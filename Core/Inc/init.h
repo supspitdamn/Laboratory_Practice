@@ -1,5 +1,5 @@
 #ifndef INIT_H
-
+// Я pisich  из второй лабораторной
 #include "stm32f4xx.h"
 #include "stm32f429xx.h"
 #include "stdio.h"
