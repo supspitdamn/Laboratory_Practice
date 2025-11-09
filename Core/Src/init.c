@@ -1,5 +1,7 @@
 #include "../Inc/init.h"
 
+// Всем хай)
+
 void macros_init(void)
 {
     SETBIT(RCC_TACT, GPIO_B_RCC_ON); // Включение тактирования ГПИОБ
