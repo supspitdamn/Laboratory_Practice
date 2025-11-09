@@ -1,0 +1,141 @@
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccRokWyG.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"interrupt.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/interrupt.c"
+  20              		.section	.text.EXTI15_10_IRQHandler,"ax",%progbits
+  21              		.align	1
+  22              		.global	EXTI15_10_IRQHandler
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	EXTI15_10_IRQHandler:
+  28              	.LFB133:
+   1:Core/Src/interrupt.c **** #include "interrupt.h"
+   2:Core/Src/interrupt.c **** 
+   3:Core/Src/interrupt.c **** void EXTI15_10_IRQHandler(void)
+   4:Core/Src/interrupt.c **** {
+  29              		.loc 1 4 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+   5:Core/Src/interrupt.c ****     if (READ_BIT(EXTI->PR, EXTI_PR_PR12)) 
+  34              		.loc 1 5 5 view .LVU1
+  35              		.loc 1 5 9 is_stmt 0 view .LVU2
+  36 0000 0F4B     		ldr	r3, .L10
+  37 0002 5B69     		ldr	r3, [r3, #20]
+  38              		.loc 1 5 8 view .LVU3
+  39 0004 13F4805F 		tst	r3, #4096
+  40 0008 18D0     		beq	.L7
+   4:Core/Src/interrupt.c ****     if (READ_BIT(EXTI->PR, EXTI_PR_PR12)) 
+  41              		.loc 1 4 1 view .LVU4
+  42 000a 82B0     		sub	sp, sp, #8
+  43              	.LCFI0:
+  44              		.cfi_def_cfa_offset 8
+   6:Core/Src/interrupt.c ****     {
+   7:Core/Src/interrupt.c ****         // // Задержка для антидребезга
+   8:Core/Src/interrupt.c ****         for(volatile int i = 0; i < 100; i++);
+  45              		.loc 1 8 9 is_stmt 1 view .LVU5
+  46              	.LBB2:
+  47              		.loc 1 8 13 view .LVU6
+  48              		.loc 1 8 26 is_stmt 0 view .LVU7
+  49 000c 0023     		movs	r3, #0
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccRokWyG.s 			page 2
+
+
+  50 000e 0193     		str	r3, [sp, #4]
+  51              		.loc 1 8 9 view .LVU8
+  52 0010 02E0     		b	.L3
+  53              	.L4:
+  54              		.loc 1 8 43 is_stmt 1 discriminator 3 view .LVU9
+  55 0012 019B     		ldr	r3, [sp, #4]
+  56 0014 0133     		adds	r3, r3, #1
+  57 0016 0193     		str	r3, [sp, #4]
+  58              	.L3:
+  59              		.loc 1 8 35 discriminator 1 view .LVU10
+  60 0018 019B     		ldr	r3, [sp, #4]
+  61 001a 632B     		cmp	r3, #99
+  62 001c F9DD     		ble	.L4
+  63              	.LBE2:
+   9:Core/Src/interrupt.c ****         
+  10:Core/Src/interrupt.c ****         // Проверяем что кнопка действительно нажата
+  11:Core/Src/interrupt.c ****         if(!(GPIOC->IDR & GPIO_IDR_ID12))
+  64              		.loc 1 11 9 view .LVU11
+  65              		.loc 1 11 19 is_stmt 0 view .LVU12
+  66 001e 094B     		ldr	r3, .L10+4
+  67 0020 1B69     		ldr	r3, [r3, #16]
+  68              		.loc 1 11 11 view .LVU13
+  69 0022 13F4805F 		tst	r3, #4096
+  70 0026 02D1     		bne	.L5
+  12:Core/Src/interrupt.c ****         {
+  13:Core/Src/interrupt.c ****             button_pressed = 1; // Устанавливаем флаг для основного ц
+  71              		.loc 1 13 13 is_stmt 1 view .LVU14
+  72              		.loc 1 13 28 is_stmt 0 view .LVU15
+  73 0028 074B     		ldr	r3, .L10+8
+  74 002a 0122     		movs	r2, #1
+  75 002c 1A70     		strb	r2, [r3]
+  76              	.L5:
+  14:Core/Src/interrupt.c ****         }
+  15:Core/Src/interrupt.c ****         
+  16:Core/Src/interrupt.c ****         SET_BIT(EXTI->PR, EXTI_PR_PR12);
+  77              		.loc 1 16 9 is_stmt 1 view .LVU16
+  78 002e 044A     		ldr	r2, .L10
+  79 0030 5369     		ldr	r3, [r2, #20]
+  80 0032 43F48053 		orr	r3, r3, #4096
+  81 0036 5361     		str	r3, [r2, #20]
+  17:Core/Src/interrupt.c ****     }
+  18:Core/Src/interrupt.c **** }
+  82              		.loc 1 18 1 is_stmt 0 view .LVU17
+  83 0038 02B0     		add	sp, sp, #8
+  84              	.LCFI1:
+  85              		.cfi_def_cfa_offset 0
+  86              		@ sp needed
+  87 003a 7047     		bx	lr
+  88              	.L7:
+  89 003c 7047     		bx	lr
+  90              	.L11:
+  91 003e 00BF     		.align	2
+  92              	.L10:
+  93 0040 003C0140 		.word	1073822720
+  94 0044 00080240 		.word	1073874944
+  95 0048 00000000 		.word	button_pressed
+  96              		.cfi_endproc
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccRokWyG.s 			page 3
+
+
+  97              	.LFE133:
+  99              		.text
+ 100              	.Letext0:
+ 101              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 102              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 103              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 104              		.file 5 "Core/Inc/interrupt.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccRokWyG.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 interrupt.c
+C:\Users\User\AppData\Local\Temp\ccRokWyG.s:21     .text.EXTI15_10_IRQHandler:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccRokWyG.s:27     .text.EXTI15_10_IRQHandler:00000000 EXTI15_10_IRQHandler
+C:\Users\User\AppData\Local\Temp\ccRokWyG.s:93     .text.EXTI15_10_IRQHandler:00000040 $d
+
+UNDEFINED SYMBOLS
+button_pressed

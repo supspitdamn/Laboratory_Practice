@@ -38,7 +38,8 @@ BUILD_DIR = build
 C_SOURCES =  \
 CMSIS/Devices/STM32F4xx/Src/system_stm32f4xx.c \
 Core/Src/main.c \
-
+Core/Inc/init.c \
+# Core/Src/interrupt.c \
 
 # ASM sources
 ASM_SOURCES =  \
@@ -155,7 +156,7 @@ $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(BIN) $< $@	
 	
 $(BUILD_DIR):
-	mkdir $@		
+	@mkdir $@		
 
 #######################################
 # clean up
