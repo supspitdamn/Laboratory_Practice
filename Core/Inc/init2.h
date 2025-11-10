@@ -8,4 +8,6 @@ void RCC_init(void);
 
 void Interrupt_init(void);
 
+void systick_init(void);
+
 #endif

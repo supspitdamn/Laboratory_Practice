@@ -60,3 +60,12 @@ void RCC_init(void)
     SET_BIT(RCC->CR, RCC_CR_PLLON);             // Включение PLL
     while (READ_BIT(RCC->CR, RCC_CR_PLLRDY) == RESET);
 }
+
+void systick_init(void)
+{
+    CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk);// Если поймали помехи. Отключили счетный регистр
+    SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk); // Включили прерывания
+    SET_BIT(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk); // Подключили источник тактирования. 1 - без делителя
+
+
+}
