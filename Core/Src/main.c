@@ -1,128 +1,65 @@
 #include "..\Inc\init.h"
-#include "..\Inc\init2.h"
 #include "stdio.h"
 
 // Кнопка 6 - включение светодиодов
 // Кнопка 7 - смена режима работы
+
+volatile uint32_t duration = 0;
+
 int main(void)
 {
-    macros_init();
-    
-    uint32_t counter_LED1 = 0;
-    uint32_t counter_LED2 = 0;
-    uint32_t counter_LED3 = 0;
-    uint32_t change_mode = 0;
-
+    cmsis_init();
+    int counter = 0;
+    int mass[3] = {1000, 5000, 10000};
     while(1)
     {
- 
-        if (pressed_button(IDRC7_))  
+        if(pressed_button(GPIOB, GPIO_IDR_ID3)) // Переключение светодиодов
         {
-            change_mode = !change_mode;
-        }
-
-        if(pressed_button(IDRC6_))
-        {
-            if(change_mode == 0)
+            if(duration>LONGDURATION)
             {
-                if(counter_LED1 == 0)
-                    counter_LED1 = 1;
-                else if(counter_LED2 == 0)
-                    counter_LED2 = 1;
-                else if(counter_LED3 == 0)
-                    counter_LED3 = 1;
+                SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14);
             }
-            else
+            else if(duration>MEDIUMDURATION)
             {
-                if(counter_LED3 == 1)
-                    counter_LED3 = 0;
-                else if(counter_LED2 == 1)
-                    counter_LED2 = 0;
-                else if(counter_LED1 == 1)
-                    counter_LED1 = 0;
+                SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);
             }
+            else if(duration>SHORTDURATION)
+            {
+                SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+            }
+            else if(duration<=SHORTDURATION)
+            {
+                SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14);
+            }
+            duration = 0;
         }
 
-        if(counter_LED1)
+        if(pressed_button(GPIOB, GPIO_IDR_ID1)) // Цикличное переключение светодиодов
         {
-            SET_BIT(BSRR_, BSRRB_0_ON);
-        }
-        else
-        {
-            SET_BIT(BSRR_, BSRRB_0_OFF);
-        }
-
-        if(counter_LED2)
-        {
-            SET_BIT(BSRR_, BSRRB_7_ON);
-        }
-        else
-        {
-            SET_BIT(BSRR_, BSRRB_7_OFF);
+            counter++;
+            if(counter == 4)
+            {
+                counter = 0;
+            }
+            duration = 0;
         }
 
-        if(counter_LED3)
+        switch(counter)
         {
-            SET_BIT(BSRR_, BSRRB_14_ON);
+            case 0 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14);
+            break;
+            case 1 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);
+            break;
+            case 2 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+            break;
+            case 3 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14);
+            break;
         }
-        else
+
+        if(pressed_button(GPIOB, GPIO_IDR_ID2)) // Задаем частоту мерцания
         {
-            SET_BIT(BSRR_, BSRRB_14_OFF);
+
         }
     }
 }
-
-// int main(void)
-// {
-//     RCC_init();
-//     macros_init();
-    
-//     uint32_t counter_LED1 = 0;
-//     uint32_t counter_LED2 = 0;
-//     uint32_t counter_LED3 = 0;
-//     uint32_t change_mode = 0;
-
-//     while(1)
-//     {
- 
-//         if (pressed_button(IDRC7_))  
-//         {
-//             change_mode++;
-//             if(change_mode == 3)
-//             {
-//                 change_mode = 0;
-//             }
-//         }
-
-//         if(pressed_button(IDRC6_))
-//         {
-//                 if(counter_LED1 == 1 && counter_LED2 == 1 && counter_LED3 == 1)
-//                 {
-//                     counter_LED1 = 0;
-//                     counter_LED2 = 0;
-//                     counter_LED3 = 0;
-//                 }
-//                 else
-//                 {
-//                 if(counter_LED1 == 0)
-//                     counter_LED1 = 1;
-//                 else if(counter_LED2 == 0)
-//                     counter_LED2 = 1;
-//                 else if(counter_LED3 == 0)
-//                     counter_LED3 = 1;
-//                 }
-//         }
-
-//         if((IDRC_ & IDRC6_) && (IDRC_ & IDRC7_))
-//         {
-//             glow_LED(counter_LED1, counter_LED2, counter_LED3, change_mode);
-//         }
-//     }
-// }
-
-// #include "..\Inc\init.h"
-// #include "stdio.h"
-
-// // Кнопка 6 - включение светодиодов
-// // Кнопка 7 - смена режима работы
 
