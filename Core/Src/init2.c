@@ -8,12 +8,14 @@ void GPIO_init(void)
 
     //
 
-    SET_BIT(GPIOB->MODER, GPIO_MODER_MODE0 | GPIO_MODER_MODE7 | GPIO_MODER_MODE14); // Светодиоды на выход
+    SET_BIT(GPIOB->MODER, GPIO_MODER_MODE0_0 | GPIO_MODER_MODE7_0 | GPIO_MODER_MODE14_0
+         | GPIO_MODER_MODE8_0 | GPIO_MODER_MODE9_0 | GPIO_MODER_MODE10_0); // Светодиоды на выход
+
     CLEAR_BIT(GPIOC->MODER, GPIO_MODER_MODE6 | GPIO_MODER_MODE7); // Кнопки по входу
 
     //
 
-    SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14); // Выключил светодиоды
+    SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14 | GPIO_BSRR_BR8 | GPIO_BSRR_BR9 | GPIO_BSRR_BR10); // Выключил светодиоды
     CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT0_Msk); // светодиоды пуш-пул
     SET_BIT(GPIOC->PUPDR, GPIO_PUPDR_PUPD6_0 | GPIO_PUPDR_PUPD7_0); // Кнопки пул-ап
 
@@ -21,19 +23,19 @@ void GPIO_init(void)
 
 void Interrupt_init(void) // По какому-либо сценарию происходит остановка программы по таймеру, вызывая обработчик прерывания
 {
-    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_SYSCFGEN); // Подали тактирование для прерываний
+    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_SYSCFGEN); // Подали тактирование для прерываний. 90 Мгц
 
-    SET_BIT(SYSCFG->EXTICR[3], SYSCFG_EXTICR4_EXTI12_PC); // Активировали PC12
+    SET_BIT(SYSCFG->EXTICR[1], SYSCFG_EXTICR2_EXTI6_PC); // Активировали PC12
 
-    SET_BIT(EXTI->IMR, EXTI_IMR_IM12); // Настроили маску на прерывание
+    SET_BIT(EXTI->IMR, EXTI_IMR_IM6); // Настроили маску на прерывание
 
-    SET_BIT(EXTI->RTSR, EXTI_RTSR_TR12); // Назначили по фронту интеррапт
+    SET_BIT(EXTI->RTSR, EXTI_RTSR_TR6); // Назначили по фронту интеррапт
 
-    CLEAR_BIT(EXTI->FTSR, EXTI_FTSR_TR12); // Убрали по спаду интеррапт
+    CLEAR_BIT(EXTI->FTSR, EXTI_FTSR_TR6); // Убрали по спаду интеррапт
 
-    NVIC_SetPriority(EXTI15_10_IRQn, NVIC_EncodePriority(__NVIC_GetPriorityGrouping(), 0, 0));
-    NVIC_EnableIRQ(EXTI15_10_IRQn); // Разрешил прерывание (название взял в ассемблерном коде stm32)
+    NVIC_SetPriority(EXTI9_5_IRQn, NVIC_EncodePriority(__NVIC_GetPriorityGrouping(), 0, 0));
 
+    NVIC_EnableIRQ(EXTI9_5_IRQn); // Разрешил прерывание (название взял в ассемблерном коде stm32)
 }
 
 void RCC_init(void) // Тактирование

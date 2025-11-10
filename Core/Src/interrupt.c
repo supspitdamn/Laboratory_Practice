@@ -3,20 +3,16 @@
 uint8_t last_state, FLAG_DELAY;
 uint32_t delay_count;
 
-void EXTI15_10_IRQHandler(void)
+void EXTI9_5_IRQHandler(void)
 {
-    if (READ_BIT(EXTI->PR, EXTI_PR_PR12)) 
+    if (READ_BIT(EXTI->PR, EXTI_PR_PR6)) 
     {
-        // // Задержка для антидребезга
-        for(volatile int i = 0; i < 100; i++);
-        
-        // Проверяем что кнопка действительно нажата
-        if(!(GPIOC->IDR & GPIO_IDR_ID12))
+        SET_BIT(EXTI->PR, EXTI_PR_PR6);
+        last_button_time = global_counter; 
+        if((GPIOC->IDR & GPIO_IDR_ID6)) // На отпускание
         {
-            button_pressed = 1; // Устанавливаем флаг для основного цикла
+            button_pressed = 1;
         }
-        
-        SET_BIT(EXTI->PR, EXTI_PR_PR12);
     }
 }
 
