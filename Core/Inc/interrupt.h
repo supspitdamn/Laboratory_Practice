@@ -6,9 +6,13 @@
 
 // Объявление внешних переменных (без инициализации)
 extern volatile uint8_t button_pressed;
+extern volatile uint32_t global_counter;
+extern volatile uint16_t button_delay, second_tim;
 
 // Прототипы функций
 void Interrupt_init(void);
 void EXTI15_10_IRQHandler(void);
+void SysTick_Handler(void);
+
 
 #endif

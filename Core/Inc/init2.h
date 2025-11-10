@@ -4,6 +4,8 @@
 #include "stm32f429xx.h"
 #include "stdio.h"
 
+void GPIO_init(void);
+
 void RCC_init(void);
 
 void Interrupt_init(void);

@@ -1,5 +1,23 @@
 #include "../Inc/init2.h"
 
+void GPIO_init(void)
+{
+    // Активировал порты ГПИОБ ГПИОС
+    SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN);
+    SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOCEN);
+
+    //
+
+    SET_BIT(GPIOB->MODER, GPIO_MODER_MODE0 | GPIO_MODER_MODE7 | GPIO_MODER_MODE14); // Светодиоды на выход
+    CLEAR_BIT(GPIOC->MODER, GPIO_MODER_MODE6 | GPIO_MODER_MODE7); // Кнопки по входу
+
+    //
+
+    SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14); // Выключил светодиоды
+    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT0_Msk); // светодиоды пуш-пул
+    SET_BIT(GPIOC->PUPDR, GPIO_PUPDR_PUPD6_0 | GPIO_PUPDR_PUPD7_0); // Кнопки пул-ап
+
+}
 
 void Interrupt_init(void) // По какому-либо сценарию происходит остановка программы по таймеру, вызывая обработчик прерывания
 {
@@ -18,7 +36,7 @@ void Interrupt_init(void) // По какому-либо сценарию про�
 
 }
 
-void RCC_init(void)
+void RCC_init(void) // Тактирование
 {
     MODIFY_REG(RCC->CR, RCC_CR_HSITRIM, 0x80UL);
     CLEAR_REG(RCC->CFGR);
@@ -61,11 +79,17 @@ void RCC_init(void)
     while (READ_BIT(RCC->CR, RCC_CR_PLLRDY) == RESET);
 }
 
-void systick_init(void)
+void systick_init(void) // Прерывания таймера
 {
     CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk);// Если поймали помехи. Отключили счетный регистр
     SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk); // Включили прерывания
     SET_BIT(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk); // Подключили источник тактирования. 1 - без делителя
+    
+    // SET_BIT(SysTick->CTRL, SysTick_CTRL_COUNTFLAG_Msk); для лохов
 
+    MODIFY_REG(SysTick->LOAD, SysTick_LOAD_RELOAD_Msk, (180000-1) << SysTick_LOAD_RELOAD_Pos); // Регистр, маска удаления, маска установочная
+    MODIFY_REG(SysTick->VAL, SysTick_VAL_CURRENT_Msk, (180000-1) << SysTick_VAL_CURRENT_Pos);
+    
+    SET_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk); // Включил прерывание
 
 }
