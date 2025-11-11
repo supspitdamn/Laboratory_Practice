@@ -1,8 +1,10 @@
 #include "..\Inc\init2.h"
 #include "interrupt.h"
+
 volatile uint32_t global_counter = 0;
 extern volatile uint32_t last_button_time_pressed;
 extern volatile uint32_t last_button_time_unpressed;
+
 int main(void) // Запускать плл блок после всех настроек
 {
     // Настройка регистров
