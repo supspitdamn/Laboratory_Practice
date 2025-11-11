@@ -1,10 +1,8 @@
 #include "..\Inc\init2.h"
 #include "interrupt.h"
-volatile uint8_t prev_state = 0;
-volatile uint8_t button_pressed = 0;
 volatile uint32_t global_counter = 0;
-volatile uint16_t button_delay = 0, second_tim = 0;
-volatile uint32_t last_button_time = 0;
+extern volatile uint32_t last_button_time_pressed;
+extern volatile uint32_t last_button_time_unpressed;
 int main(void) // Запускать плл блок после всех настроек
 {
     // Настройка регистров
@@ -19,10 +17,9 @@ int main(void) // Запускать плл блок после всех нас�
 
     while(1)
     {
-        if(button_pressed && (global_counter - last_button_time > TIME_DELAY_2SEC))
+        if(last_button_time_unpressed - last_button_time_pressed > TIME_DELAY_2SEC)
         {
             counter++;
-            prev_state = 1;
             if ((GPIOC->IDR & GPIO_IDR_ID6))
             {
                 if(counter == 4)
@@ -30,7 +27,6 @@ int main(void) // Запускать плл блок после всех нас�
                     counter = 0;
                 }
             }   
-            button_pressed = 0;
         }
         
         switch(counter)
