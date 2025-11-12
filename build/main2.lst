@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\cczwz0PR.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccPt8YwI.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -30,14 +30,18 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cczwz0PR.s 			page 1
   28              	.LFB133:
    1:Core/Src/main2.c **** #include "..\Inc\init2.h"
    2:Core/Src/main2.c **** #include "interrupt.h"
-   3:Core/Src/main2.c **** volatile uint8_t prev_state = 0;
-   4:Core/Src/main2.c **** volatile uint8_t button_pressed = 0;
-   5:Core/Src/main2.c **** volatile uint32_t global_counter = 0;
-   6:Core/Src/main2.c **** volatile uint16_t button_delay = 0, second_tim = 0;
-   7:Core/Src/main2.c **** volatile uint32_t last_button_time = 0;
-   8:Core/Src/main2.c **** int main(void) // Запускать плл блок после всех настроек
-   9:Core/Src/main2.c **** {
-  29              		.loc 1 9 1 view -0
+   3:Core/Src/main2.c **** 
+   4:Core/Src/main2.c **** volatile uint32_t global_counter = 0;
+   5:Core/Src/main2.c **** volatile uint32_t last_button_time_pressed = 0;
+   6:Core/Src/main2.c **** volatile uint32_t last_button_time_unpressed = 0;
+   7:Core/Src/main2.c **** volatile uint16_t MCO2_freq = 0;
+   8:Core/Src/main2.c **** volatile uint16_t SysClock_freq = 0;
+   9:Core/Src/main2.c **** volatile uint8_t state = 0;
+  10:Core/Src/main2.c **** volatile uint8_t button = 0;
+  11:Core/Src/main2.c **** 
+  12:Core/Src/main2.c **** int main(void) // Запускать плл блок после всех настроек
+  13:Core/Src/main2.c **** {
+  29              		.loc 1 13 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -46,258 +50,159 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cczwz0PR.s 			page 1
   35              		.cfi_def_cfa_offset 8
   36              		.cfi_offset 3, -8
   37              		.cfi_offset 14, -4
-  10:Core/Src/main2.c ****     // Настройка регистров
-  11:Core/Src/main2.c **** 
-  12:Core/Src/main2.c ****     RCC_init();
-  38              		.loc 1 12 5 view .LVU1
+  14:Core/Src/main2.c ****     // Настройка регистров
+  15:Core/Src/main2.c **** 
+  16:Core/Src/main2.c ****     RCC_init();
+  38              		.loc 1 16 5 view .LVU1
   39 0002 FFF7FEFF 		bl	RCC_init
   40              	.LVL0:
-  13:Core/Src/main2.c ****     GPIO_init();
-  41              		.loc 1 13 5 view .LVU2
+  17:Core/Src/main2.c **** 
+  18:Core/Src/main2.c ****     GPIO_init();
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccPt8YwI.s 			page 2
+
+
+  41              		.loc 1 18 5 view .LVU2
   42 0006 FFF7FEFF 		bl	GPIO_init
   43              	.LVL1:
-  14:Core/Src/main2.c ****     Interrupt_init();
-  44              		.loc 1 14 5 view .LVU3
-ARM GAS  C:\Users\User\AppData\Local\Temp\cczwz0PR.s 			page 2
-
-
+  19:Core/Src/main2.c ****     Interrupt_init();
+  44              		.loc 1 19 5 view .LVU3
   45 000a FFF7FEFF 		bl	Interrupt_init
   46              	.LVL2:
-  15:Core/Src/main2.c ****     systick_init();
-  47              		.loc 1 15 5 view .LVU4
+  20:Core/Src/main2.c ****     systick_init();
+  47              		.loc 1 20 5 view .LVU4
   48 000e FFF7FEFF 		bl	systick_init
   49              	.LVL3:
-  16:Core/Src/main2.c **** 
-  17:Core/Src/main2.c ****     // Основной код
-  18:Core/Src/main2.c ****     int counter = 0;
-  50              		.loc 1 18 5 view .LVU5
-  51              		.loc 1 18 9 is_stmt 0 view .LVU6
-  52 0012 0023     		movs	r3, #0
-  53 0014 09E0     		b	.L2
-  54              	.LVL4:
-  55              	.L14:
-  19:Core/Src/main2.c **** 
-  20:Core/Src/main2.c ****     while(1)
-  21:Core/Src/main2.c ****     {
-  22:Core/Src/main2.c ****         if(button_pressed && (global_counter - last_button_time > TIME_DELAY_2SEC))
-  23:Core/Src/main2.c ****         {
-  24:Core/Src/main2.c ****             counter++;
-  25:Core/Src/main2.c ****             prev_state = 1;
-  26:Core/Src/main2.c ****             if ((GPIOC->IDR & GPIO_IDR_ID6))
-  27:Core/Src/main2.c ****             {
-  28:Core/Src/main2.c ****                 if(counter == 4)
-  29:Core/Src/main2.c ****                 {
-  30:Core/Src/main2.c ****                     counter = 0;
-  56              		.loc 1 30 21 is_stmt 1 view .LVU7
-  31:Core/Src/main2.c ****                 }
-  32:Core/Src/main2.c ****             }   
-  33:Core/Src/main2.c ****             button_pressed = 0;
-  57              		.loc 1 33 13 view .LVU8
-  58              		.loc 1 33 28 is_stmt 0 view .LVU9
-  59 0016 0023     		movs	r3, #0
-  60 0018 234A     		ldr	r2, .L15
-  61 001a 1370     		strb	r3, [r2]
+  21:Core/Src/main2.c **** 
+  22:Core/Src/main2.c ****     // Основной код
+  23:Core/Src/main2.c ****     int counter = 0;
+  50              		.loc 1 23 5 view .LVU5
+  24:Core/Src/main2.c ****     uint8_t long_press = 0;
+  51              		.loc 1 24 5 view .LVU6
+  25:Core/Src/main2.c ****     uint8_t short_press = 0;
+  52              		.loc 1 25 5 view .LVU7
+  53              		.loc 1 25 5 is_stmt 0 view .LVU8
+  54 0012 04E0     		b	.L2
+  55              	.L6:
+  26:Core/Src/main2.c **** 
+  27:Core/Src/main2.c ****     while(1)
+  28:Core/Src/main2.c ****     {
+  29:Core/Src/main2.c ****         state = button;
+  30:Core/Src/main2.c ****         // Управление светодиодами
+  31:Core/Src/main2.c ****         if (state) 
+  32:Core/Src/main2.c ****         {
+  33:Core/Src/main2.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7); // Включить PB7
+  56              		.loc 1 33 13 is_stmt 1 view .LVU9
+  57 0014 094A     		ldr	r2, .L7
+  58 0016 9369     		ldr	r3, [r2, #24]
+  59 0018 43F08003 		orr	r3, r3, #128
+  60 001c 9361     		str	r3, [r2, #24]
+  61              	.L2:
+  27:Core/Src/main2.c ****     {
+  62              		.loc 1 27 5 view .LVU10
+  29:Core/Src/main2.c ****         // Управление светодиодами
+  63              		.loc 1 29 9 view .LVU11
+  29:Core/Src/main2.c ****         // Управление светодиодами
+  64              		.loc 1 29 15 is_stmt 0 view .LVU12
+  65 001e 084B     		ldr	r3, .L7+4
+  66 0020 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  67 0022 DBB2     		uxtb	r3, r3
+  68 0024 074A     		ldr	r2, .L7+8
+  69 0026 1370     		strb	r3, [r2]
+  31:Core/Src/main2.c ****         {
+  70              		.loc 1 31 9 is_stmt 1 view .LVU13
+  31:Core/Src/main2.c ****         {
+  71              		.loc 1 31 13 is_stmt 0 view .LVU14
+  72 0028 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+  31:Core/Src/main2.c ****         {
+  73              		.loc 1 31 12 view .LVU15
+  74 002a 002B     		cmp	r3, #0
+  75 002c F2D1     		bne	.L6
   34:Core/Src/main2.c ****         }
-  35:Core/Src/main2.c ****         
-  36:Core/Src/main2.c ****         switch(counter)
-  62              		.loc 1 36 9 is_stmt 1 view .LVU10
-  63              	.LVL5:
-  64              	.L6:
-  37:Core/Src/main2.c ****         {
-  38:Core/Src/main2.c ****             case 0 :SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14);
-  65              		.loc 1 38 21 view .LVU11
-  66 001c 2349     		ldr	r1, .L15+4
-  67 001e 8A69     		ldr	r2, [r1, #24]
-  68 0020 42F08142 		orr	r2, r2, #1082130432
-  69 0024 42F48032 		orr	r2, r2, #65536
-  70 0028 8A61     		str	r2, [r1, #24]
-  39:Core/Src/main2.c ****             break;
-  71              		.loc 1 39 13 view .LVU12
-  72              	.L2:
-  73              	.LVL6:
-  20:Core/Src/main2.c ****     {
-  74              		.loc 1 20 5 view .LVU13
-  22:Core/Src/main2.c ****         {
-ARM GAS  C:\Users\User\AppData\Local\Temp\cczwz0PR.s 			page 3
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccPt8YwI.s 			page 3
 
 
-  75              		.loc 1 22 9 view .LVU14
-  22:Core/Src/main2.c ****         {
-  76              		.loc 1 22 12 is_stmt 0 view .LVU15
-  77 002a 1F4A     		ldr	r2, .L15
-  78 002c 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
-  22:Core/Src/main2.c ****         {
-  79              		.loc 1 22 11 view .LVU16
-  80 002e AAB1     		cbz	r2, .L4
-  22:Core/Src/main2.c ****         {
-  81              		.loc 1 22 46 discriminator 1 view .LVU17
-  82 0030 1F4A     		ldr	r2, .L15+8
-  83 0032 1268     		ldr	r2, [r2]
-  84 0034 1F49     		ldr	r1, .L15+12
-  85 0036 0968     		ldr	r1, [r1]
-  86 0038 521A     		subs	r2, r2, r1
-  22:Core/Src/main2.c ****         {
-  87              		.loc 1 22 27 discriminator 1 view .LVU18
-  88 003a B2F5FA6F 		cmp	r2, #2000
-  89 003e 0DD9     		bls	.L4
-  24:Core/Src/main2.c ****             prev_state = 1;
-  90              		.loc 1 24 13 is_stmt 1 view .LVU19
-  24:Core/Src/main2.c ****             prev_state = 1;
-  91              		.loc 1 24 20 is_stmt 0 view .LVU20
-  92 0040 0133     		adds	r3, r3, #1
-  93              	.LVL7:
-  25:Core/Src/main2.c ****             if ((GPIOC->IDR & GPIO_IDR_ID6))
-  94              		.loc 1 25 13 is_stmt 1 view .LVU21
-  25:Core/Src/main2.c ****             if ((GPIOC->IDR & GPIO_IDR_ID6))
-  95              		.loc 1 25 24 is_stmt 0 view .LVU22
-  96 0042 1D4A     		ldr	r2, .L15+16
-  97 0044 0121     		movs	r1, #1
-  98 0046 1170     		strb	r1, [r2]
-  26:Core/Src/main2.c ****             {
-  99              		.loc 1 26 13 is_stmt 1 view .LVU23
-  26:Core/Src/main2.c ****             {
- 100              		.loc 1 26 23 is_stmt 0 view .LVU24
- 101 0048 1C4A     		ldr	r2, .L15+20
- 102 004a 1269     		ldr	r2, [r2, #16]
-  26:Core/Src/main2.c ****             {
- 103              		.loc 1 26 16 view .LVU25
- 104 004c 12F0400F 		tst	r2, #64
- 105 0050 01D0     		beq	.L5
-  28:Core/Src/main2.c ****                 {
- 106              		.loc 1 28 17 is_stmt 1 view .LVU26
-  28:Core/Src/main2.c ****                 {
- 107              		.loc 1 28 19 is_stmt 0 view .LVU27
- 108 0052 042B     		cmp	r3, #4
- 109 0054 DFD0     		beq	.L14
- 110              	.L5:
-  33:Core/Src/main2.c ****         }
- 111              		.loc 1 33 13 is_stmt 1 view .LVU28
-  33:Core/Src/main2.c ****         }
- 112              		.loc 1 33 28 is_stmt 0 view .LVU29
- 113 0056 144A     		ldr	r2, .L15
- 114 0058 0021     		movs	r1, #0
- 115 005a 1170     		strb	r1, [r2]
- 116              	.L4:
-ARM GAS  C:\Users\User\AppData\Local\Temp\cczwz0PR.s 			page 4
-
-
+  35:Core/Src/main2.c ****         else 
   36:Core/Src/main2.c ****         {
- 117              		.loc 1 36 9 is_stmt 1 view .LVU30
- 118 005c 032B     		cmp	r3, #3
- 119 005e E4D8     		bhi	.L2
- 120 0060 01A2     		adr	r2, .L8
- 121 0062 52F823F0 		ldr	pc, [r2, r3, lsl #2]
- 122 0066 00BF     		.p2align 2
- 123              	.L8:
- 124 0068 1D000000 		.word	.L6+1
- 125 006c 79000000 		.word	.L10+1
- 126 0070 89000000 		.word	.L9+1
- 127 0074 99000000 		.word	.L7+1
- 128              		.p2align 1
- 129              	.L10:
-  40:Core/Src/main2.c ****             case 1 :SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14);
- 130              		.loc 1 40 21 view .LVU31
- 131 0078 0C49     		ldr	r1, .L15+4
- 132 007a 8A69     		ldr	r2, [r1, #24]
- 133 007c 42F08142 		orr	r2, r2, #1082130432
- 134 0080 42F00102 		orr	r2, r2, #1
- 135 0084 8A61     		str	r2, [r1, #24]
-  41:Core/Src/main2.c ****             break;
- 136              		.loc 1 41 13 view .LVU32
- 137 0086 D0E7     		b	.L2
- 138              	.L9:
-  42:Core/Src/main2.c ****             case 2 :SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0 | GPIO_BSRR_BS7 | GPIO_BSRR_BR14);
- 139              		.loc 1 42 21 view .LVU33
- 140 0088 0849     		ldr	r1, .L15+4
- 141 008a 8A69     		ldr	r2, [r1, #24]
- 142 008c 42F08042 		orr	r2, r2, #1073741824
- 143 0090 42F08102 		orr	r2, r2, #129
- 144 0094 8A61     		str	r2, [r1, #24]
-  43:Core/Src/main2.c ****             break;
- 145              		.loc 1 43 13 view .LVU34
- 146 0096 C8E7     		b	.L2
- 147              	.L7:
-  44:Core/Src/main2.c ****             case 3 :SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0 | GPIO_BSRR_BS7 | GPIO_BSRR_BS14);
- 148              		.loc 1 44 21 view .LVU35
- 149 0098 0449     		ldr	r1, .L15+4
- 150 009a 8A69     		ldr	r2, [r1, #24]
- 151 009c 42F48142 		orr	r2, r2, #16512
- 152 00a0 42F00102 		orr	r2, r2, #1
- 153 00a4 8A61     		str	r2, [r1, #24]
-  45:Core/Src/main2.c ****             break;
- 154              		.loc 1 45 13 view .LVU36
- 155 00a6 C0E7     		b	.L2
- 156              	.L16:
- 157              		.align	2
- 158              	.L15:
- 159 00a8 00000000 		.word	button_pressed
- 160 00ac 00040240 		.word	1073873920
- 161 00b0 00000000 		.word	global_counter
- 162 00b4 00000000 		.word	last_button_time
- 163 00b8 00000000 		.word	prev_state
- 164 00bc 00080240 		.word	1073874944
- 165              		.cfi_endproc
- 166              	.LFE133:
-ARM GAS  C:\Users\User\AppData\Local\Temp\cczwz0PR.s 			page 5
+  37:Core/Src/main2.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR7); // Выключить PB7
+  76              		.loc 1 37 13 is_stmt 1 view .LVU16
+  77 002e 034A     		ldr	r2, .L7
+  78 0030 9369     		ldr	r3, [r2, #24]
+  79 0032 43F40003 		orr	r3, r3, #8388608
+  80 0036 9361     		str	r3, [r2, #24]
+  81 0038 F1E7     		b	.L2
+  82              	.L8:
+  83 003a 00BF     		.align	2
+  84              	.L7:
+  85 003c 00040240 		.word	1073873920
+  86 0040 00000000 		.word	button
+  87 0044 00000000 		.word	state
+  88              		.cfi_endproc
+  89              	.LFE133:
+  91              		.global	button
+  92              		.section	.bss.button,"aw",%nobits
+  95              	button:
+  96 0000 00       		.space	1
+  97              		.global	state
+  98              		.section	.bss.state,"aw",%nobits
+ 101              	state:
+ 102 0000 00       		.space	1
+ 103              		.global	SysClock_freq
+ 104              		.section	.bss.SysClock_freq,"aw",%nobits
+ 105              		.align	1
+ 108              	SysClock_freq:
+ 109 0000 0000     		.space	2
+ 110              		.global	MCO2_freq
+ 111              		.section	.bss.MCO2_freq,"aw",%nobits
+ 112              		.align	1
+ 115              	MCO2_freq:
+ 116 0000 0000     		.space	2
+ 117              		.global	last_button_time_unpressed
+ 118              		.section	.bss.last_button_time_unpressed,"aw",%nobits
+ 119              		.align	2
+ 122              	last_button_time_unpressed:
+ 123 0000 00000000 		.space	4
+ 124              		.global	last_button_time_pressed
+ 125              		.section	.bss.last_button_time_pressed,"aw",%nobits
+ 126              		.align	2
+ 129              	last_button_time_pressed:
+ 130 0000 00000000 		.space	4
+ 131              		.global	global_counter
+ 132              		.section	.bss.global_counter,"aw",%nobits
+ 133              		.align	2
+ 136              	global_counter:
+ 137 0000 00000000 		.space	4
+ 138              		.text
+ 139              	.Letext0:
+ 140              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 141              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 142              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 143              		.file 5 "Core/Inc/interrupt.h"
+ 144              		.file 6 "Core/Inc/init2.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccPt8YwI.s 			page 4
 
 
- 168              		.global	last_button_time
- 169              		.section	.bss.last_button_time,"aw",%nobits
- 170              		.align	2
- 173              	last_button_time:
- 174 0000 00000000 		.space	4
- 175              		.global	second_tim
- 176              		.section	.bss.second_tim,"aw",%nobits
- 177              		.align	1
- 180              	second_tim:
- 181 0000 0000     		.space	2
- 182              		.global	button_delay
- 183              		.section	.bss.button_delay,"aw",%nobits
- 184              		.align	1
- 187              	button_delay:
- 188 0000 0000     		.space	2
- 189              		.global	global_counter
- 190              		.section	.bss.global_counter,"aw",%nobits
- 191              		.align	2
- 194              	global_counter:
- 195 0000 00000000 		.space	4
- 196              		.global	button_pressed
- 197              		.section	.bss.button_pressed,"aw",%nobits
- 200              	button_pressed:
- 201 0000 00       		.space	1
- 202              		.global	prev_state
- 203              		.section	.bss.prev_state,"aw",%nobits
- 206              	prev_state:
- 207 0000 00       		.space	1
- 208              		.text
- 209              	.Letext0:
- 210              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 211              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 212              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 213              		.file 5 "Core/Inc/interrupt.h"
- 214              		.file 6 "Core/Inc/init2.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\cczwz0PR.s 			page 6
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccPt8YwI.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main2.c
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:21     .text.main:00000000 $t
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:27     .text.main:00000000 main
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:124    .text.main:00000068 $d
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:128    .text.main:00000078 $t
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:159    .text.main:000000a8 $d
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:200    .bss.button_pressed:00000000 button_pressed
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:194    .bss.global_counter:00000000 global_counter
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:173    .bss.last_button_time:00000000 last_button_time
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:206    .bss.prev_state:00000000 prev_state
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:170    .bss.last_button_time:00000000 $d
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:180    .bss.second_tim:00000000 second_tim
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:177    .bss.second_tim:00000000 $d
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:187    .bss.button_delay:00000000 button_delay
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:184    .bss.button_delay:00000000 $d
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:191    .bss.global_counter:00000000 $d
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:201    .bss.button_pressed:00000000 $d
-C:\Users\User\AppData\Local\Temp\cczwz0PR.s:207    .bss.prev_state:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:21     .text.main:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:27     .text.main:00000000 main
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:85     .text.main:0000003c $d
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:95     .bss.button:00000000 button
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:101    .bss.state:00000000 state
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:96     .bss.button:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:102    .bss.state:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:108    .bss.SysClock_freq:00000000 SysClock_freq
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:105    .bss.SysClock_freq:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:115    .bss.MCO2_freq:00000000 MCO2_freq
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:112    .bss.MCO2_freq:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:122    .bss.last_button_time_unpressed:00000000 last_button_time_unpressed
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:119    .bss.last_button_time_unpressed:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:129    .bss.last_button_time_pressed:00000000 last_button_time_pressed
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:126    .bss.last_button_time_pressed:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:136    .bss.global_counter:00000000 global_counter
+C:\Users\User\AppData\Local\Temp\ccPt8YwI.s:133    .bss.global_counter:00000000 $d
 
 UNDEFINED SYMBOLS
 RCC_init
