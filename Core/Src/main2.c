@@ -2,41 +2,101 @@
 #include "interrupt.h"
 
 volatile uint32_t global_counter = 0;
-volatile uint32_t last_button_time_pressed = 0;
-volatile uint32_t last_button_time_unpressed = 0;
-volatile uint16_t MCO2_freq = 0;
-volatile uint16_t SysClock_freq = 0;
-volatile uint8_t state = 0;
-volatile uint8_t button = 0;
 
-int main(void) // Запускать плл блок после всех настроек
+volatile uint8_t short_press1 = 0, long_press1 = 0;
+volatile uint8_t short_press2 = 0, long_press2 = 0;
+
+volatile uint32_t frequences[6] = {
+    FREQ_0_3Hz, FREQ_0_3Hz, FREQ_0_3Hz,
+    FREQ_0_3Hz, FREQ_0_3Hz, FREQ_0_3Hz
+};
+
+volatile uint8_t states[6] = {0};
+
+volatile uint32_t last_toggle[6] = {0};
+
+const uint32_t freq_table[3][3] = {
+    { FREQ_0_3Hz, FREQ_0_8Hz, FREQ_1_3Hz },
+    { FREQ_0_5Hz, FREQ_1_0Hz, FREQ_1_6Hz },
+    { FREQ_0_8Hz, FREQ_2_0Hz, FREQ_3_3Hz }
+};
+
+// Пины светодиодов: PB8, PB9, PB10, PB7, PB14, PB0
+const uint8_t led_pins[6] = {8, 9, 10, 7, 14, 0};
+
+volatile int8_t selected_led = -1;
+
+int main(void)
 {
-    // Настройка регистров
-
     RCC_init();
-
     GPIO_init();
     Interrupt_init();
     systick_init();
 
-    // Основной код
-    int counter = 0;
-    uint8_t long_press = 0;
-    uint8_t short_press = 0;
+    uint8_t counter_light = 0;
+    uint8_t x = 0, y = 0;
 
-    while(1)
+    while (1)
     {
-        state = button;
-        // Управление светодиодами
-        if (state) 
+        // === Кнопка 1 (PC6) ===
+        if (long_press1)
         {
-            SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7); // Включить PB7
+            counter_light = (counter_light + 1) % 7;
+            long_press1 = 0;
         }
-        else 
+        else if (short_press1)
         {
-            SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR7); // Выключить PB7
+            y = (y + 1) % 3;
+            short_press1 = 0;
+        }
+
+        // === Кнопка 2 (PC 7) ===
+        if (long_press2)
+        {
+            if (selected_led == -1)
+                selected_led = 0;
+            else if (selected_led < 5)
+                selected_led++;
+            else
+                selected_led = -1;
+
+            long_press2 = 0;
+        }
+        else if (short_press2)
+        {
+            x = (x + 1) % 3;
+            short_press2 = 0;
+        }
+
+        if(selected_led >= 0)
+        {
+            frequences[selected_led] = freq_table[x][y];
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            if (i == selected_led)
+                states[i] = 1;  
+        }
+
+        
+        for (int i = 0; i < 6; i++)
+        {
+            if (i == selected_led)
+            {
+                // ВЫБРАННЫЙ — ВСЕГДА ВКЛЮЧЁН
+                GPIOB->BSRR = (1 << led_pins[i]);
+            }
+            else if (counter_light > 0 && i < counter_light && states[i])
+            {
+                // ОБЫЧНЫЙ РЕЖИМ: мерцает, если включён
+                GPIOB->BSRR = (1 << led_pins[i]);
+            }
+            else
+            {
+                // ВЫКЛЮЧЕН
+                GPIOB->BSRR = (1 << (led_pins[i] + 16));
+            }
         }
     }
 }
-
-
