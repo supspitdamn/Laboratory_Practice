@@ -16,9 +16,10 @@ volatile uint8_t states[6] = {0};
 volatile uint32_t last_toggle[6] = {0};
 
 const uint32_t freq_table[3][3] = {
-    { FREQ_0_3Hz, FREQ_0_8Hz, FREQ_1_3Hz },
-    { FREQ_0_5Hz, FREQ_1_0Hz, FREQ_1_6Hz },
-    { FREQ_0_8Hz, FREQ_2_0Hz, FREQ_3_3Hz }
+    //   y=0         y=1         y=2
+    { FREQ_0_3Hz, FREQ_1Hz,   FREQ_1_4Hz },  // x=0: 0.3 → 1.0 → 1.4
+    { FREQ_0_4Hz, FREQ_1_2Hz, FREQ_1_7Hz },  // x=1: 0.4 → 1.2 → 1.7
+    { FREQ_0_5Hz, FREQ_1_6Hz, FREQ_1_9Hz }   // x=2: 0.5 → 1.6 → 1.9
 };
 
 // Пины светодиодов: PB8, PB9, PB10, PB7, PB14, PB0

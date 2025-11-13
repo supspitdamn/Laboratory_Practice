@@ -19,18 +19,6 @@
 #define FREQ_1_6Hz 313
 #define FREQ_1_9Hz 263
 
-#define FREQ_0_3Hz    1667    // 0.30 Гц → 3.33 сек/цикл
-#define FREQ_0_5Hz    1000    // 0.50 Гц → 2.00 сек/цикл
-#define FREQ_0_8Hz     625    // 0.80 Гц → 1.25 сек/цикл
-
-#define FREQ_1_0Hz     500    // 1.00 Гц → 1.00 сек/цикл
-#define FREQ_1_3Hz     385    // 1.30 Гц → 0.77 сек/цикл
-#define FREQ_1_6Hz     312    // 1.60 Гц → 0.625 сек/цикл
-
-#define FREQ_2_0Hz     250    // 2.00 Гц → 0.50 сек/цикл
-#define FREQ_2_5Hz     200    // 2.50 Гц → 0.40 сек/цикл
-#define FREQ_3_3Hz     152    // 3.30 Гц → 0.30 сек/цикл
-
 
 void GPIO_init(void);
 
