@@ -6,6 +6,7 @@
 
 #define TIME_DELAY_2SEC   2000 // при частоте тактирования 1000 Гц
 #define TIME_DELAY_50MS   50
+#define TIME_DELAY_5SEC   5000
 
 #define FREQ_0_3Hz 1660
 #define FREQ_1Hz 500

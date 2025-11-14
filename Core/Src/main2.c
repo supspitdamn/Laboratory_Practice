@@ -7,8 +7,7 @@ volatile uint8_t short_press1 = 0, long_press1 = 0;
 volatile uint8_t short_press2 = 0, long_press2 = 0;
 
 volatile uint32_t frequences[6] = {
-    FREQ_0_3Hz, FREQ_0_3Hz, FREQ_0_3Hz,
-    FREQ_0_3Hz, FREQ_0_3Hz, FREQ_0_3Hz
+    FREQ_0_3Hz, FREQ_0_3Hz, FREQ_0_3Hz, FREQ_0_3Hz, FREQ_0_3Hz, FREQ_0_3Hz
 };
 
 volatile uint8_t states[6] = {0};
@@ -26,6 +25,9 @@ const uint8_t led_pins[6] = {8, 9, 10, 7, 14, 0};
 
 volatile int8_t selected_led = -1;
 
+volatile uint32_t tolerance = 0;
+
+volatile uint8_t counter_light = 0;
 int main(void)
 {
     RCC_init();
@@ -33,7 +35,6 @@ int main(void)
     Interrupt_init();
     systick_init();
 
-    uint8_t counter_light = 0;
     uint8_t x = 0, y = 0;
 
     while (1)
@@ -48,6 +49,7 @@ int main(void)
         {
             y = (y + 1) % 3;
             short_press1 = 0;
+            tolerance = global_counter;
         }
 
         // PC7
@@ -64,11 +66,21 @@ int main(void)
 
             x = 0;
             y = 0;
+
+            tolerance = global_counter;
         }
         else if (short_press2)
         {
             x = (x + 1) % 3;
             short_press2 = 0;
+            tolerance = global_counter;
+        }
+
+        if(global_counter - tolerance > TIME_DELAY_5SEC)
+        {
+            selected_led = -1;
+            x = 0;
+            y = 0;
         }
 
         if(selected_led >= 0)

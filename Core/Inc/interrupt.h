@@ -17,6 +17,7 @@ extern volatile uint32_t frequences[6];
 extern volatile uint32_t last_toggle[6];
 extern volatile uint8_t states[6];
 extern volatile int8_t selected_led;
+extern volatile uint8_t counter_light;
 
 // Прототипы функций
 void Interrupt_init(void);

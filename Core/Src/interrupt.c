@@ -79,7 +79,7 @@ void SysTick_Handler(void)
 
         if (i == selected_led) continue;
 
-        if (global_counter - last_toggle[i] >= frequences[i])
+        if (global_counter - last_toggle[i] >= frequences[i] && i <= counter_light - 1)
         {
             states[i] = !states[i];           // инвертируем состояние
             last_toggle[i] = global_counter;  // обновляем время
