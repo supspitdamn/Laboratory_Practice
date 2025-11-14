@@ -27,6 +27,12 @@ volatile int8_t selected_led = -1;
 
 volatile uint32_t tolerance = 0;
 
+volatile uint16_t pressing_long_1 = 0;
+volatile uint16_t pressing_long_2 = 0;
+
+volatile uint16_t pressing_short_1 = 0;
+volatile uint16_t pressing_short_2 = 0;
+
 volatile uint8_t counter_light = 0;
 int main(void)
 {
@@ -44,12 +50,14 @@ int main(void)
         {
             counter_light = (counter_light + 1) % 7;
             long_press1 = 0;
+            pressing_long_1++;
         }
         else if (short_press1)
         {
             y = (y + 1) % 3;
             short_press1 = 0;
             tolerance = global_counter;
+            pressing_short_1++;
         }
 
         // PC7
@@ -68,12 +76,14 @@ int main(void)
             y = 0;
 
             tolerance = global_counter;
+            pressing_long_2++;
         }
         else if (short_press2)
         {
             x = (x + 1) % 3;
             short_press2 = 0;
             tolerance = global_counter;
+            pressing_short_2++;
         }
 
         if(global_counter - tolerance > TIME_DELAY_5SEC)

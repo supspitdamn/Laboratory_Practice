@@ -1,0 +1,430 @@
+[elf]
+file_path = build\LABORATORY_PRACTICE.elf
+relative_path = true
+
+[general]
+version = 2
+
+[settings]
+sample_frequency_hz = 100
+max_points = 10000
+max_viewport_points = 5000
+viewport_width_ms = 500,000000
+refresh_on_elf_change = true
+stop_acq_on_elf_change = true
+probe_type = 0
+target_name = 
+probe_mode = 0
+probe_speed_khz = 10000
+probe_sn = 066BFF485753667187153837
+should_log = false
+log_directory = 
+gdb_command = ./gdb
+recorder_enabled = false
+restart_on_group_change = true
+keep_connection = true
+ip_address = 127.0.0.1
+port = 3333
+
+[trace_settings]
+core_frequency = 160000
+trace_prescaler = 10
+max_points = 10000
+max_viewport_points_percent = 10
+viewport_width_ms = 5,000000
+trigger_channel = -1
+trigger_level = 0,900000
+timeout = 2
+probe_type = 0
+target_name = 
+probe_speed_khz = 10000
+probe_sn = 
+should_log = false
+log_directory = 
+
+[var0]
+name = long_press1
+tracked_name = long_press1
+address = 536871016
+type = 1
+color = 1713560583
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var1]
+name = long_press2
+tracked_name = long_press2
+address = 536871014
+type = 1
+color = 3830531617
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var2]
+name = pressing_long_1
+tracked_name = pressing_long_1
+address = 536870976
+type = 3
+color = 3525215171
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var3]
+name = pressing_long_2
+tracked_name = pressing_long_2
+address = 536870974
+type = 3
+color = 3738683237
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var4]
+name = pressing_short_1
+tracked_name = pressing_short_1
+address = 536870972
+type = 3
+color = 3838025779
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var5]
+name = pressing_short_2
+tracked_name = pressing_short_2
+address = 536870970
+type = 3
+color = 4272298600
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var6]
+name = selected_led
+tracked_name = selected_led
+address = 536870912
+type = 2
+color = 2649132483
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var7]
+name = short_press1
+tracked_name = short_press1
+address = 536871017
+type = 1
+color = 3879294139
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var8]
+name = short_press2
+tracked_name = short_press2
+address = 536871015
+type = 1
+color = 2962007911
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var9]
+name = states[0]
+tracked_name = states[0]
+address = 536871008
+type = 1
+color = 2101315289
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var10]
+name = states[1]
+tracked_name = states[1]
+address = 536871009
+type = 1
+color = 2599520707
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var11]
+name = states[2]
+tracked_name = states[2]
+address = 536871010
+type = 1
+color = 1234540055
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var12]
+name = states[3]
+tracked_name = states[3]
+address = 536871011
+type = 1
+color = 3239822810
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var13]
+name = states[4]
+tracked_name = states[4]
+address = 536871012
+type = 1
+color = 2749806841
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[var14]
+name = states[5]
+tracked_name = states[5]
+address = 536871013
+type = 1
+color = 2900114562
+should_update_from_elf = true
+shift = 0
+mask = 4294967295
+high_level_type = 0
+value_to_write = 0,000000
+do_not_interpret_as_enum = false
+
+[group0]
+name = LED1-LED3
+acquisition_type = 0
+
+[group0-plot0]
+name = Choose LED for freq. change
+type = 0
+visibility = true
+
+[group0-plot0-series0]
+name = selected_led
+visibility = true
+format = DEC
+
+[group0-plot1]
+name = LED1
+type = 0
+visibility = true
+
+[group0-plot1-series0]
+name = states[0]
+visibility = true
+format = DEC
+
+[group0-plot2]
+name = LED2
+type = 0
+visibility = true
+
+[group0-plot2-series0]
+name = states[1]
+visibility = true
+format = DEC
+
+[group0-plot3]
+name = LED3
+type = 0
+visibility = true
+
+[group0-plot3-series0]
+name = states[2]
+visibility = true
+format = DEC
+
+[group1]
+name = LED4-LED5
+acquisition_type = 0
+
+[group1-plot0]
+name = Choose LED for freq. change
+type = 0
+visibility = true
+
+[group1-plot0-series0]
+name = selected_led
+visibility = true
+format = DEC
+
+[group1-plot1]
+name = LED4
+type = 0
+visibility = true
+
+[group1-plot1-series0]
+name = states[3]
+visibility = true
+format = DEC
+
+[group1-plot2]
+name = LED5
+type = 0
+visibility = true
+
+[group1-plot2-series0]
+name = states[4]
+visibility = true
+format = DEC
+
+[group1-plot3]
+name = LED6
+type = 0
+visibility = true
+
+[group1-plot3-series0]
+name = states[5]
+visibility = true
+format = DEC
+
+[group2]
+name = Pressing button
+acquisition_type = 0
+
+[group2-plot0]
+name = Long Press button 1
+type = 0
+visibility = true
+
+[group2-plot0-series0]
+name = pressing_long_1
+visibility = true
+format = DEC
+
+[group2-plot1]
+name = Long Press button 2
+type = 0
+visibility = true
+
+[group2-plot1-series0]
+name = pressing_long_2
+visibility = true
+format = DEC
+
+[group2-plot2]
+name = Short Press button 1
+type = 0
+visibility = true
+
+[group2-plot2-series0]
+name = pressing_short_1
+visibility = true
+format = DEC
+
+[group2-plot3]
+name = Short Press button 2
+type = 0
+visibility = true
+
+[group2-plot3-series0]
+name = pressing_short_2
+visibility = true
+format = DEC
+
+[trace_plot0]
+name = CH0
+alias = CH0
+visibility = true
+domain = 1
+
+[trace_plot1]
+name = CH1
+alias = CH1
+visibility = true
+domain = 1
+
+[trace_plot2]
+name = CH2
+alias = CH2
+visibility = true
+domain = 1
+
+[trace_plot3]
+name = CH3
+alias = CH3
+visibility = true
+domain = 1
+
+[trace_plot4]
+name = CH4
+alias = CH4
+visibility = true
+domain = 1
+
+[trace_plot5]
+name = CH5
+alias = CH5
+visibility = true
+domain = 1
+
+[trace_plot6]
+name = CH6
+alias = CH6
+visibility = true
+domain = 1
+
+[trace_plot7]
+name = CH7
+alias = CH7
+visibility = true
+domain = 1
+
+[trace_plot8]
+name = CH8
+alias = CH8
+visibility = true
+domain = 1
+
+[trace_plot9]
+name = CH9
+alias = CH9
+visibility = true
+domain = 1
