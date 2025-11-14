@@ -4,6 +4,8 @@
 #include "stm32f429xx.h"
 #include "stdio.h"
 
+extern volatile uint32_t duration;
+
 #define LONGDURATION  5000000
 #define MEDIUMDURATION 2500000
 #define SHORTDURATION 1000000

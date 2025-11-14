@@ -9,8 +9,10 @@ volatile uint32_t duration = 0;
 int main(void)
 {
     cmsis_init();
+    
     int counter = 0;
     int mass[3] = {1000, 5000, 10000};
+
     while(1)
     {
         if(pressed_button(GPIOB, GPIO_IDR_ID3)) // Переключение светодиодов

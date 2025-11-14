@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccztRzmV.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccnV5cCw.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -40,173 +40,330 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccztRzmV.s 			page 1
   10:Core/Src/main.c **** {
   29              		.loc 1 10 1 view -0
   30              		.cfi_startproc
-  31              		@ Volatile: function does not return.
-  32              		@ args = 0, pretend = 0, frame = 0
-  33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34 0000 08B5     		push	{r3, lr}
-  35              	.LCFI0:
-  36              		.cfi_def_cfa_offset 8
-  37              		.cfi_offset 3, -8
-  38              		.cfi_offset 14, -4
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  38 0002 84B0     		sub	sp, sp, #16
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 24
   11:Core/Src/main.c ****     cmsis_init();
-  39              		.loc 1 11 5 view .LVU1
-  40 0002 FFF7FEFF 		bl	cmsis_init
-  41              	.LVL0:
-  42 0006 0CE0     		b	.L2
-  43              	.L3:
-  12:Core/Src/main.c **** 
-  13:Core/Src/main.c ****     while(1)
-  14:Core/Src/main.c ****     {
-  15:Core/Src/main.c ****         if(pressed_button(GPIOB, GPIO_IDR_ID3))
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccztRzmV.s 			page 2
+  41              		.loc 1 11 5 view .LVU1
+  42 0004 FFF7FEFF 		bl	cmsis_init
+  43              	.LVL0:
+  12:Core/Src/main.c ****     
+  13:Core/Src/main.c ****     int counter = 0;
+  44              		.loc 1 13 5 view .LVU2
+  14:Core/Src/main.c ****     int mass[3] = {1000, 5000, 10000};
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccnV5cCw.s 			page 2
 
 
-  16:Core/Src/main.c ****         {
-  17:Core/Src/main.c ****             if(duration>LONGDURATION)
-  18:Core/Src/main.c ****             {
-  19:Core/Src/main.c ****                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14);
-  20:Core/Src/main.c ****             }
-  21:Core/Src/main.c ****             else if(duration>MEDIUMDURATION)
-  44              		.loc 1 21 18 view .LVU2
-  45              		.loc 1 21 29 is_stmt 0 view .LVU3
-  46 0008 1A4B     		ldr	r3, .L9
-  47 000a 1A68     		ldr	r2, [r3]
-  48              		.loc 1 21 20 view .LVU4
-  49 000c 1A4B     		ldr	r3, .L9+4
-  50 000e 9A42     		cmp	r2, r3
-  51 0010 1AD9     		bls	.L5
-  22:Core/Src/main.c ****             {
-  23:Core/Src/main.c ****                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);
-  52              		.loc 1 23 17 is_stmt 1 view .LVU5
-  53 0012 1A4A     		ldr	r2, .L9+8
-  54 0014 9369     		ldr	r3, [r2, #24]
-  55 0016 43F00103 		orr	r3, r3, #1
-  56 001a 9361     		str	r3, [r2, #24]
-  57              	.L4:
-  24:Core/Src/main.c ****             }
-  25:Core/Src/main.c ****             else if(duration>SHORTDURATION)
-  26:Core/Src/main.c ****             {
-  27:Core/Src/main.c ****                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
-  28:Core/Src/main.c ****             }
-  29:Core/Src/main.c ****             else if(duration<=SHORTDURATION)
-  30:Core/Src/main.c ****             {
-  31:Core/Src/main.c ****                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14);
-  32:Core/Src/main.c ****             }
-  33:Core/Src/main.c ****             duration = 0;
-  58              		.loc 1 33 13 view .LVU6
-  59              		.loc 1 33 22 is_stmt 0 view .LVU7
-  60 001c 154B     		ldr	r3, .L9
-  61 001e 0022     		movs	r2, #0
-  62 0020 1A60     		str	r2, [r3]
-  63              	.L2:
-  13:Core/Src/main.c ****     {
-  64              		.loc 1 13 5 is_stmt 1 view .LVU8
-  15:Core/Src/main.c ****         {
-  65              		.loc 1 15 9 view .LVU9
-  15:Core/Src/main.c ****         {
-  66              		.loc 1 15 12 is_stmt 0 view .LVU10
-  67 0022 0821     		movs	r1, #8
-  68 0024 1548     		ldr	r0, .L9+8
-  69 0026 FFF7FEFF 		bl	pressed_button
-  70              	.LVL1:
-  15:Core/Src/main.c ****         {
-  71              		.loc 1 15 11 discriminator 1 view .LVU11
-  72 002a 0028     		cmp	r0, #0
-  73 002c F9D0     		beq	.L2
-  17:Core/Src/main.c ****             {
-  74              		.loc 1 17 13 is_stmt 1 view .LVU12
-  17:Core/Src/main.c ****             {
-  75              		.loc 1 17 24 is_stmt 0 view .LVU13
-  76 002e 114B     		ldr	r3, .L9
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccztRzmV.s 			page 3
-
-
-  77 0030 1A68     		ldr	r2, [r3]
-  17:Core/Src/main.c ****             {
-  78              		.loc 1 17 15 view .LVU14
-  79 0032 134B     		ldr	r3, .L9+12
-  80 0034 9A42     		cmp	r2, r3
-  81 0036 E7D9     		bls	.L3
-  19:Core/Src/main.c ****             }
-  82              		.loc 1 19 17 is_stmt 1 view .LVU15
-  83 0038 104A     		ldr	r2, .L9+8
-  84 003a 9369     		ldr	r3, [r2, #24]
-  85 003c 43F08143 		orr	r3, r3, #1082130432
-  86 0040 43F48033 		orr	r3, r3, #65536
-  87 0044 9361     		str	r3, [r2, #24]
-  88 0046 E9E7     		b	.L4
-  89              	.L5:
+  45              		.loc 1 14 5 view .LVU3
+  46              		.loc 1 14 9 is_stmt 0 view .LVU4
+  47 0008 3A4B     		ldr	r3, .L20
+  48 000a 93E80700 		ldm	r3, {r0, r1, r2}
+  49 000e 04AB     		add	r3, sp, #16
+  50 0010 03E90700 		stmdb	r3, {r0, r1, r2}
+  13:Core/Src/main.c ****     int mass[3] = {1000, 5000, 10000};
+  51              		.loc 1 13 9 view .LVU5
+  52 0014 0024     		movs	r4, #0
+  53 0016 2EE0     		b	.L15
+  54              	.LVL1:
+  55              	.L3:
+  15:Core/Src/main.c **** 
+  16:Core/Src/main.c ****     while(1)
+  17:Core/Src/main.c ****     {
+  18:Core/Src/main.c ****         if(pressed_button(GPIOB, GPIO_IDR_ID3)) // Переключение светодиодов
+  19:Core/Src/main.c ****         {
+  20:Core/Src/main.c ****             if(duration>LONGDURATION)
+  21:Core/Src/main.c ****             {
+  22:Core/Src/main.c ****                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14);
+  23:Core/Src/main.c ****             }
+  24:Core/Src/main.c ****             else if(duration>MEDIUMDURATION)
+  56              		.loc 1 24 18 is_stmt 1 view .LVU6
+  57              		.loc 1 24 29 is_stmt 0 view .LVU7
+  58 0018 374B     		ldr	r3, .L20+4
+  59 001a 1A68     		ldr	r2, [r3]
+  60              		.loc 1 24 20 view .LVU8
+  61 001c 374B     		ldr	r3, .L20+8
+  62 001e 9A42     		cmp	r2, r3
+  63 0020 05D9     		bls	.L5
   25:Core/Src/main.c ****             {
-  90              		.loc 1 25 18 view .LVU16
-  25:Core/Src/main.c ****             {
-  91              		.loc 1 25 29 is_stmt 0 view .LVU17
-  92 0048 0A4B     		ldr	r3, .L9
-  93 004a 1A68     		ldr	r2, [r3]
-  25:Core/Src/main.c ****             {
-  94              		.loc 1 25 20 view .LVU18
-  95 004c 0D4B     		ldr	r3, .L9+16
-  96 004e 9A42     		cmp	r2, r3
-  97 0050 05D9     		bls	.L6
+  26:Core/Src/main.c ****                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);
+  64              		.loc 1 26 17 is_stmt 1 view .LVU9
+  65 0022 374A     		ldr	r2, .L20+12
+  66 0024 9369     		ldr	r3, [r2, #24]
+  67 0026 43F00103 		orr	r3, r3, #1
+  68 002a 9361     		str	r3, [r2, #24]
+  69 002c 34E0     		b	.L4
+  70              	.L5:
   27:Core/Src/main.c ****             }
-  98              		.loc 1 27 17 is_stmt 1 view .LVU19
-  99 0052 0A4A     		ldr	r2, .L9+8
- 100 0054 9369     		ldr	r3, [r2, #24]
- 101 0056 43F08003 		orr	r3, r3, #128
- 102 005a 9361     		str	r3, [r2, #24]
- 103 005c DEE7     		b	.L4
- 104              	.L6:
+  28:Core/Src/main.c ****             else if(duration>SHORTDURATION)
+  71              		.loc 1 28 18 view .LVU10
+  72              		.loc 1 28 29 is_stmt 0 view .LVU11
+  73 002e 324B     		ldr	r3, .L20+4
+  74 0030 1A68     		ldr	r2, [r3]
+  75              		.loc 1 28 20 view .LVU12
+  76 0032 344B     		ldr	r3, .L20+16
+  77 0034 9A42     		cmp	r2, r3
+  78 0036 05D9     		bls	.L6
   29:Core/Src/main.c ****             {
- 105              		.loc 1 29 18 view .LVU20
-  29:Core/Src/main.c ****             {
- 106              		.loc 1 29 29 is_stmt 0 view .LVU21
- 107 005e 054B     		ldr	r3, .L9
- 108 0060 1A68     		ldr	r2, [r3]
-  29:Core/Src/main.c ****             {
- 109              		.loc 1 29 20 view .LVU22
- 110 0062 084B     		ldr	r3, .L9+16
- 111 0064 9A42     		cmp	r2, r3
- 112 0066 D9D8     		bhi	.L4
+  30:Core/Src/main.c ****                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+  79              		.loc 1 30 17 is_stmt 1 view .LVU13
+  80 0038 314A     		ldr	r2, .L20+12
+  81 003a 9369     		ldr	r3, [r2, #24]
+  82 003c 43F08003 		orr	r3, r3, #128
+  83 0040 9361     		str	r3, [r2, #24]
+  84 0042 29E0     		b	.L4
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccnV5cCw.s 			page 3
+
+
+  85              	.L6:
   31:Core/Src/main.c ****             }
- 113              		.loc 1 31 17 is_stmt 1 view .LVU23
- 114 0068 044A     		ldr	r2, .L9+8
- 115 006a 9369     		ldr	r3, [r2, #24]
- 116 006c 43F48043 		orr	r3, r3, #16384
- 117 0070 9361     		str	r3, [r2, #24]
- 118 0072 D3E7     		b	.L4
- 119              	.L10:
- 120              		.align	2
- 121              	.L9:
- 122 0074 00000000 		.word	duration
- 123 0078 A0252600 		.word	2500000
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccztRzmV.s 			page 4
+  32:Core/Src/main.c ****             else if(duration<=SHORTDURATION)
+  86              		.loc 1 32 18 view .LVU14
+  87              		.loc 1 32 29 is_stmt 0 view .LVU15
+  88 0044 2C4B     		ldr	r3, .L20+4
+  89 0046 1A68     		ldr	r2, [r3]
+  90              		.loc 1 32 20 view .LVU16
+  91 0048 2E4B     		ldr	r3, .L20+16
+  92 004a 9A42     		cmp	r2, r3
+  93 004c 24D8     		bhi	.L4
+  33:Core/Src/main.c ****             {
+  34:Core/Src/main.c ****                 SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14);
+  94              		.loc 1 34 17 is_stmt 1 view .LVU17
+  95 004e 2C4A     		ldr	r2, .L20+12
+  96 0050 9369     		ldr	r3, [r2, #24]
+  97 0052 43F48043 		orr	r3, r3, #16384
+  98 0056 9361     		str	r3, [r2, #24]
+  99 0058 1EE0     		b	.L4
+ 100              	.L19:
+  35:Core/Src/main.c ****             }
+  36:Core/Src/main.c ****             duration = 0;
+  37:Core/Src/main.c ****         }
+  38:Core/Src/main.c **** 
+  39:Core/Src/main.c ****         if(pressed_button(GPIOB, GPIO_IDR_ID1)) // Цикличное переключение св
+  40:Core/Src/main.c ****         {
+  41:Core/Src/main.c ****             counter++;
+  42:Core/Src/main.c ****             if(counter == 4)
+  43:Core/Src/main.c ****             {
+  44:Core/Src/main.c ****                 counter = 0;
+ 101              		.loc 1 44 17 view .LVU18
+ 102              	.LVL2:
+  45:Core/Src/main.c ****             }
+  46:Core/Src/main.c ****             duration = 0;
+ 103              		.loc 1 46 13 view .LVU19
+ 104              		.loc 1 46 22 is_stmt 0 view .LVU20
+ 105 005a 0024     		movs	r4, #0
+ 106 005c 264B     		ldr	r3, .L20+4
+ 107 005e 1C60     		str	r4, [r3]
+  47:Core/Src/main.c ****         }
+  48:Core/Src/main.c **** 
+  49:Core/Src/main.c ****         switch(counter)
+ 108              		.loc 1 49 9 is_stmt 1 view .LVU21
+ 109              	.LVL3:
+ 110              	.L9:
+  50:Core/Src/main.c ****         {
+  51:Core/Src/main.c ****             case 0 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14);
+ 111              		.loc 1 51 22 view .LVU22
+ 112 0060 274A     		ldr	r2, .L20+12
+ 113 0062 9369     		ldr	r3, [r2, #24]
+ 114 0064 43F08143 		orr	r3, r3, #1082130432
+ 115 0068 43F48033 		orr	r3, r3, #65536
+ 116 006c 9361     		str	r3, [r2, #24]
+  52:Core/Src/main.c ****             break;
+ 117              		.loc 1 52 13 view .LVU23
+ 118              	.L10:
+  53:Core/Src/main.c ****             case 1 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccnV5cCw.s 			page 4
 
 
- 124 007c 00040240 		.word	1073873920
- 125 0080 404B4C00 		.word	5000000
- 126 0084 40420F00 		.word	1000000
- 127              		.cfi_endproc
- 128              	.LFE133:
- 130              		.global	duration
- 131              		.section	.bss.duration,"aw",%nobits
- 132              		.align	2
- 135              	duration:
- 136 0000 00000000 		.space	4
- 137              		.text
- 138              	.Letext0:
- 139              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 140              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 141              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 142              		.file 5 "Core/Src/..\\Inc\\init.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccztRzmV.s 			page 5
+  54:Core/Src/main.c ****             break;
+  55:Core/Src/main.c ****             case 2 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+  56:Core/Src/main.c ****             break;
+  57:Core/Src/main.c ****             case 3 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14);
+  58:Core/Src/main.c ****             break;
+  59:Core/Src/main.c ****         }
+  60:Core/Src/main.c **** 
+  61:Core/Src/main.c ****         if(pressed_button(GPIOB, GPIO_IDR_ID2)) // Задаем частоту мерцания
+ 119              		.loc 1 61 9 view .LVU24
+ 120              		.loc 1 61 12 is_stmt 0 view .LVU25
+ 121 006e 0421     		movs	r1, #4
+ 122 0070 2348     		ldr	r0, .L20+12
+ 123 0072 FFF7FEFF 		bl	pressed_button
+ 124              	.LVL4:
+  62:Core/Src/main.c ****         {
+  63:Core/Src/main.c **** 
+  64:Core/Src/main.c ****         }
+ 125              		.loc 1 64 9 is_stmt 1 view .LVU26
+  16:Core/Src/main.c ****     {
+ 126              		.loc 1 16 10 view .LVU27
+ 127              	.L15:
+  16:Core/Src/main.c ****     {
+ 128              		.loc 1 16 5 view .LVU28
+  18:Core/Src/main.c ****         {
+ 129              		.loc 1 18 9 view .LVU29
+  18:Core/Src/main.c ****         {
+ 130              		.loc 1 18 12 is_stmt 0 view .LVU30
+ 131 0076 0821     		movs	r1, #8
+ 132 0078 2148     		ldr	r0, .L20+12
+ 133 007a FFF7FEFF 		bl	pressed_button
+ 134              	.LVL5:
+  18:Core/Src/main.c ****         {
+ 135              		.loc 1 18 11 discriminator 1 view .LVU31
+ 136 007e 70B1     		cbz	r0, .L2
+  20:Core/Src/main.c ****             {
+ 137              		.loc 1 20 13 is_stmt 1 view .LVU32
+  20:Core/Src/main.c ****             {
+ 138              		.loc 1 20 24 is_stmt 0 view .LVU33
+ 139 0080 1D4B     		ldr	r3, .L20+4
+ 140 0082 1A68     		ldr	r2, [r3]
+  20:Core/Src/main.c ****             {
+ 141              		.loc 1 20 15 view .LVU34
+ 142 0084 204B     		ldr	r3, .L20+20
+ 143 0086 9A42     		cmp	r2, r3
+ 144 0088 C6D9     		bls	.L3
+  22:Core/Src/main.c ****             }
+ 145              		.loc 1 22 17 is_stmt 1 view .LVU35
+ 146 008a 1D4A     		ldr	r2, .L20+12
+ 147 008c 9369     		ldr	r3, [r2, #24]
+ 148 008e 43F08143 		orr	r3, r3, #1082130432
+ 149 0092 43F48033 		orr	r3, r3, #65536
+ 150 0096 9361     		str	r3, [r2, #24]
+ 151              	.L4:
+  36:Core/Src/main.c ****         }
+ 152              		.loc 1 36 13 view .LVU36
+  36:Core/Src/main.c ****         }
+ 153              		.loc 1 36 22 is_stmt 0 view .LVU37
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccnV5cCw.s 			page 5
+
+
+ 154 0098 174B     		ldr	r3, .L20+4
+ 155 009a 0022     		movs	r2, #0
+ 156 009c 1A60     		str	r2, [r3]
+ 157              	.L2:
+  39:Core/Src/main.c ****         {
+ 158              		.loc 1 39 9 is_stmt 1 view .LVU38
+  39:Core/Src/main.c ****         {
+ 159              		.loc 1 39 12 is_stmt 0 view .LVU39
+ 160 009e 0221     		movs	r1, #2
+ 161 00a0 1748     		ldr	r0, .L20+12
+ 162 00a2 FFF7FEFF 		bl	pressed_button
+ 163              	.LVL6:
+  39:Core/Src/main.c ****         {
+ 164              		.loc 1 39 11 discriminator 1 view .LVU40
+ 165 00a6 28B1     		cbz	r0, .L7
+  41:Core/Src/main.c ****             if(counter == 4)
+ 166              		.loc 1 41 13 is_stmt 1 view .LVU41
+  41:Core/Src/main.c ****             if(counter == 4)
+ 167              		.loc 1 41 20 is_stmt 0 view .LVU42
+ 168 00a8 0134     		adds	r4, r4, #1
+ 169              	.LVL7:
+  42:Core/Src/main.c ****             {
+ 170              		.loc 1 42 13 is_stmt 1 view .LVU43
+  42:Core/Src/main.c ****             {
+ 171              		.loc 1 42 15 is_stmt 0 view .LVU44
+ 172 00aa 042C     		cmp	r4, #4
+ 173 00ac D5D0     		beq	.L19
+  46:Core/Src/main.c ****         }
+ 174              		.loc 1 46 13 is_stmt 1 view .LVU45
+  46:Core/Src/main.c ****         }
+ 175              		.loc 1 46 22 is_stmt 0 view .LVU46
+ 176 00ae 124B     		ldr	r3, .L20+4
+ 177 00b0 0022     		movs	r2, #0
+ 178 00b2 1A60     		str	r2, [r3]
+ 179              	.L7:
+  49:Core/Src/main.c ****         {
+ 180              		.loc 1 49 9 is_stmt 1 view .LVU47
+ 181 00b4 032C     		cmp	r4, #3
+ 182 00b6 DAD8     		bhi	.L10
+ 183 00b8 01A3     		adr	r3, .L12
+ 184 00ba 53F824F0 		ldr	pc, [r3, r4, lsl #2]
+ 185 00be 00BF     		.p2align 2
+ 186              	.L12:
+ 187 00c0 61000000 		.word	.L9+1
+ 188 00c4 D1000000 		.word	.L14+1
+ 189 00c8 DD000000 		.word	.L13+1
+ 190 00cc E9000000 		.word	.L11+1
+ 191              		.p2align 1
+ 192              	.L14:
+  53:Core/Src/main.c ****             break;
+ 193              		.loc 1 53 22 view .LVU48
+ 194 00d0 0B4A     		ldr	r2, .L20+12
+ 195 00d2 9369     		ldr	r3, [r2, #24]
+ 196 00d4 43F00103 		orr	r3, r3, #1
+ 197 00d8 9361     		str	r3, [r2, #24]
+  54:Core/Src/main.c ****             case 2 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+ 198              		.loc 1 54 13 view .LVU49
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccnV5cCw.s 			page 6
+
+
+ 199 00da C8E7     		b	.L10
+ 200              	.L13:
+  55:Core/Src/main.c ****             break;
+ 201              		.loc 1 55 22 view .LVU50
+ 202 00dc 084A     		ldr	r2, .L20+12
+ 203 00de 9369     		ldr	r3, [r2, #24]
+ 204 00e0 43F08003 		orr	r3, r3, #128
+ 205 00e4 9361     		str	r3, [r2, #24]
+  56:Core/Src/main.c ****             case 3 : SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14);
+ 206              		.loc 1 56 13 view .LVU51
+ 207 00e6 C2E7     		b	.L10
+ 208              	.L11:
+  57:Core/Src/main.c ****             break;
+ 209              		.loc 1 57 22 view .LVU52
+ 210 00e8 054A     		ldr	r2, .L20+12
+ 211 00ea 9369     		ldr	r3, [r2, #24]
+ 212 00ec 43F48043 		orr	r3, r3, #16384
+ 213 00f0 9361     		str	r3, [r2, #24]
+  58:Core/Src/main.c ****         }
+ 214              		.loc 1 58 13 view .LVU53
+ 215 00f2 BCE7     		b	.L10
+ 216              	.L21:
+ 217              		.align	2
+ 218              	.L20:
+ 219 00f4 00000000 		.word	.LANCHOR0
+ 220 00f8 00000000 		.word	duration
+ 221 00fc A0252600 		.word	2500000
+ 222 0100 00040240 		.word	1073873920
+ 223 0104 40420F00 		.word	1000000
+ 224 0108 404B4C00 		.word	5000000
+ 225              		.cfi_endproc
+ 226              	.LFE133:
+ 228              		.global	duration
+ 229              		.section	.bss.duration,"aw",%nobits
+ 230              		.align	2
+ 233              	duration:
+ 234 0000 00000000 		.space	4
+ 235              		.section	.rodata
+ 236              		.align	2
+ 237              		.set	.LANCHOR0,. + 0
+ 238              	.LC0:
+ 239 0000 E8030000 		.word	1000
+ 240 0004 88130000 		.word	5000
+ 241 0008 10270000 		.word	10000
+ 242              		.text
+ 243              	.Letext0:
+ 244              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 245              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 246              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 247              		.file 5 "Core/Src/..\\Inc\\init.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccnV5cCw.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\User\AppData\Local\Temp\ccztRzmV.s:21     .text.main:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccztRzmV.s:27     .text.main:00000000 main
-C:\Users\User\AppData\Local\Temp\ccztRzmV.s:122    .text.main:00000074 $d
-C:\Users\User\AppData\Local\Temp\ccztRzmV.s:135    .bss.duration:00000000 duration
-C:\Users\User\AppData\Local\Temp\ccztRzmV.s:132    .bss.duration:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccnV5cCw.s:21     .text.main:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccnV5cCw.s:27     .text.main:00000000 main
+C:\Users\User\AppData\Local\Temp\ccnV5cCw.s:187    .text.main:000000c0 $d
+C:\Users\User\AppData\Local\Temp\ccnV5cCw.s:191    .text.main:000000d0 $t
+C:\Users\User\AppData\Local\Temp\ccnV5cCw.s:219    .text.main:000000f4 $d
+C:\Users\User\AppData\Local\Temp\ccnV5cCw.s:233    .bss.duration:00000000 duration
+C:\Users\User\AppData\Local\Temp\ccnV5cCw.s:230    .bss.duration:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccnV5cCw.s:236    .rodata:00000000 $d
 
 UNDEFINED SYMBOLS
 cmsis_init

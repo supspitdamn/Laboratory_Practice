@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 1
   11:Core/Src/init.c **** 
   12:Core/Src/init.c **** void cmsis_init(void)
   13:Core/Src/init.c **** {
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 2
+ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 2
 
 
   48              		.loc 1 13 1 view -0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 1
   32:Core/Src/init.c **** 
   33:Core/Src/init.c ****     // Кнопки
   34:Core/Src/init.c ****     
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 3
+ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 3
 
 
   35:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE1_Msk | GPIO_MODER_MODE2_Msk | GPIO_MODER_MODE3_Msk, 0x
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 1
  130              		.section	.text.pressed_button,"ax",%progbits
  131              		.align	1
  132              		.global	pressed_button
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 4
+ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 4
 
 
  133              		.syntax unified
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 1
  166 000e 41F28732 		movw	r2, #4999
  167 0012 9342     		cmp	r3, r2
  168 0014 FADD     		ble	.L9
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 5
+ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 5
 
 
  169              	.LBE2:
@@ -298,28 +298,28 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 1
  211              	.LFE136:
  213              		.text
  214              	.Letext0:
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 6
+ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 6
 
 
  215              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
  216              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
  217              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
  218              		.file 5 "Core/Src/../Inc/init.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc8XAp7x.s 			page 7
+ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:21     .text.macros_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:27     .text.macros_init:00000000 macros_init
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:40     .text.cmsis_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:46     .text.cmsis_init:00000000 cmsis_init
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:105    .text.cmsis_init:0000005c $d
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:112    .text.simple_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:118    .text.simple_init:00000000 simple_init
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:131    .text.pressed_button:00000000 $t
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:137    .text.pressed_button:00000000 pressed_button
-C:\Users\User\AppData\Local\Temp\cc8XAp7x.s:209    .text.pressed_button:00000038 $d
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:21     .text.macros_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:27     .text.macros_init:00000000 macros_init
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:40     .text.cmsis_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:46     .text.cmsis_init:00000000 cmsis_init
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:105    .text.cmsis_init:0000005c $d
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:112    .text.simple_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:118    .text.simple_init:00000000 simple_init
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:131    .text.pressed_button:00000000 $t
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:137    .text.pressed_button:00000000 pressed_button
+C:\Users\User\AppData\Local\Temp\cchZgoWB.s:209    .text.pressed_button:00000038 $d
 
 UNDEFINED SYMBOLS
 duration
