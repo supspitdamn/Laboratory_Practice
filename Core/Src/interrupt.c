@@ -32,7 +32,7 @@ void EXTI9_5_IRQHandler(void)
                     short_press1 = 1;
                 }
             }
-            // Сброс временных меток
+            // Обнуляем времена
             last_button1_time_unpressed = 0;
             last_button1_time_pressed = 0; 
         }
@@ -63,7 +63,7 @@ void EXTI9_5_IRQHandler(void)
                     short_press2 = 1;
                 }
             }
-            // Сброс временных меток
+            // Обнуляем времена
             last_button2_time_unpressed = 0;
             last_button2_time_pressed = 0; 
         }

@@ -16,10 +16,9 @@ volatile uint8_t states[6] = {0};
 volatile uint32_t last_toggle[6] = {0};
 
 const uint32_t freq_table[3][3] = {
-    //   y=0         y=1         y=2
-    { FREQ_0_3Hz, FREQ_1Hz,   FREQ_1_4Hz },  // x=0: 0.3 → 1.0 → 1.4
-    { FREQ_0_4Hz, FREQ_1_2Hz, FREQ_1_7Hz },  // x=1: 0.4 → 1.2 → 1.7
-    { FREQ_0_5Hz, FREQ_1_6Hz, FREQ_1_9Hz }   // x=2: 0.5 → 1.6 → 1.9
+    { FREQ_0_3Hz, FREQ_1Hz,   FREQ_1_4Hz },
+    { FREQ_0_4Hz, FREQ_1_2Hz, FREQ_1_7Hz },  
+    { FREQ_0_5Hz, FREQ_1_6Hz, FREQ_1_9Hz }   
 };
 
 // Пины светодиодов: PB8, PB9, PB10, PB7, PB14, PB0
@@ -39,7 +38,7 @@ int main(void)
 
     while (1)
     {
-        // === Кнопка 1 (PC6) ===
+        // PC6
         if (long_press1)
         {
             counter_light = (counter_light + 1) % 7;
@@ -51,7 +50,7 @@ int main(void)
             short_press1 = 0;
         }
 
-        // === Кнопка 2 (PC 7) ===
+        // PC7
         if (long_press2)
         {
             if (selected_led == -1)
@@ -62,6 +61,9 @@ int main(void)
                 selected_led = -1;
 
             long_press2 = 0;
+
+            x = 0;
+            y = 0;
         }
         else if (short_press2)
         {
@@ -85,17 +87,17 @@ int main(void)
         {
             if (i == selected_led)
             {
-                // ВЫБРАННЫЙ — ВСЕГДА ВКЛЮЧЁН
+                // ВЫбранный светодиод горит
                 GPIOB->BSRR = (1 << led_pins[i]);
             }
             else if (counter_light > 0 && i < counter_light && states[i])
             {
-                // ОБЫЧНЫЙ РЕЖИМ: мерцает, если включён
+                // Остальные мерцают
                 GPIOB->BSRR = (1 << led_pins[i]);
             }
             else
             {
-                // ВЫКЛЮЧЕН
+                // светодиод не горит
                 GPIOB->BSRR = (1 << (led_pins[i] + 16));
             }
         }

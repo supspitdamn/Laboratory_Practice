@@ -2,9 +2,7 @@
 #define INTERRUPT_H
 
 #include "init2.h"
-#include "stm32f4xx.h"  // Добавьте этот include
-
-// Объявление внешних переменных (без инициализации)
+#include "stm32f4xx.h"  
 extern volatile uint32_t last_button1_time_pressed;
 extern volatile uint32_t last_button1_time_unpressed;
 extern volatile uint32_t last_button2_time_pressed;
