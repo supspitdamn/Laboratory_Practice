@@ -34,11 +34,17 @@ int main(void)
         {
             if(duration > SHORTDURATION) // Выключение всех светодиодов по короткому жамканью
             {
-                counter = 0;
+                // counter = 0;
+                // appendix = 0;
             }
             else if(duration > LONGDURATION) // Сдвиги светодиодов по долгому жамканью
             {
-
+                appendix++;
+                if(appendix == 3)
+                {
+                    appendix = 0;
+                    counter = 0;
+                }
             }
             duration = 0;
         }
@@ -74,6 +80,7 @@ int main(void)
             {
                 states[i] = 0;
             }
+            appendix = 0;
         }
 
         if(LED_for_change > -1) 
@@ -85,24 +92,26 @@ int main(void)
 
         independent_counter();
 
-        for(uint32_t i = 0; i < counter; i++)
+        for(uint8_t i = 0; i < counter && (i + appendix) < 3; i++)
         {
-            if(i == LED_for_change)
+            uint8_t idx = i + appendix;
+            
+            if(idx == LED_for_change)
             {
-                states[i] = 1;
+                states[idx] = 1;
             }
             else
             {
-                if(LED_freq[i] <= (time - last_time[i])) 
+                if(LED_freq[idx] <= (time - last_time[idx])) 
                 {
-                    states[i] = !states[i];
-                    last_time[i] = time;
+                    states[idx] = !states[idx];
+                    last_time[idx] = time;
                 }
-             }
+            }
         }
 
         // Работа с диодами
-        if(states[0])
+        if(states[0] && appendix < 1)
         {
             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);
         }
@@ -111,7 +120,7 @@ int main(void)
             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0);
         }
 
-        if(states[1])
+        if(states[1] && appendix < 2)
         {
             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
         }
@@ -120,7 +129,7 @@ int main(void)
             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR7);
         }
 
-        if(states[2])
+        if(states[2] && appendix < 3)
         {
             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14);
         }

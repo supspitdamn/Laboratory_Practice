@@ -28,7 +28,6 @@ void macros_init(void);
 void cmsis_init(void);
 void simple_init(void);
 uint32_t pressed_button(GPIO_TypeDef* port, uint32_t mask);
-void LED_blinking(uint8_t LED);
 void independent_counter();
 
 #endif

@@ -61,15 +61,6 @@ uint32_t pressed_button(GPIO_TypeDef* port, uint32_t mask)
     return 0;
 }
 
-void LED_blinking(uint8_t LED)
-{
-    for(uint8_t i = 0; i < LED; i++)
-    {
-        if(frequences[i] <= (time - last_time[i])) states[i] = !states[i];
-        last_time[i] = time;
-    }
-}
-
 void independent_counter()
 {
     time++;
