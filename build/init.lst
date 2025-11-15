@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 1
   11:Core/Src/init.c **** 
   12:Core/Src/init.c **** void cmsis_init(void)
   13:Core/Src/init.c **** {
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 2
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 2
 
 
   48              		.loc 1 13 1 view -0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 1
   32:Core/Src/init.c **** 
   33:Core/Src/init.c ****     // Кнопки
   34:Core/Src/init.c ****     
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 3
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 3
 
 
   35:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE1_Msk | GPIO_MODER_MODE2_Msk | GPIO_MODER_MODE3_Msk, 0x
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 1
  130              		.section	.text.pressed_button,"ax",%progbits
  131              		.align	1
  132              		.global	pressed_button
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 4
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 4
 
 
  133              		.syntax unified
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 1
  169              		.loc 1 52 9 view .LVU26
   52:Core/Src/init.c ****         {
  170              		.loc 1 52 13 is_stmt 0 view .LVU27
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 5
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 5
 
 
  171 0016 DCF81030 		ldr	r3, [ip, #16]
@@ -298,196 +298,192 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 1
  216              		.thumb
  217              		.thumb_func
  219              	LED_blinking:
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 6
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 6
 
 
  220              	.LVL7:
  221              	.LFB137:
   63:Core/Src/init.c **** 
-  64:Core/Src/init.c **** void LED_blinking(uint16_t frequence, uint8_t state, uint8_t LED)
+  64:Core/Src/init.c **** void LED_blinking(uint8_t LED)
   65:Core/Src/init.c **** {
  222              		.loc 1 65 1 is_stmt 1 view -0
  223              		.cfi_startproc
  224              		@ args = 0, pretend = 0, frame = 0
  225              		@ frame_needed = 0, uses_anonymous_args = 0
  226              		@ link register save eliminated.
-  66:Core/Src/init.c ****     if(state)
+  66:Core/Src/init.c ****     for(uint8_t i = 0; i < LED; i++)
  227              		.loc 1 66 5 view .LVU39
- 228              		.loc 1 66 7 is_stmt 0 view .LVU40
- 229 0000 A9B1     		cbz	r1, .L16
+ 228              	.LBB4:
+ 229              		.loc 1 66 9 view .LVU40
+ 230              		.loc 1 66 17 is_stmt 0 view .LVU41
+ 231 0000 0023     		movs	r3, #0
+ 232              	.LVL8:
+ 233              		.loc 1 66 26 is_stmt 1 discriminator 1 view .LVU42
+ 234 0002 8342     		cmp	r3, r0
+ 235 0004 1FD2     		bcs	.L22
+ 236              	.LBE4:
+  65:Core/Src/init.c ****     for(uint8_t i = 0; i < LED; i++)
+ 237              		.loc 1 65 1 is_stmt 0 view .LVU43
+ 238 0006 30B4     		push	{r4, r5}
+ 239              	.LCFI0:
+ 240              		.cfi_def_cfa_offset 8
+ 241              		.cfi_offset 4, -8
+ 242              		.cfi_offset 5, -4
+ 243 0008 08E0     		b	.L18
+ 244              	.L17:
+ 245              	.LBB5:
   67:Core/Src/init.c ****     {
-  68:Core/Src/init.c ****         GPIOB->BSRR = (1 <<  (0 + 7 * LED));
- 230              		.loc 1 68 9 is_stmt 1 view .LVU41
- 231              		.loc 1 68 33 is_stmt 0 view .LVU42
- 232 0002 C2EBC202 		rsb	r2, r2, r2, lsl #3
- 233              	.LVL8:
- 234              		.loc 1 68 26 view .LVU43
- 235 0006 0123     		movs	r3, #1
- 236 0008 9340     		lsls	r3, r3, r2
- 237              		.loc 1 68 21 view .LVU44
- 238 000a 0D49     		ldr	r1, .L22
- 239              	.LVL9:
- 240              		.loc 1 68 21 view .LVU45
- 241 000c 8B61     		str	r3, [r1, #24]
-  69:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
- 242              		.loc 1 69 9 is_stmt 1 view .LVU46
- 243              	.LBB4:
- 244              		.loc 1 69 13 view .LVU47
- 245              	.LVL10:
- 246              		.loc 1 69 22 is_stmt 0 view .LVU48
- 247 000e 0023     		movs	r3, #0
- 248              		.loc 1 69 9 view .LVU49
- 249 0010 00E0     		b	.L17
- 250              	.LVL11:
- 251              	.L18:
-  70:Core/Src/init.c ****         {
-  71:Core/Src/init.c **** 
-  72:Core/Src/init.c ****         }
- 252              		.loc 1 72 9 is_stmt 1 view .LVU50
-  69:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
- 253              		.loc 1 69 45 discriminator 3 view .LVU51
- 254 0012 0133     		adds	r3, r3, #1
- 255              	.LVL12:
- 256              	.L17:
-  69:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
- 257              		.loc 1 69 31 discriminator 1 view .LVU52
- 258 0014 9842     		cmp	r0, r3
- 259 0016 FCD8     		bhi	.L18
- 260              	.LBE4:
-  73:Core/Src/init.c ****         GPIOB->BSRR = (1 << (16 + 7 * LED));
- 261              		.loc 1 73 9 view .LVU53
- 262              		.loc 1 73 33 is_stmt 0 view .LVU54
- 263 0018 1032     		adds	r2, r2, #16
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 7
+  68:Core/Src/init.c ****         if(frequences[i] <= (time - last_time[i])) states[i] = !states[i];
+  69:Core/Src/init.c ****         last_time[i] = time;
+ 246              		.loc 1 69 9 is_stmt 1 view .LVU44
+ 247              		.loc 1 69 22 is_stmt 0 view .LVU45
+ 248 000a 0F4A     		ldr	r2, .L24
+ 249 000c 1468     		ldr	r4, [r2]
+ 250 000e 0F4A     		ldr	r2, .L24+4
+ 251 0010 42F82140 		str	r4, [r2, r1, lsl #2]
+  66:Core/Src/init.c ****     {
+ 252              		.loc 1 66 34 is_stmt 1 discriminator 2 view .LVU46
+ 253 0014 0133     		adds	r3, r3, #1
+ 254              	.LVL9:
+  66:Core/Src/init.c ****     {
+ 255              		.loc 1 66 34 is_stmt 0 discriminator 2 view .LVU47
+ 256 0016 DBB2     		uxtb	r3, r3
+ 257              	.LVL10:
+  66:Core/Src/init.c ****     {
+ 258              		.loc 1 66 26 is_stmt 1 discriminator 1 view .LVU48
+ 259 0018 8342     		cmp	r3, r0
+ 260 001a 12D2     		bcs	.L23
+ 261              	.L18:
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 262              		.loc 1 68 9 view .LVU49
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 263              		.loc 1 68 22 is_stmt 0 view .LVU50
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 7
 
 
- 264              		.loc 1 73 26 view .LVU55
- 265 001a 0123     		movs	r3, #1
- 266              	.LVL13:
- 267              		.loc 1 73 26 view .LVU56
- 268 001c 9340     		lsls	r3, r3, r2
- 269              		.loc 1 73 21 view .LVU57
- 270 001e 084A     		ldr	r2, .L22
- 271 0020 9361     		str	r3, [r2, #24]
-  74:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
- 272              		.loc 1 74 9 is_stmt 1 view .LVU58
- 273              	.LBB5:
- 274              		.loc 1 74 13 view .LVU59
- 275              	.LVL14:
- 276              		.loc 1 74 22 is_stmt 0 view .LVU60
- 277 0022 0023     		movs	r3, #0
- 278              		.loc 1 74 9 view .LVU61
- 279 0024 00E0     		b	.L19
- 280              	.LVL15:
- 281              	.L20:
-  75:Core/Src/init.c ****         {
-  76:Core/Src/init.c **** 
-  77:Core/Src/init.c ****         }
- 282              		.loc 1 77 9 is_stmt 1 view .LVU62
-  74:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
- 283              		.loc 1 74 45 discriminator 3 view .LVU63
- 284 0026 0133     		adds	r3, r3, #1
- 285              	.LVL16:
- 286              	.L19:
-  74:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
- 287              		.loc 1 74 31 discriminator 1 view .LVU64
- 288 0028 9842     		cmp	r0, r3
- 289 002a FCD8     		bhi	.L20
- 290 002c 7047     		bx	lr
- 291              	.LVL17:
- 292              	.L16:
-  74:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
- 293              		.loc 1 74 31 is_stmt 0 discriminator 1 view .LVU65
- 294              	.LBE5:
-  78:Core/Src/init.c ****     }
-  79:Core/Src/init.c ****     else
-  80:Core/Src/init.c ****     {
-  81:Core/Src/init.c ****         GPIOB->BSRR = (1 <<  (16 + 7 * LED));
- 295              		.loc 1 81 9 is_stmt 1 view .LVU66
- 296              		.loc 1 81 38 is_stmt 0 view .LVU67
- 297 002e C2EBC202 		rsb	r2, r2, r2, lsl #3
- 298              	.LVL18:
- 299              		.loc 1 81 34 view .LVU68
- 300 0032 1032     		adds	r2, r2, #16
- 301              		.loc 1 81 26 view .LVU69
- 302 0034 0123     		movs	r3, #1
- 303 0036 9340     		lsls	r3, r3, r2
- 304              		.loc 1 81 21 view .LVU70
- 305 0038 014A     		ldr	r2, .L22
- 306 003a 9361     		str	r3, [r2, #24]
-  82:Core/Src/init.c ****     }
-  83:Core/Src/init.c **** }
- 307              		.loc 1 83 1 view .LVU71
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 8
+ 264 001c 1946     		mov	r1, r3
+ 265 001e 0C4A     		ldr	r2, .L24+8
+ 266 0020 52F82340 		ldr	r4, [r2, r3, lsl #2]
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 267              		.loc 1 68 35 view .LVU51
+ 268 0024 084A     		ldr	r2, .L24
+ 269 0026 1268     		ldr	r2, [r2]
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 270              		.loc 1 68 46 view .LVU52
+ 271 0028 084D     		ldr	r5, .L24+4
+ 272 002a 55F82350 		ldr	r5, [r5, r3, lsl #2]
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 273              		.loc 1 68 35 view .LVU53
+ 274 002e 521B     		subs	r2, r2, r5
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 275              		.loc 1 68 11 view .LVU54
+ 276 0030 9442     		cmp	r4, r2
+ 277 0032 EAD8     		bhi	.L17
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 278              		.loc 1 68 52 is_stmt 1 discriminator 1 view .LVU55
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 279              		.loc 1 68 71 is_stmt 0 discriminator 1 view .LVU56
+ 280 0034 074C     		ldr	r4, .L24+12
+ 281 0036 E25C     		ldrb	r2, [r4, r3]	@ zero_extendqisi2
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 282              		.loc 1 68 64 discriminator 1 view .LVU57
+ 283 0038 B2FA82F2 		clz	r2, r2
+ 284 003c 5209     		lsrs	r2, r2, #5
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 285              		.loc 1 68 62 discriminator 1 view .LVU58
+ 286 003e E254     		strb	r2, [r4, r3]
+ 287 0040 E3E7     		b	.L17
+ 288              	.L23:
+  68:Core/Src/init.c ****         last_time[i] = time;
+ 289              		.loc 1 68 62 discriminator 1 view .LVU59
+ 290              	.LBE5:
+  70:Core/Src/init.c ****     }
+  71:Core/Src/init.c **** }
+ 291              		.loc 1 71 1 view .LVU60
+ 292 0042 30BC     		pop	{r4, r5}
+ 293              	.LCFI1:
+ 294              		.cfi_restore 5
+ 295              		.cfi_restore 4
+ 296              		.cfi_def_cfa_offset 0
+ 297 0044 7047     		bx	lr
+ 298              	.L22:
+ 299              		.loc 1 71 1 view .LVU61
+ 300 0046 7047     		bx	lr
+ 301              	.L25:
+ 302              		.align	2
+ 303              	.L24:
+ 304 0048 00000000 		.word	time
+ 305 004c 00000000 		.word	last_time
+ 306 0050 00000000 		.word	frequences
+ 307 0054 00000000 		.word	states
+ 308              		.cfi_endproc
+ 309              	.LFE137:
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 8
 
 
- 308 003c 7047     		bx	lr
- 309              	.L23:
- 310 003e 00BF     		.align	2
- 311              	.L22:
- 312 0040 00040240 		.word	1073873920
- 313              		.cfi_endproc
- 314              	.LFE137:
- 316              		.section	.text.independent_counter,"ax",%progbits
- 317              		.align	1
- 318              		.global	independent_counter
- 319              		.syntax unified
- 320              		.thumb
- 321              		.thumb_func
- 323              	independent_counter:
- 324              	.LFB138:
-  84:Core/Src/init.c **** 
-  85:Core/Src/init.c **** void independent_counter()
-  86:Core/Src/init.c **** {
- 325              		.loc 1 86 1 is_stmt 1 view -0
- 326              		.cfi_startproc
- 327              		@ args = 0, pretend = 0, frame = 0
- 328              		@ frame_needed = 0, uses_anonymous_args = 0
- 329              		@ link register save eliminated.
-  87:Core/Src/init.c ****     time++;
- 330              		.loc 1 87 5 view .LVU73
- 331              		.loc 1 87 9 is_stmt 0 view .LVU74
- 332 0000 024A     		ldr	r2, .L25
- 333 0002 1368     		ldr	r3, [r2]
- 334 0004 0133     		adds	r3, r3, #1
- 335 0006 1360     		str	r3, [r2]
-  88:Core/Src/init.c **** }
- 336              		.loc 1 88 1 view .LVU75
- 337 0008 7047     		bx	lr
- 338              	.L26:
- 339 000a 00BF     		.align	2
- 340              	.L25:
- 341 000c 00000000 		.word	time
- 342              		.cfi_endproc
- 343              	.LFE138:
- 345              		.text
- 346              	.Letext0:
- 347              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 348              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 349              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 350              		.file 5 "Core/Src/../Inc/init.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 9
+ 311              		.section	.text.independent_counter,"ax",%progbits
+ 312              		.align	1
+ 313              		.global	independent_counter
+ 314              		.syntax unified
+ 315              		.thumb
+ 316              		.thumb_func
+ 318              	independent_counter:
+ 319              	.LFB138:
+  72:Core/Src/init.c **** 
+  73:Core/Src/init.c **** void independent_counter()
+  74:Core/Src/init.c **** {
+ 320              		.loc 1 74 1 is_stmt 1 view -0
+ 321              		.cfi_startproc
+ 322              		@ args = 0, pretend = 0, frame = 0
+ 323              		@ frame_needed = 0, uses_anonymous_args = 0
+ 324              		@ link register save eliminated.
+  75:Core/Src/init.c ****     time++;
+ 325              		.loc 1 75 5 view .LVU63
+ 326              		.loc 1 75 9 is_stmt 0 view .LVU64
+ 327 0000 024A     		ldr	r2, .L27
+ 328 0002 1368     		ldr	r3, [r2]
+ 329 0004 0133     		adds	r3, r3, #1
+ 330 0006 1360     		str	r3, [r2]
+  76:Core/Src/init.c **** }
+ 331              		.loc 1 76 1 view .LVU65
+ 332 0008 7047     		bx	lr
+ 333              	.L28:
+ 334 000a 00BF     		.align	2
+ 335              	.L27:
+ 336 000c 00000000 		.word	time
+ 337              		.cfi_endproc
+ 338              	.LFE138:
+ 340              		.text
+ 341              	.Letext0:
+ 342              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 343              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 344              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 345              		.file 5 "Core/Src/../Inc/init.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccS8cOpj.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:21     .text.macros_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:27     .text.macros_init:00000000 macros_init
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:40     .text.cmsis_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:46     .text.cmsis_init:00000000 cmsis_init
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:105    .text.cmsis_init:0000005c $d
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:112    .text.simple_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:118    .text.simple_init:00000000 simple_init
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:131    .text.pressed_button:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:137    .text.pressed_button:00000000 pressed_button
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:208    .text.pressed_button:00000038 $d
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:213    .text.LED_blinking:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:219    .text.LED_blinking:00000000 LED_blinking
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:312    .text.LED_blinking:00000040 $d
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:317    .text.independent_counter:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:323    .text.independent_counter:00000000 independent_counter
-C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:341    .text.independent_counter:0000000c $d
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:21     .text.macros_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:27     .text.macros_init:00000000 macros_init
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:40     .text.cmsis_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:46     .text.cmsis_init:00000000 cmsis_init
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:105    .text.cmsis_init:0000005c $d
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:112    .text.simple_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:118    .text.simple_init:00000000 simple_init
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:131    .text.pressed_button:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:137    .text.pressed_button:00000000 pressed_button
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:208    .text.pressed_button:00000038 $d
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:213    .text.LED_blinking:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:219    .text.LED_blinking:00000000 LED_blinking
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:304    .text.LED_blinking:00000048 $d
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:312    .text.independent_counter:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:318    .text.independent_counter:00000000 independent_counter
+C:\Users\User\AppData\Local\Temp\ccS8cOpj.s:336    .text.independent_counter:0000000c $d
 
 UNDEFINED SYMBOLS
 duration
 time
+last_time
+frequences
+states

@@ -20,12 +20,15 @@ extern volatile uint32_t duration;
 
 extern volatile uint32_t duration;
 extern volatile uint32_t time;
+extern volatile uint8_t states[3];
+extern volatile int32_t frequences[3];
+extern volatile uint32_t last_time[3];
 
 void macros_init(void);
 void cmsis_init(void);
 void simple_init(void);
 uint32_t pressed_button(GPIO_TypeDef* port, uint32_t mask);
-void LED_blinking(uint16_t frequence, uint8_t state, uint8_t LED);
+void LED_blinking(uint8_t LED);
 void independent_counter();
 
 #endif

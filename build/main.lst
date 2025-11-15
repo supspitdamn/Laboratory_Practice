@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc5sXYQu.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -31,308 +31,658 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cc5sXYQu.s 			page 1
    1:Core/Src/main.c **** #include "..\Inc\init.h"
    2:Core/Src/main.c **** #include "stdio.h"
    3:Core/Src/main.c **** 
-   4:Core/Src/main.c **** // Кнопка 6 - включение светодиодов
-   5:Core/Src/main.c **** // Кнопка 7 - смена режима работы
-   6:Core/Src/main.c **** 
-   7:Core/Src/main.c **** volatile uint32_t duration = 0;
-   8:Core/Src/main.c **** volatile uint32_t flag1 = 0;
-   9:Core/Src/main.c **** volatile uint32_t flag2 = 0;
-  10:Core/Src/main.c **** volatile uint32_t flag3 = 0;
-  11:Core/Src/main.c **** 
-  12:Core/Src/main.c **** int main(void)
-  13:Core/Src/main.c **** {
-  29              		.loc 1 13 1 view -0
+   4:Core/Src/main.c **** volatile uint32_t duration = 0;
+   5:Core/Src/main.c **** 
+   6:Core/Src/main.c **** volatile int32_t frequences[3] = {50000, 200000, 1000000};
+   7:Core/Src/main.c **** volatile uint8_t states[3] = {0, 0, 0};
+   8:Core/Src/main.c **** volatile uint32_t LED_freq[3] = {50000, 50000, 50000};
+   9:Core/Src/main.c **** volatile uint32_t last_time[3] = {0, 0, 0};
+  10:Core/Src/main.c **** 
+  11:Core/Src/main.c **** volatile uint32_t time = 0;
+  12:Core/Src/main.c **** 
+  13:Core/Src/main.c **** int main(void)
+  14:Core/Src/main.c **** {
+  29              		.loc 1 14 1 view -0
   30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 24
+  31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 10B5     		push	{r4, lr}
+  33 0000 70B5     		push	{r4, r5, r6, lr}
   34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 8
-  36              		.cfi_offset 4, -8
-  37              		.cfi_offset 14, -4
-  38 0002 86B0     		sub	sp, sp, #24
-  39              	.LCFI1:
-  40              		.cfi_def_cfa_offset 32
-  14:Core/Src/main.c ****     cmsis_init();
-  41              		.loc 1 14 5 view .LVU1
-  42 0004 FFF7FEFF 		bl	cmsis_init
-  43              	.LVL0:
-  15:Core/Src/main.c **** 
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc5sXYQu.s 			page 2
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 4, -16
+  37              		.cfi_offset 5, -12
+  38              		.cfi_offset 6, -8
+  39              		.cfi_offset 14, -4
+  15:Core/Src/main.c ****     cmsis_init();
+  40              		.loc 1 15 5 view .LVU1
+  41 0002 FFF7FEFF 		bl	cmsis_init
+  42              	.LVL0:
+  16:Core/Src/main.c **** 
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 2
 
 
-  16:Core/Src/main.c ****     int8_t counter = -1;
-  44              		.loc 1 16 5 view .LVU2
-  17:Core/Src/main.c ****     int16_t frequences[3] = {100000, 500000, 1000000};
-  45              		.loc 1 17 5 view .LVU3
-  46              		.loc 1 17 13 is_stmt 0 view .LVU4
-  47 0008 2C4B     		ldr	r3, .L16
-  48 000a 93E80300 		ldm	r3, {r0, r1}
-  49 000e 0490     		str	r0, [sp, #16]
-  50 0010 ADF81410 		strh	r1, [sp, #20]	@ movhi
-  18:Core/Src/main.c ****     uint8_t states[3] = {0, 0, 0};
-  51              		.loc 1 18 5 is_stmt 1 view .LVU5
-  52              		.loc 1 18 13 is_stmt 0 view .LVU6
-  53 0014 0023     		movs	r3, #0
-  54 0016 ADF80C30 		strh	r3, [sp, #12]	@ movhi
-  55 001a 8DF80E30 		strb	r3, [sp, #14]
-  19:Core/Src/main.c ****     uint16_t LED_freq[3] = {0, 0, 0};
-  56              		.loc 1 19 5 is_stmt 1 view .LVU7
-  57              		.loc 1 19 14 is_stmt 0 view .LVU8
-  58 001e ADF80430 		strh	r3, [sp, #4]	@ movhi
-  59 0022 ADF80630 		strh	r3, [sp, #6]	@ movhi
-  60 0026 ADF80830 		strh	r3, [sp, #8]	@ movhi
-  61 002a 30E0     		b	.L11
-  62              	.LVL1:
-  63              	.L5:
-  64              	.LBB2:
+  17:Core/Src/main.c ****     uint8_t counter = 0;
+  43              		.loc 1 17 5 view .LVU2
+  18:Core/Src/main.c ****     int8_t LED_for_change = -1;
+  44              		.loc 1 18 5 view .LVU3
+  19:Core/Src/main.c ****     int8_t x = -1;
+  45              		.loc 1 19 5 view .LVU4
+  46              		.loc 1 19 12 is_stmt 0 view .LVU5
+  47 0006 4FF0FF36 		mov	r6, #-1
+  18:Core/Src/main.c ****     int8_t LED_for_change = -1;
+  48              		.loc 1 18 12 view .LVU6
+  49 000a 3546     		mov	r5, r6
+  17:Core/Src/main.c ****     int8_t LED_for_change = -1;
+  50              		.loc 1 17 13 view .LVU7
+  51 000c 0024     		movs	r4, #0
+  52 000e 4DE0     		b	.L2
+  53              	.LVL1:
+  54              	.L31:
   20:Core/Src/main.c **** 
   21:Core/Src/main.c ****     while(1)
   22:Core/Src/main.c ****     {
-  23:Core/Src/main.c ****         if(pressed_button(GPIOB, GPIO_IDR_ID3)) // Переключение светодиодов
+  23:Core/Src/main.c ****         if(pressed_button(GPIOB, GPIO_IDR_ID1)) // Кнопка PB1
   24:Core/Src/main.c ****         {
-  25:Core/Src/main.c ****             if(duration>LONGDURATION)
-  26:Core/Src/main.c ****             {
-  27:Core/Src/main.c ****                 for(uint8_t i = 0; i < 3; i++)
-  28:Core/Src/main.c ****                 {
-  29:Core/Src/main.c ****                     states[i] = 0;
-  65              		.loc 1 29 21 is_stmt 1 view .LVU9
-  66              		.loc 1 29 31 is_stmt 0 view .LVU10
-  67 002c 03F11802 		add	r2, r3, #24
-  68 0030 6A44     		add	r2, sp, r2
-  69 0032 0021     		movs	r1, #0
-  70 0034 02F80C1C 		strb	r1, [r2, #-12]
-  27:Core/Src/main.c ****                 {
-  71              		.loc 1 27 44 is_stmt 1 discriminator 3 view .LVU11
-  72 0038 0133     		adds	r3, r3, #1
-  73              	.LVL2:
-  27:Core/Src/main.c ****                 {
-  74              		.loc 1 27 44 is_stmt 0 discriminator 3 view .LVU12
-  75 003a DBB2     		uxtb	r3, r3
-  76              	.LVL3:
-  77              	.L3:
-  27:Core/Src/main.c ****                 {
-  78              		.loc 1 27 38 is_stmt 1 discriminator 1 view .LVU13
-  79 003c 022B     		cmp	r3, #2
-  80 003e F5D9     		bls	.L5
-  81 0040 37E0     		b	.L6
-  82              	.LVL4:
-  83              	.L15:
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc5sXYQu.s 			page 3
+  25:Core/Src/main.c ****             counter++;
+  26:Core/Src/main.c ****             if(counter == 4)
+  27:Core/Src/main.c ****             {
+  28:Core/Src/main.c ****                 counter = 0;
+  55              		.loc 1 28 25 view .LVU8
+  56 0010 0024     		movs	r4, #0
+  57              	.LVL2:
+  58              		.loc 1 28 25 view .LVU9
+  59 0012 54E0     		b	.L3
+  60              	.LVL3:
+  61              	.L25:
+  29:Core/Src/main.c ****             }
+  30:Core/Src/main.c ****         }
+  31:Core/Src/main.c **** 
+  32:Core/Src/main.c ****         if(pressed_button(GPIOC, GPIO_IDR_ID11)) // Кнопка PC11
+  33:Core/Src/main.c ****         {
+  34:Core/Src/main.c ****             if(duration > SHORTDURATION) // Выключение всех светодиодов п
+  35:Core/Src/main.c ****             {
+  36:Core/Src/main.c ****                 counter = 0;
+  62              		.loc 1 36 25 view .LVU10
+  63 0014 0024     		movs	r4, #0
+  64              	.LVL4:
+  65              		.loc 1 36 25 view .LVU11
+  66 0016 5FE0     		b	.L5
+  67              	.LVL5:
+  68              	.L32:
+  37:Core/Src/main.c ****             }
+  38:Core/Src/main.c ****             else if(duration > LONGDURATION) // Сдвиги светодиодов по долго
+  39:Core/Src/main.c ****             {
+  40:Core/Src/main.c **** 
+  41:Core/Src/main.c ****             }
+  42:Core/Src/main.c ****             duration = 0;
+  43:Core/Src/main.c ****         }
+  44:Core/Src/main.c **** 
+  45:Core/Src/main.c ****         if(pressed_button(GPIOB, GPIO_IDR_ID2)) // Кнопка PB2
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 3
 
 
-  27:Core/Src/main.c ****                 {
-  84              		.loc 1 27 29 is_stmt 0 view .LVU14
-  85 0042 0023     		movs	r3, #0
-  86 0044 FAE7     		b	.L3
-  87              	.L7:
-  88              	.LBE2:
-  30:Core/Src/main.c ****                 }
-  31:Core/Src/main.c ****             }
-  32:Core/Src/main.c ****             else if(duration>MEDIUMDURATION)
-  33:Core/Src/main.c ****             {
-  34:Core/Src/main.c ****                 states[0] = 1;
-  35:Core/Src/main.c ****             }
-  36:Core/Src/main.c ****             else if(duration>SHORTDURATION)
-  89              		.loc 1 36 18 is_stmt 1 view .LVU15
-  90              		.loc 1 36 29 is_stmt 0 view .LVU16
-  91 0046 1E4B     		ldr	r3, .L16+4
-  92 0048 1A68     		ldr	r2, [r3]
-  93              		.loc 1 36 20 view .LVU17
-  94 004a 1E4B     		ldr	r3, .L16+8
-  95 004c 9A42     		cmp	r2, r3
-  96 004e 03D9     		bls	.L8
-  37:Core/Src/main.c ****             {
-  38:Core/Src/main.c ****                 states[1] = 1;
-  97              		.loc 1 38 17 is_stmt 1 view .LVU18
-  98              		.loc 1 38 27 is_stmt 0 view .LVU19
-  99 0050 0123     		movs	r3, #1
- 100 0052 8DF80D30 		strb	r3, [sp, #13]
- 101 0056 2CE0     		b	.L6
- 102              	.L8:
-  39:Core/Src/main.c ****             }
-  40:Core/Src/main.c ****             else if(duration<=SHORTDURATION)
- 103              		.loc 1 40 18 is_stmt 1 view .LVU20
- 104              		.loc 1 40 29 is_stmt 0 view .LVU21
- 105 0058 194B     		ldr	r3, .L16+4
- 106 005a 1A68     		ldr	r2, [r3]
- 107              		.loc 1 40 20 view .LVU22
- 108 005c 194B     		ldr	r3, .L16+8
- 109 005e 9A42     		cmp	r2, r3
- 110 0060 27D8     		bhi	.L6
-  41:Core/Src/main.c ****             {
-  42:Core/Src/main.c ****                 states[2] = 1;
- 111              		.loc 1 42 17 is_stmt 1 view .LVU23
- 112              		.loc 1 42 27 is_stmt 0 view .LVU24
- 113 0062 0123     		movs	r3, #1
- 114 0064 8DF80E30 		strb	r3, [sp, #14]
- 115 0068 23E0     		b	.L6
- 116              	.LVL5:
- 117              	.L10:
- 118              	.LBB3:
-  43:Core/Src/main.c ****             }
-  44:Core/Src/main.c ****             duration = 0;
-  45:Core/Src/main.c ****         }
-  46:Core/Src/main.c **** 
-  47:Core/Src/main.c ****         for(uint8_t i = 0; i < 3; i++)
-  48:Core/Src/main.c ****         {
-  49:Core/Src/main.c ****             LED_blinking(LED_freq[i], states[i], i);
- 119              		.loc 1 49 13 is_stmt 1 view .LVU25
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc5sXYQu.s 			page 4
+  46:Core/Src/main.c ****         {
+  47:Core/Src/main.c ****             x++;
+  48:Core/Src/main.c ****             if(x > 2)
+  49:Core/Src/main.c ****             {
+  50:Core/Src/main.c ****                 x = 0;
+  51:Core/Src/main.c ****             }
+  52:Core/Src/main.c ****             duration = 0;
+  53:Core/Src/main.c ****         }
+  54:Core/Src/main.c **** 
+  55:Core/Src/main.c ****         if(pressed_button(GPIOB, GPIO_IDR_ID3)) // Кнопка PB3
+  56:Core/Src/main.c ****         {
+  57:Core/Src/main.c ****             if(duration > SHORTDURATION)
+  58:Core/Src/main.c ****             {
+  59:Core/Src/main.c ****                 LED_for_change++;
+  60:Core/Src/main.c ****                 if(LED_for_change == 4)
+  61:Core/Src/main.c ****                 {
+  62:Core/Src/main.c ****                     LED_for_change = -1;
+  69              		.loc 1 62 36 view .LVU12
+  70 0018 4FF0FF35 		mov	r5, #-1
+  71              	.LVL6:
+  72              		.loc 1 62 36 view .LVU13
+  73 001c 7AE0     		b	.L9
+  74              	.LVL7:
+  75              	.L33:
+  63:Core/Src/main.c ****                 }
+  64:Core/Src/main.c ****             }
+  65:Core/Src/main.c ****             duration = 0;
+  66:Core/Src/main.c ****             x = 0;
+  67:Core/Src/main.c ****         }
+  68:Core/Src/main.c **** 
+  69:Core/Src/main.c ****         if(counter == 0)
+  70:Core/Src/main.c ****         {
+  71:Core/Src/main.c ****             time = 0;
+  76              		.loc 1 71 13 is_stmt 1 view .LVU14
+  77              		.loc 1 71 18 is_stmt 0 view .LVU15
+  78 001e 4F4B     		ldr	r3, .L34
+  79 0020 0022     		movs	r2, #0
+  80 0022 1A60     		str	r2, [r3]
+  72:Core/Src/main.c ****             for(uint8_t i = 0; i < 3; i++)
+  81              		.loc 1 72 13 is_stmt 1 view .LVU16
+  82              	.LBB2:
+  83              		.loc 1 72 17 view .LVU17
+  84              	.LVL8:
+  85              		.loc 1 72 25 is_stmt 0 view .LVU18
+  86 0024 2346     		mov	r3, r4
+  87              		.loc 1 72 13 view .LVU19
+  88 0026 04E0     		b	.L11
+  89              	.LVL9:
+  90              	.L12:
+  73:Core/Src/main.c ****             {
+  74:Core/Src/main.c ****                 states[i] = 0;
+  91              		.loc 1 74 17 is_stmt 1 view .LVU20
+  92              		.loc 1 74 27 is_stmt 0 view .LVU21
+  93 0028 4D4A     		ldr	r2, .L34+4
+  94 002a 0021     		movs	r1, #0
+  95 002c D154     		strb	r1, [r2, r3]
+  72:Core/Src/main.c ****             for(uint8_t i = 0; i < 3; i++)
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 4
 
 
- 120 006a 04F11803 		add	r3, r4, #24
- 121 006e 0DEB0301 		add	r1, sp, r3
- 122 0072 06AB     		add	r3, sp, #24
- 123 0074 03EB4403 		add	r3, r3, r4, lsl #1
- 124 0078 2246     		mov	r2, r4
- 125 007a 11F80C1C 		ldrb	r1, [r1, #-12]	@ zero_extendqisi2
- 126 007e 33F8140C 		ldrh	r0, [r3, #-20]
- 127 0082 FFF7FEFF 		bl	LED_blinking
- 128              	.LVL6:
-  47:Core/Src/main.c ****         {
- 129              		.loc 1 47 36 discriminator 3 view .LVU26
- 130 0086 0134     		adds	r4, r4, #1
- 131              	.LVL7:
-  47:Core/Src/main.c ****         {
- 132              		.loc 1 47 36 is_stmt 0 discriminator 3 view .LVU27
- 133 0088 E4B2     		uxtb	r4, r4
- 134              	.LVL8:
- 135              	.L9:
-  47:Core/Src/main.c ****         {
- 136              		.loc 1 47 30 is_stmt 1 discriminator 1 view .LVU28
- 137 008a 022C     		cmp	r4, #2
- 138 008c EDD9     		bls	.L10
- 139              	.LVL9:
- 140              	.L11:
-  47:Core/Src/main.c ****         {
- 141              		.loc 1 47 30 is_stmt 0 discriminator 1 view .LVU29
- 142              	.LBE3:
+  96              		.loc 1 72 40 is_stmt 1 discriminator 3 view .LVU22
+  97 002e 0133     		adds	r3, r3, #1
+  98              	.LVL10:
+  72:Core/Src/main.c ****             for(uint8_t i = 0; i < 3; i++)
+  99              		.loc 1 72 40 is_stmt 0 discriminator 3 view .LVU23
+ 100 0030 DBB2     		uxtb	r3, r3
+ 101              	.LVL11:
+ 102              	.L11:
+  72:Core/Src/main.c ****             for(uint8_t i = 0; i < 3; i++)
+ 103              		.loc 1 72 34 is_stmt 1 discriminator 1 view .LVU24
+ 104 0032 022B     		cmp	r3, #2
+ 105 0034 F8D9     		bls	.L12
+ 106 0036 73E0     		b	.L10
+ 107              	.LVL12:
+ 108              	.L30:
+  72:Core/Src/main.c ****             for(uint8_t i = 0; i < 3; i++)
+ 109              		.loc 1 72 34 is_stmt 0 discriminator 1 view .LVU25
+ 110              	.LBE2:
+ 111              	.LBB3:
+  75:Core/Src/main.c ****             }
+  76:Core/Src/main.c ****         }
+  77:Core/Src/main.c ****         
+  78:Core/Src/main.c ****         if(LED_for_change > -1) 
+  79:Core/Src/main.c ****         {
+  80:Core/Src/main.c ****             LED_freq[LED_for_change] = frequences[x];
+  81:Core/Src/main.c ****         }
+  82:Core/Src/main.c **** 
+  83:Core/Src/main.c ****         // Переключение диодов
+  84:Core/Src/main.c **** 
+  85:Core/Src/main.c ****         independent_counter();
+  86:Core/Src/main.c **** 
+  87:Core/Src/main.c ****         for(uint32_t i = 0; i < counter; i++)
+  88:Core/Src/main.c ****         {
+  89:Core/Src/main.c ****             if(i == LED_for_change)
+  90:Core/Src/main.c ****             {
+  91:Core/Src/main.c ****                 states[i] = 1;
+ 112              		.loc 1 91 17 is_stmt 1 view .LVU26
+ 113              		.loc 1 91 27 is_stmt 0 view .LVU27
+ 114 0038 494A     		ldr	r2, .L34+4
+ 115 003a 0121     		movs	r1, #1
+ 116 003c D154     		strb	r1, [r2, r3]
+ 117              	.L16:
+  87:Core/Src/main.c ****         {
+ 118              		.loc 1 87 43 is_stmt 1 discriminator 2 view .LVU28
+ 119 003e 0133     		adds	r3, r3, #1
+ 120              	.LVL13:
+ 121              	.L14:
+  87:Core/Src/main.c ****         {
+ 122              		.loc 1 87 31 discriminator 1 view .LVU29
+ 123 0040 9C42     		cmp	r4, r3
+ 124 0042 18D9     		bls	.L29
+  89:Core/Src/main.c ****             {
+ 125              		.loc 1 89 13 view .LVU30
+  89:Core/Src/main.c ****             {
+ 126              		.loc 1 89 15 is_stmt 0 view .LVU31
+ 127 0044 9D42     		cmp	r5, r3
+ 128 0046 F7D0     		beq	.L30
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 5
+
+
+  92:Core/Src/main.c ****             }
+  93:Core/Src/main.c ****             else
+  94:Core/Src/main.c ****             {
+  95:Core/Src/main.c ****                 if(LED_freq[i] <= (time - last_time[i])) 
+ 129              		.loc 1 95 17 is_stmt 1 view .LVU32
+ 130              		.loc 1 95 28 is_stmt 0 view .LVU33
+ 131 0048 464A     		ldr	r2, .L34+8
+ 132 004a 52F82310 		ldr	r1, [r2, r3, lsl #2]
+ 133              		.loc 1 95 41 view .LVU34
+ 134 004e 434A     		ldr	r2, .L34
+ 135 0050 1268     		ldr	r2, [r2]
+ 136              		.loc 1 95 52 view .LVU35
+ 137 0052 4548     		ldr	r0, .L34+12
+ 138 0054 50F82300 		ldr	r0, [r0, r3, lsl #2]
+ 139              		.loc 1 95 41 view .LVU36
+ 140 0058 121A     		subs	r2, r2, r0
+ 141              		.loc 1 95 19 view .LVU37
+ 142 005a 9142     		cmp	r1, r2
+ 143 005c EFD8     		bhi	.L16
+  96:Core/Src/main.c ****                 {
+  97:Core/Src/main.c ****                     states[i] = !states[i];
+ 144              		.loc 1 97 21 is_stmt 1 view .LVU38
+ 145              		.loc 1 97 40 is_stmt 0 view .LVU39
+ 146 005e 4049     		ldr	r1, .L34+4
+ 147 0060 CA5C     		ldrb	r2, [r1, r3]	@ zero_extendqisi2
+ 148              		.loc 1 97 33 view .LVU40
+ 149 0062 B2FA82F2 		clz	r2, r2
+ 150 0066 5209     		lsrs	r2, r2, #5
+ 151              		.loc 1 97 31 view .LVU41
+ 152 0068 CA54     		strb	r2, [r1, r3]
+  98:Core/Src/main.c ****                     last_time[i] = time;
+ 153              		.loc 1 98 21 is_stmt 1 view .LVU42
+ 154              		.loc 1 98 34 is_stmt 0 view .LVU43
+ 155 006a 3C4A     		ldr	r2, .L34
+ 156 006c 1168     		ldr	r1, [r2]
+ 157 006e 3E4A     		ldr	r2, .L34+12
+ 158 0070 42F82310 		str	r1, [r2, r3, lsl #2]
+ 159 0074 E3E7     		b	.L16
+ 160              	.L29:
+ 161              	.LBE3:
+  99:Core/Src/main.c ****                 }
+ 100:Core/Src/main.c ****              }
+ 101:Core/Src/main.c ****         }
+ 102:Core/Src/main.c **** 
+ 103:Core/Src/main.c ****         // Работа с диодами
+ 104:Core/Src/main.c ****         if(states[0])
+ 162              		.loc 1 104 9 is_stmt 1 view .LVU44
+ 163              		.loc 1 104 18 is_stmt 0 view .LVU45
+ 164 0076 3A4B     		ldr	r3, .L34+4
+ 165              	.LVL14:
+ 166              		.loc 1 104 18 view .LVU46
+ 167 0078 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 168              		.loc 1 104 11 view .LVU47
+ 169 007a 002B     		cmp	r3, #0
+ 170 007c 5CD0     		beq	.L18
+ 105:Core/Src/main.c ****         {
+ 106:Core/Src/main.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 6
+
+
+ 171              		.loc 1 106 13 is_stmt 1 view .LVU48
+ 172 007e 3B4A     		ldr	r2, .L34+16
+ 173 0080 9369     		ldr	r3, [r2, #24]
+ 174 0082 43F00103 		orr	r3, r3, #1
+ 175 0086 9361     		str	r3, [r2, #24]
+ 176              	.L19:
+ 107:Core/Src/main.c ****         }
+ 108:Core/Src/main.c ****         else
+ 109:Core/Src/main.c ****         {
+ 110:Core/Src/main.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0);
+ 111:Core/Src/main.c ****         }
+ 112:Core/Src/main.c **** 
+ 113:Core/Src/main.c ****         if(states[1])
+ 177              		.loc 1 113 9 view .LVU49
+ 178              		.loc 1 113 18 is_stmt 0 view .LVU50
+ 179 0088 354B     		ldr	r3, .L34+4
+ 180 008a 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 181              		.loc 1 113 11 view .LVU51
+ 182 008c 002B     		cmp	r3, #0
+ 183 008e 59D0     		beq	.L20
+ 114:Core/Src/main.c ****         {
+ 115:Core/Src/main.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+ 184              		.loc 1 115 13 is_stmt 1 view .LVU52
+ 185 0090 364A     		ldr	r2, .L34+16
+ 186 0092 9369     		ldr	r3, [r2, #24]
+ 187 0094 43F08003 		orr	r3, r3, #128
+ 188 0098 9361     		str	r3, [r2, #24]
+ 189              	.L21:
+ 116:Core/Src/main.c ****         }
+ 117:Core/Src/main.c ****         else
+ 118:Core/Src/main.c ****         {
+ 119:Core/Src/main.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR7);
+ 120:Core/Src/main.c ****         }
+ 121:Core/Src/main.c **** 
+ 122:Core/Src/main.c ****         if(states[2])
+ 190              		.loc 1 122 9 view .LVU53
+ 191              		.loc 1 122 18 is_stmt 0 view .LVU54
+ 192 009a 314B     		ldr	r3, .L34+4
+ 193 009c 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 194              		.loc 1 122 11 view .LVU55
+ 195 009e 002B     		cmp	r3, #0
+ 196 00a0 56D0     		beq	.L22
+ 123:Core/Src/main.c ****         {
+ 124:Core/Src/main.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS14);
+ 197              		.loc 1 124 13 is_stmt 1 view .LVU56
+ 198 00a2 324A     		ldr	r2, .L34+16
+ 199 00a4 9369     		ldr	r3, [r2, #24]
+ 200 00a6 43F48043 		orr	r3, r3, #16384
+ 201 00aa 9361     		str	r3, [r2, #24]
+ 202              	.LVL15:
+ 203              	.L2:
   21:Core/Src/main.c ****     {
- 143              		.loc 1 21 5 is_stmt 1 view .LVU30
+ 204              		.loc 1 21 5 view .LVU57
   23:Core/Src/main.c ****         {
- 144              		.loc 1 23 9 view .LVU31
+ 205              		.loc 1 23 9 view .LVU58
   23:Core/Src/main.c ****         {
- 145              		.loc 1 23 12 is_stmt 0 view .LVU32
- 146 008e 0821     		movs	r1, #8
- 147 0090 0D48     		ldr	r0, .L16+12
- 148 0092 FFF7FEFF 		bl	pressed_button
- 149              	.LVL10:
+ 206              		.loc 1 23 12 is_stmt 0 view .LVU59
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 7
+
+
+ 207 00ac 0221     		movs	r1, #2
+ 208 00ae 2F48     		ldr	r0, .L34+16
+ 209 00b0 FFF7FEFF 		bl	pressed_button
+ 210              	.LVL16:
   23:Core/Src/main.c ****         {
- 150              		.loc 1 23 11 discriminator 1 view .LVU33
- 151 0096 78B1     		cbz	r0, .L2
-  25:Core/Src/main.c ****             {
- 152              		.loc 1 25 13 is_stmt 1 view .LVU34
-  25:Core/Src/main.c ****             {
- 153              		.loc 1 25 24 is_stmt 0 view .LVU35
- 154 0098 094B     		ldr	r3, .L16+4
- 155 009a 1A68     		ldr	r2, [r3]
-  25:Core/Src/main.c ****             {
- 156              		.loc 1 25 15 view .LVU36
- 157 009c 0B4B     		ldr	r3, .L16+16
- 158 009e 9A42     		cmp	r2, r3
- 159 00a0 CFD8     		bhi	.L15
-  32:Core/Src/main.c ****             {
- 160              		.loc 1 32 18 is_stmt 1 view .LVU37
-  32:Core/Src/main.c ****             {
- 161              		.loc 1 32 29 is_stmt 0 view .LVU38
- 162 00a2 074B     		ldr	r3, .L16+4
- 163 00a4 1A68     		ldr	r2, [r3]
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc5sXYQu.s 			page 5
+ 211              		.loc 1 23 11 discriminator 1 view .LVU60
+ 212 00b4 18B1     		cbz	r0, .L3
+  25:Core/Src/main.c ****             if(counter == 4)
+ 213              		.loc 1 25 13 is_stmt 1 view .LVU61
+  25:Core/Src/main.c ****             if(counter == 4)
+ 214              		.loc 1 25 20 is_stmt 0 view .LVU62
+ 215 00b6 0134     		adds	r4, r4, #1
+ 216              	.LVL17:
+  25:Core/Src/main.c ****             if(counter == 4)
+ 217              		.loc 1 25 20 view .LVU63
+ 218 00b8 E4B2     		uxtb	r4, r4
+ 219              	.LVL18:
+  26:Core/Src/main.c ****             {
+ 220              		.loc 1 26 13 is_stmt 1 view .LVU64
+  26:Core/Src/main.c ****             {
+ 221              		.loc 1 26 15 is_stmt 0 view .LVU65
+ 222 00ba 042C     		cmp	r4, #4
+ 223 00bc A8D0     		beq	.L31
+ 224              	.LVL19:
+ 225              	.L3:
+  32:Core/Src/main.c ****         {
+ 226              		.loc 1 32 9 is_stmt 1 view .LVU66
+  32:Core/Src/main.c ****         {
+ 227              		.loc 1 32 12 is_stmt 0 view .LVU67
+ 228 00be 4FF40061 		mov	r1, #2048
+ 229 00c2 2B48     		ldr	r0, .L34+20
+ 230 00c4 FFF7FEFF 		bl	pressed_button
+ 231              	.LVL20:
+  32:Core/Src/main.c ****         {
+ 232              		.loc 1 32 11 discriminator 1 view .LVU68
+ 233 00c8 48B1     		cbz	r0, .L4
+  34:Core/Src/main.c ****             {
+ 234              		.loc 1 34 13 is_stmt 1 view .LVU69
+  34:Core/Src/main.c ****             {
+ 235              		.loc 1 34 25 is_stmt 0 view .LVU70
+ 236 00ca 2A4B     		ldr	r3, .L34+24
+ 237 00cc 1A68     		ldr	r2, [r3]
+  34:Core/Src/main.c ****             {
+ 238              		.loc 1 34 15 view .LVU71
+ 239 00ce 2A4B     		ldr	r3, .L34+28
+ 240 00d0 9A42     		cmp	r2, r3
+ 241 00d2 9FD8     		bhi	.L25
+  38:Core/Src/main.c ****             {
+ 242              		.loc 1 38 18 is_stmt 1 view .LVU72
+  38:Core/Src/main.c ****             {
+ 243              		.loc 1 38 30 is_stmt 0 view .LVU73
+ 244 00d4 274B     		ldr	r3, .L34+24
+ 245 00d6 1B68     		ldr	r3, [r3]
+ 246              	.LVL21:
+ 247              	.L5:
+  41:Core/Src/main.c ****             duration = 0;
+ 248              		.loc 1 41 13 is_stmt 1 view .LVU74
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 8
 
 
-  32:Core/Src/main.c ****             {
- 164              		.loc 1 32 20 view .LVU39
- 165 00a6 0A4B     		ldr	r3, .L16+20
- 166 00a8 9A42     		cmp	r2, r3
- 167 00aa CCD9     		bls	.L7
-  34:Core/Src/main.c ****             }
- 168              		.loc 1 34 17 is_stmt 1 view .LVU40
-  34:Core/Src/main.c ****             }
- 169              		.loc 1 34 27 is_stmt 0 view .LVU41
- 170 00ac 0123     		movs	r3, #1
- 171 00ae 8DF80C30 		strb	r3, [sp, #12]
- 172              	.L6:
-  44:Core/Src/main.c ****         }
- 173              		.loc 1 44 13 is_stmt 1 view .LVU42
-  44:Core/Src/main.c ****         }
- 174              		.loc 1 44 22 is_stmt 0 view .LVU43
- 175 00b2 034B     		ldr	r3, .L16+4
- 176 00b4 0022     		movs	r2, #0
- 177 00b6 1A60     		str	r2, [r3]
- 178              	.L2:
- 179              	.LBB4:
-  27:Core/Src/main.c ****                 {
- 180              		.loc 1 27 29 view .LVU44
- 181 00b8 0024     		movs	r4, #0
- 182 00ba E6E7     		b	.L9
- 183              	.L17:
- 184              		.align	2
- 185              	.L16:
- 186 00bc 00000000 		.word	.LANCHOR0
- 187 00c0 00000000 		.word	duration
- 188 00c4 40420F00 		.word	1000000
- 189 00c8 00040240 		.word	1073873920
- 190 00cc 404B4C00 		.word	5000000
- 191 00d0 A0252600 		.word	2500000
- 192              	.LBE4:
- 193              		.cfi_endproc
- 194              	.LFE133:
- 196              		.global	flag3
- 197              		.section	.bss.flag3,"aw",%nobits
- 198              		.align	2
- 201              	flag3:
- 202 0000 00000000 		.space	4
- 203              		.global	flag2
- 204              		.section	.bss.flag2,"aw",%nobits
- 205              		.align	2
- 208              	flag2:
- 209 0000 00000000 		.space	4
- 210              		.global	flag1
- 211              		.section	.bss.flag1,"aw",%nobits
- 212              		.align	2
- 215              	flag1:
- 216 0000 00000000 		.space	4
- 217              		.global	duration
- 218              		.section	.bss.duration,"aw",%nobits
- 219              		.align	2
- 222              	duration:
- 223 0000 00000000 		.space	4
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc5sXYQu.s 			page 6
+  42:Core/Src/main.c ****         }
+ 249              		.loc 1 42 13 view .LVU75
+  42:Core/Src/main.c ****         }
+ 250              		.loc 1 42 22 is_stmt 0 view .LVU76
+ 251 00d8 264B     		ldr	r3, .L34+24
+ 252 00da 0022     		movs	r2, #0
+ 253 00dc 1A60     		str	r2, [r3]
+ 254              	.L4:
+  45:Core/Src/main.c ****         {
+ 255              		.loc 1 45 9 is_stmt 1 view .LVU77
+  45:Core/Src/main.c ****         {
+ 256              		.loc 1 45 12 is_stmt 0 view .LVU78
+ 257 00de 0421     		movs	r1, #4
+ 258 00e0 2248     		ldr	r0, .L34+16
+ 259 00e2 FFF7FEFF 		bl	pressed_button
+ 260              	.LVL22:
+  45:Core/Src/main.c ****         {
+ 261              		.loc 1 45 11 discriminator 1 view .LVU79
+ 262 00e6 38B1     		cbz	r0, .L6
+  47:Core/Src/main.c ****             if(x > 2)
+ 263              		.loc 1 47 13 is_stmt 1 view .LVU80
+  47:Core/Src/main.c ****             if(x > 2)
+ 264              		.loc 1 47 14 is_stmt 0 view .LVU81
+ 265 00e8 0136     		adds	r6, r6, #1
+ 266              	.LVL23:
+  47:Core/Src/main.c ****             if(x > 2)
+ 267              		.loc 1 47 14 view .LVU82
+ 268 00ea 76B2     		sxtb	r6, r6
+ 269              	.LVL24:
+  48:Core/Src/main.c ****             {
+ 270              		.loc 1 48 13 is_stmt 1 view .LVU83
+  48:Core/Src/main.c ****             {
+ 271              		.loc 1 48 15 is_stmt 0 view .LVU84
+ 272 00ec 022E     		cmp	r6, #2
+ 273 00ee 00DD     		ble	.L7
+  50:Core/Src/main.c ****             }
+ 274              		.loc 1 50 19 view .LVU85
+ 275 00f0 0026     		movs	r6, #0
+ 276              	.LVL25:
+ 277              	.L7:
+  52:Core/Src/main.c ****         }
+ 278              		.loc 1 52 13 is_stmt 1 view .LVU86
+  52:Core/Src/main.c ****         }
+ 279              		.loc 1 52 22 is_stmt 0 view .LVU87
+ 280 00f2 204B     		ldr	r3, .L34+24
+ 281 00f4 0022     		movs	r2, #0
+ 282 00f6 1A60     		str	r2, [r3]
+ 283              	.L6:
+  55:Core/Src/main.c ****         {
+ 284              		.loc 1 55 9 is_stmt 1 view .LVU88
+  55:Core/Src/main.c ****         {
+ 285              		.loc 1 55 12 is_stmt 0 view .LVU89
+ 286 00f8 0821     		movs	r1, #8
+ 287 00fa 1C48     		ldr	r0, .L34+16
+ 288 00fc FFF7FEFF 		bl	pressed_button
+ 289              	.LVL26:
+  55:Core/Src/main.c ****         {
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 9
 
 
- 224              		.section	.rodata
- 225              		.align	2
- 226              		.set	.LANCHOR0,. + 0
- 227              	.LC0:
- 228 0000 A086     		.short	-31072
- 229 0002 20A1     		.short	-24288
- 230 0004 4042     		.short	16960
- 231              		.text
- 232              	.Letext0:
- 233              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 234              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 235              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 236              		.file 5 "Core/Src/..\\Inc\\init.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\cc5sXYQu.s 			page 7
+ 290              		.loc 1 55 11 discriminator 1 view .LVU90
+ 291 0100 58B1     		cbz	r0, .L8
+  57:Core/Src/main.c ****             {
+ 292              		.loc 1 57 13 is_stmt 1 view .LVU91
+  57:Core/Src/main.c ****             {
+ 293              		.loc 1 57 25 is_stmt 0 view .LVU92
+ 294 0102 1C4B     		ldr	r3, .L34+24
+ 295 0104 1A68     		ldr	r2, [r3]
+  57:Core/Src/main.c ****             {
+ 296              		.loc 1 57 15 view .LVU93
+ 297 0106 1C4B     		ldr	r3, .L34+28
+ 298 0108 9A42     		cmp	r2, r3
+ 299 010a 03D9     		bls	.L9
+  59:Core/Src/main.c ****                 if(LED_for_change == 4)
+ 300              		.loc 1 59 17 is_stmt 1 view .LVU94
+  59:Core/Src/main.c ****                 if(LED_for_change == 4)
+ 301              		.loc 1 59 31 is_stmt 0 view .LVU95
+ 302 010c 0135     		adds	r5, r5, #1
+ 303              	.LVL27:
+  59:Core/Src/main.c ****                 if(LED_for_change == 4)
+ 304              		.loc 1 59 31 view .LVU96
+ 305 010e 6DB2     		sxtb	r5, r5
+ 306              	.LVL28:
+  60:Core/Src/main.c ****                 {
+ 307              		.loc 1 60 17 is_stmt 1 view .LVU97
+  60:Core/Src/main.c ****                 {
+ 308              		.loc 1 60 19 is_stmt 0 view .LVU98
+ 309 0110 042D     		cmp	r5, #4
+ 310 0112 81D0     		beq	.L32
+ 311              	.LVL29:
+ 312              	.L9:
+  65:Core/Src/main.c ****             x = 0;
+ 313              		.loc 1 65 13 is_stmt 1 view .LVU99
+  65:Core/Src/main.c ****             x = 0;
+ 314              		.loc 1 65 22 is_stmt 0 view .LVU100
+ 315 0114 0026     		movs	r6, #0
+ 316              	.LVL30:
+  65:Core/Src/main.c ****             x = 0;
+ 317              		.loc 1 65 22 view .LVU101
+ 318 0116 174B     		ldr	r3, .L34+24
+ 319 0118 1E60     		str	r6, [r3]
+  66:Core/Src/main.c ****         }
+ 320              		.loc 1 66 13 is_stmt 1 view .LVU102
+ 321              	.LVL31:
+ 322              	.L8:
+  69:Core/Src/main.c ****         {
+ 323              		.loc 1 69 9 view .LVU103
+  69:Core/Src/main.c ****         {
+ 324              		.loc 1 69 11 is_stmt 0 view .LVU104
+ 325 011a 002C     		cmp	r4, #0
+ 326 011c 3FF47FAF 		beq	.L33
+ 327              	.L10:
+  78:Core/Src/main.c ****         {
+ 328              		.loc 1 78 9 is_stmt 1 view .LVU105
+  78:Core/Src/main.c ****         {
+ 329              		.loc 1 78 11 is_stmt 0 view .LVU106
+ 330 0120 002D     		cmp	r5, #0
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 10
+
+
+ 331 0122 05DB     		blt	.L13
+  80:Core/Src/main.c ****         }
+ 332              		.loc 1 80 13 is_stmt 1 view .LVU107
+  80:Core/Src/main.c ****         }
+ 333              		.loc 1 80 50 is_stmt 0 view .LVU108
+ 334 0124 154B     		ldr	r3, .L34+32
+ 335 0126 53F82620 		ldr	r2, [r3, r6, lsl #2]
+  80:Core/Src/main.c ****         }
+ 336              		.loc 1 80 38 view .LVU109
+ 337 012a 0E4B     		ldr	r3, .L34+8
+ 338 012c 43F82520 		str	r2, [r3, r5, lsl #2]
+ 339              	.L13:
+  85:Core/Src/main.c **** 
+ 340              		.loc 1 85 9 is_stmt 1 view .LVU110
+ 341 0130 FFF7FEFF 		bl	independent_counter
+ 342              	.LVL32:
+  87:Core/Src/main.c ****         {
+ 343              		.loc 1 87 9 view .LVU111
+ 344              	.LBB4:
+  87:Core/Src/main.c ****         {
+ 345              		.loc 1 87 13 view .LVU112
+  87:Core/Src/main.c ****         {
+ 346              		.loc 1 87 22 is_stmt 0 view .LVU113
+ 347 0134 0023     		movs	r3, #0
+  87:Core/Src/main.c ****         {
+ 348              		.loc 1 87 9 view .LVU114
+ 349 0136 83E7     		b	.L14
+ 350              	.LVL33:
+ 351              	.L18:
+  87:Core/Src/main.c ****         {
+ 352              		.loc 1 87 9 view .LVU115
+ 353              	.LBE4:
+ 110:Core/Src/main.c ****         }
+ 354              		.loc 1 110 13 is_stmt 1 view .LVU116
+ 355 0138 0C4A     		ldr	r2, .L34+16
+ 356 013a 9369     		ldr	r3, [r2, #24]
+ 357 013c 43F48033 		orr	r3, r3, #65536
+ 358 0140 9361     		str	r3, [r2, #24]
+ 359 0142 A1E7     		b	.L19
+ 360              	.L20:
+ 119:Core/Src/main.c ****         }
+ 361              		.loc 1 119 13 view .LVU117
+ 362 0144 094A     		ldr	r2, .L34+16
+ 363 0146 9369     		ldr	r3, [r2, #24]
+ 364 0148 43F40003 		orr	r3, r3, #8388608
+ 365 014c 9361     		str	r3, [r2, #24]
+ 366 014e A4E7     		b	.L21
+ 367              	.L22:
+ 125:Core/Src/main.c ****         }
+ 126:Core/Src/main.c ****         else
+ 127:Core/Src/main.c ****         {
+ 128:Core/Src/main.c ****             SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR14);
+ 368              		.loc 1 128 13 view .LVU118
+ 369 0150 064A     		ldr	r2, .L34+16
+ 370 0152 9369     		ldr	r3, [r2, #24]
+ 371 0154 43F08043 		orr	r3, r3, #1073741824
+ 372 0158 9361     		str	r3, [r2, #24]
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 11
+
+
+ 373 015a A7E7     		b	.L2
+ 374              	.L35:
+ 375              		.align	2
+ 376              	.L34:
+ 377 015c 00000000 		.word	time
+ 378 0160 00000000 		.word	states
+ 379 0164 00000000 		.word	LED_freq
+ 380 0168 00000000 		.word	last_time
+ 381 016c 00040240 		.word	1073873920
+ 382 0170 00080240 		.word	1073874944
+ 383 0174 00000000 		.word	duration
+ 384 0178 40420F00 		.word	1000000
+ 385 017c 00000000 		.word	frequences
+ 386              		.cfi_endproc
+ 387              	.LFE133:
+ 389              		.global	time
+ 390              		.section	.bss.time,"aw",%nobits
+ 391              		.align	2
+ 394              	time:
+ 395 0000 00000000 		.space	4
+ 396              		.global	last_time
+ 397              		.section	.bss.last_time,"aw",%nobits
+ 398              		.align	2
+ 401              	last_time:
+ 402 0000 00000000 		.space	12
+ 402      00000000 
+ 402      00000000 
+ 403              		.global	LED_freq
+ 404              		.section	.data.LED_freq,"aw"
+ 405              		.align	2
+ 408              	LED_freq:
+ 409 0000 50C30000 		.word	50000
+ 410 0004 50C30000 		.word	50000
+ 411 0008 50C30000 		.word	50000
+ 412              		.global	states
+ 413              		.section	.bss.states,"aw",%nobits
+ 414              		.align	2
+ 417              	states:
+ 418 0000 000000   		.space	3
+ 419              		.global	frequences
+ 420              		.section	.data.frequences,"aw"
+ 421              		.align	2
+ 424              	frequences:
+ 425 0000 50C30000 		.word	50000
+ 426 0004 400D0300 		.word	200000
+ 427 0008 40420F00 		.word	1000000
+ 428              		.global	duration
+ 429              		.section	.bss.duration,"aw",%nobits
+ 430              		.align	2
+ 433              	duration:
+ 434 0000 00000000 		.space	4
+ 435              		.text
+ 436              	.Letext0:
+ 437              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 438              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 439              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 440              		.file 5 "Core/Src/..\\Inc\\init.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 12
+
+
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccY8ot3E.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:21     .text.main:00000000 $t
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:27     .text.main:00000000 main
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:186    .text.main:000000bc $d
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:222    .bss.duration:00000000 duration
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:201    .bss.flag3:00000000 flag3
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:198    .bss.flag3:00000000 $d
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:208    .bss.flag2:00000000 flag2
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:205    .bss.flag2:00000000 $d
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:215    .bss.flag1:00000000 flag1
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:212    .bss.flag1:00000000 $d
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:219    .bss.duration:00000000 $d
-C:\Users\User\AppData\Local\Temp\cc5sXYQu.s:225    .rodata:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:21     .text.main:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:27     .text.main:00000000 main
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:377    .text.main:0000015c $d
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:394    .bss.time:00000000 time
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:417    .bss.states:00000000 states
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:408    .data.LED_freq:00000000 LED_freq
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:401    .bss.last_time:00000000 last_time
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:433    .bss.duration:00000000 duration
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:424    .data.frequences:00000000 frequences
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:391    .bss.time:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:398    .bss.last_time:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:405    .data.LED_freq:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:414    .bss.states:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:421    .data.frequences:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccY8ot3E.s:430    .bss.duration:00000000 $d
 
 UNDEFINED SYMBOLS
 cmsis_init
-LED_blinking
 pressed_button
+independent_counter
