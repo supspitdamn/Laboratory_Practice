@@ -48,10 +48,7 @@ uint32_t pressed_button(GPIO_TypeDef* port, uint32_t mask)
 {
     if(!READ_BIT(port->IDR, mask))
     {
-        for(int i = 0; i < 5000; i++)
-        {
-            
-        }
+        for(int i = 0; i < 5000; i++);
         if(!READ_BIT(port->IDR, mask))
         {
             while(!READ_BIT(port->IDR, mask))
@@ -62,5 +59,31 @@ uint32_t pressed_button(GPIO_TypeDef* port, uint32_t mask)
         }
     }
     return 0;
+}
+
+void LED_blinking(uint16_t frequence, uint8_t state, uint8_t LED)
+{
+    if(state)
+    {
+        GPIOB->BSRR = (1 <<  (0 + 7 * LED));
+        for(uint32_t i = 0; i < frequence; i++)
+        {
+
+        }
+        GPIOB->BSRR = (1 << (16 + 7 * LED));
+        for(uint32_t i = 0; i < frequence; i++)
+        {
+
+        }
+    }
+    else
+    {
+        GPIOB->BSRR = (1 <<  (16 + 7 * LED));
+    }
+}
+
+void independent_counter()
+{
+    time++;
 }
 

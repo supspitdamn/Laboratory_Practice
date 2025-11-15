@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 1
   11:Core/Src/init.c **** 
   12:Core/Src/init.c **** void cmsis_init(void)
   13:Core/Src/init.c **** {
-ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 2
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 2
 
 
   48              		.loc 1 13 1 view -0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 1
   32:Core/Src/init.c **** 
   33:Core/Src/init.c ****     // Кнопки
   34:Core/Src/init.c ****     
-ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 3
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 3
 
 
   35:Core/Src/init.c ****     MODIFY_REG(GPIOB->MODER, GPIO_MODER_MODE1_Msk | GPIO_MODER_MODE2_Msk | GPIO_MODER_MODE3_Msk, 0x
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 1
  130              		.section	.text.pressed_button,"ax",%progbits
  131              		.align	1
  132              		.global	pressed_button
-ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 4
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 4
 
 
  133              		.syntax unified
@@ -206,120 +206,288 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 1
  152 0004 0840     		ands	r0, r0, r1
  153 0006 0BD0     		beq	.L12
   50:Core/Src/init.c ****     {
-  51:Core/Src/init.c ****         for(int i = 0; i < 5000; i++)
-  52:Core/Src/init.c ****         {
-  53:Core/Src/init.c ****             
-  54:Core/Src/init.c ****         }
-  55:Core/Src/init.c ****         if(!READ_BIT(port->IDR, mask))
-  56:Core/Src/init.c ****         {
-  57:Core/Src/init.c ****             while(!READ_BIT(port->IDR, mask))
-  58:Core/Src/init.c ****             {
-  59:Core/Src/init.c ****                 duration++;
-  60:Core/Src/init.c ****             }
-  61:Core/Src/init.c ****             return 1;
-  62:Core/Src/init.c ****         }
-  63:Core/Src/init.c ****     }
-  64:Core/Src/init.c ****     return 0;
- 154              		.loc 1 64 12 view .LVU23
+  51:Core/Src/init.c ****         for(int i = 0; i < 5000; i++);
+  52:Core/Src/init.c ****         if(!READ_BIT(port->IDR, mask))
+  53:Core/Src/init.c ****         {
+  54:Core/Src/init.c ****             while(!READ_BIT(port->IDR, mask))
+  55:Core/Src/init.c ****             {
+  56:Core/Src/init.c ****                 duration++;
+  57:Core/Src/init.c ****             }
+  58:Core/Src/init.c ****             return 1;
+  59:Core/Src/init.c ****         }
+  60:Core/Src/init.c ****     }
+  61:Core/Src/init.c ****     return 0;
+ 154              		.loc 1 61 12 view .LVU23
  155 0008 0020     		movs	r0, #0
  156 000a 7047     		bx	lr
  157              	.LVL2:
  158              	.L9:
  159              	.LBB2:
-  54:Core/Src/init.c ****         if(!READ_BIT(port->IDR, mask))
- 160              		.loc 1 54 9 is_stmt 1 view .LVU24
-  51:Core/Src/init.c ****         {
- 161              		.loc 1 51 35 discriminator 3 view .LVU25
- 162 000c 0133     		adds	r3, r3, #1
- 163              	.LVL3:
- 164              	.L7:
-  51:Core/Src/init.c ****         {
- 165              		.loc 1 51 26 discriminator 1 view .LVU26
- 166 000e 41F28732 		movw	r2, #4999
- 167 0012 9342     		cmp	r3, r2
- 168 0014 FADD     		ble	.L9
-ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 5
+  51:Core/Src/init.c ****         if(!READ_BIT(port->IDR, mask))
+ 160              		.loc 1 51 35 is_stmt 1 discriminator 3 view .LVU24
+ 161 000c 0133     		adds	r3, r3, #1
+ 162              	.LVL3:
+ 163              	.L7:
+  51:Core/Src/init.c ****         if(!READ_BIT(port->IDR, mask))
+ 164              		.loc 1 51 26 discriminator 1 view .LVU25
+ 165 000e 41F28732 		movw	r2, #4999
+ 166 0012 9342     		cmp	r3, r2
+ 167 0014 FADD     		ble	.L9
+ 168              	.LBE2:
+  52:Core/Src/init.c ****         {
+ 169              		.loc 1 52 9 view .LVU26
+  52:Core/Src/init.c ****         {
+ 170              		.loc 1 52 13 is_stmt 0 view .LVU27
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 5
 
 
- 169              	.LBE2:
-  55:Core/Src/init.c ****         {
- 170              		.loc 1 55 9 view .LVU27
-  55:Core/Src/init.c ****         {
- 171              		.loc 1 55 13 is_stmt 0 view .LVU28
- 172 0016 DCF81030 		ldr	r3, [ip, #16]
- 173              	.LVL4:
-  55:Core/Src/init.c ****         {
- 174              		.loc 1 55 11 view .LVU29
- 175 001a 0B42     		tst	r3, r1
- 176 001c 06D0     		beq	.L10
- 177              	.L6:
-  65:Core/Src/init.c **** }
- 178              		.loc 1 65 1 view .LVU30
- 179 001e 7047     		bx	lr
- 180              	.LVL5:
- 181              	.L12:
- 182              	.LBB3:
-  51:Core/Src/init.c ****         {
- 183              		.loc 1 51 17 view .LVU31
- 184 0020 0023     		movs	r3, #0
- 185 0022 F4E7     		b	.L7
- 186              	.LVL6:
- 187              	.L11:
-  51:Core/Src/init.c ****         {
- 188              		.loc 1 51 17 view .LVU32
- 189              	.LBE3:
-  59:Core/Src/init.c ****             }
- 190              		.loc 1 59 17 is_stmt 1 view .LVU33
-  59:Core/Src/init.c ****             }
- 191              		.loc 1 59 25 is_stmt 0 view .LVU34
- 192 0024 044A     		ldr	r2, .L13
- 193 0026 1368     		ldr	r3, [r2]
- 194 0028 0133     		adds	r3, r3, #1
- 195 002a 1360     		str	r3, [r2]
- 196              	.L10:
-  57:Core/Src/init.c ****             {
- 197              		.loc 1 57 19 is_stmt 1 view .LVU35
-  57:Core/Src/init.c ****             {
- 198              		.loc 1 57 20 is_stmt 0 view .LVU36
- 199 002c DCF81030 		ldr	r3, [ip, #16]
-  57:Core/Src/init.c ****             {
- 200              		.loc 1 57 19 view .LVU37
- 201 0030 0B42     		tst	r3, r1
- 202 0032 F7D0     		beq	.L11
-  61:Core/Src/init.c ****         }
- 203              		.loc 1 61 20 view .LVU38
- 204 0034 0120     		movs	r0, #1
- 205 0036 F2E7     		b	.L6
- 206              	.L14:
- 207              		.align	2
- 208              	.L13:
- 209 0038 00000000 		.word	duration
- 210              		.cfi_endproc
- 211              	.LFE136:
- 213              		.text
- 214              	.Letext0:
-ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 6
+ 171 0016 DCF81030 		ldr	r3, [ip, #16]
+ 172              	.LVL4:
+  52:Core/Src/init.c ****         {
+ 173              		.loc 1 52 11 view .LVU28
+ 174 001a 0B42     		tst	r3, r1
+ 175 001c 06D0     		beq	.L10
+ 176              	.L6:
+  62:Core/Src/init.c **** }
+ 177              		.loc 1 62 1 view .LVU29
+ 178 001e 7047     		bx	lr
+ 179              	.LVL5:
+ 180              	.L12:
+ 181              	.LBB3:
+  51:Core/Src/init.c ****         if(!READ_BIT(port->IDR, mask))
+ 182              		.loc 1 51 17 view .LVU30
+ 183 0020 0023     		movs	r3, #0
+ 184 0022 F4E7     		b	.L7
+ 185              	.LVL6:
+ 186              	.L11:
+  51:Core/Src/init.c ****         if(!READ_BIT(port->IDR, mask))
+ 187              		.loc 1 51 17 view .LVU31
+ 188              	.LBE3:
+  56:Core/Src/init.c ****             }
+ 189              		.loc 1 56 17 is_stmt 1 view .LVU32
+  56:Core/Src/init.c ****             }
+ 190              		.loc 1 56 25 is_stmt 0 view .LVU33
+ 191 0024 044A     		ldr	r2, .L13
+ 192 0026 1368     		ldr	r3, [r2]
+ 193 0028 0133     		adds	r3, r3, #1
+ 194 002a 1360     		str	r3, [r2]
+ 195              	.L10:
+  54:Core/Src/init.c ****             {
+ 196              		.loc 1 54 19 is_stmt 1 view .LVU34
+  54:Core/Src/init.c ****             {
+ 197              		.loc 1 54 20 is_stmt 0 view .LVU35
+ 198 002c DCF81030 		ldr	r3, [ip, #16]
+  54:Core/Src/init.c ****             {
+ 199              		.loc 1 54 19 view .LVU36
+ 200 0030 0B42     		tst	r3, r1
+ 201 0032 F7D0     		beq	.L11
+  58:Core/Src/init.c ****         }
+ 202              		.loc 1 58 20 view .LVU37
+ 203 0034 0120     		movs	r0, #1
+ 204 0036 F2E7     		b	.L6
+ 205              	.L14:
+ 206              		.align	2
+ 207              	.L13:
+ 208 0038 00000000 		.word	duration
+ 209              		.cfi_endproc
+ 210              	.LFE136:
+ 212              		.section	.text.LED_blinking,"ax",%progbits
+ 213              		.align	1
+ 214              		.global	LED_blinking
+ 215              		.syntax unified
+ 216              		.thumb
+ 217              		.thumb_func
+ 219              	LED_blinking:
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 6
 
 
- 215              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 216              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 217              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 218              		.file 5 "Core/Src/../Inc/init.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\cchZgoWB.s 			page 7
+ 220              	.LVL7:
+ 221              	.LFB137:
+  63:Core/Src/init.c **** 
+  64:Core/Src/init.c **** void LED_blinking(uint16_t frequence, uint8_t state, uint8_t LED)
+  65:Core/Src/init.c **** {
+ 222              		.loc 1 65 1 is_stmt 1 view -0
+ 223              		.cfi_startproc
+ 224              		@ args = 0, pretend = 0, frame = 0
+ 225              		@ frame_needed = 0, uses_anonymous_args = 0
+ 226              		@ link register save eliminated.
+  66:Core/Src/init.c ****     if(state)
+ 227              		.loc 1 66 5 view .LVU39
+ 228              		.loc 1 66 7 is_stmt 0 view .LVU40
+ 229 0000 A9B1     		cbz	r1, .L16
+  67:Core/Src/init.c ****     {
+  68:Core/Src/init.c ****         GPIOB->BSRR = (1 <<  (0 + 7 * LED));
+ 230              		.loc 1 68 9 is_stmt 1 view .LVU41
+ 231              		.loc 1 68 33 is_stmt 0 view .LVU42
+ 232 0002 C2EBC202 		rsb	r2, r2, r2, lsl #3
+ 233              	.LVL8:
+ 234              		.loc 1 68 26 view .LVU43
+ 235 0006 0123     		movs	r3, #1
+ 236 0008 9340     		lsls	r3, r3, r2
+ 237              		.loc 1 68 21 view .LVU44
+ 238 000a 0D49     		ldr	r1, .L22
+ 239              	.LVL9:
+ 240              		.loc 1 68 21 view .LVU45
+ 241 000c 8B61     		str	r3, [r1, #24]
+  69:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
+ 242              		.loc 1 69 9 is_stmt 1 view .LVU46
+ 243              	.LBB4:
+ 244              		.loc 1 69 13 view .LVU47
+ 245              	.LVL10:
+ 246              		.loc 1 69 22 is_stmt 0 view .LVU48
+ 247 000e 0023     		movs	r3, #0
+ 248              		.loc 1 69 9 view .LVU49
+ 249 0010 00E0     		b	.L17
+ 250              	.LVL11:
+ 251              	.L18:
+  70:Core/Src/init.c ****         {
+  71:Core/Src/init.c **** 
+  72:Core/Src/init.c ****         }
+ 252              		.loc 1 72 9 is_stmt 1 view .LVU50
+  69:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
+ 253              		.loc 1 69 45 discriminator 3 view .LVU51
+ 254 0012 0133     		adds	r3, r3, #1
+ 255              	.LVL12:
+ 256              	.L17:
+  69:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
+ 257              		.loc 1 69 31 discriminator 1 view .LVU52
+ 258 0014 9842     		cmp	r0, r3
+ 259 0016 FCD8     		bhi	.L18
+ 260              	.LBE4:
+  73:Core/Src/init.c ****         GPIOB->BSRR = (1 << (16 + 7 * LED));
+ 261              		.loc 1 73 9 view .LVU53
+ 262              		.loc 1 73 33 is_stmt 0 view .LVU54
+ 263 0018 1032     		adds	r2, r2, #16
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 7
+
+
+ 264              		.loc 1 73 26 view .LVU55
+ 265 001a 0123     		movs	r3, #1
+ 266              	.LVL13:
+ 267              		.loc 1 73 26 view .LVU56
+ 268 001c 9340     		lsls	r3, r3, r2
+ 269              		.loc 1 73 21 view .LVU57
+ 270 001e 084A     		ldr	r2, .L22
+ 271 0020 9361     		str	r3, [r2, #24]
+  74:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
+ 272              		.loc 1 74 9 is_stmt 1 view .LVU58
+ 273              	.LBB5:
+ 274              		.loc 1 74 13 view .LVU59
+ 275              	.LVL14:
+ 276              		.loc 1 74 22 is_stmt 0 view .LVU60
+ 277 0022 0023     		movs	r3, #0
+ 278              		.loc 1 74 9 view .LVU61
+ 279 0024 00E0     		b	.L19
+ 280              	.LVL15:
+ 281              	.L20:
+  75:Core/Src/init.c ****         {
+  76:Core/Src/init.c **** 
+  77:Core/Src/init.c ****         }
+ 282              		.loc 1 77 9 is_stmt 1 view .LVU62
+  74:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
+ 283              		.loc 1 74 45 discriminator 3 view .LVU63
+ 284 0026 0133     		adds	r3, r3, #1
+ 285              	.LVL16:
+ 286              	.L19:
+  74:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
+ 287              		.loc 1 74 31 discriminator 1 view .LVU64
+ 288 0028 9842     		cmp	r0, r3
+ 289 002a FCD8     		bhi	.L20
+ 290 002c 7047     		bx	lr
+ 291              	.LVL17:
+ 292              	.L16:
+  74:Core/Src/init.c ****         for(uint32_t i = 0; i < frequence; i++)
+ 293              		.loc 1 74 31 is_stmt 0 discriminator 1 view .LVU65
+ 294              	.LBE5:
+  78:Core/Src/init.c ****     }
+  79:Core/Src/init.c ****     else
+  80:Core/Src/init.c ****     {
+  81:Core/Src/init.c ****         GPIOB->BSRR = (1 <<  (16 + 7 * LED));
+ 295              		.loc 1 81 9 is_stmt 1 view .LVU66
+ 296              		.loc 1 81 38 is_stmt 0 view .LVU67
+ 297 002e C2EBC202 		rsb	r2, r2, r2, lsl #3
+ 298              	.LVL18:
+ 299              		.loc 1 81 34 view .LVU68
+ 300 0032 1032     		adds	r2, r2, #16
+ 301              		.loc 1 81 26 view .LVU69
+ 302 0034 0123     		movs	r3, #1
+ 303 0036 9340     		lsls	r3, r3, r2
+ 304              		.loc 1 81 21 view .LVU70
+ 305 0038 014A     		ldr	r2, .L22
+ 306 003a 9361     		str	r3, [r2, #24]
+  82:Core/Src/init.c ****     }
+  83:Core/Src/init.c **** }
+ 307              		.loc 1 83 1 view .LVU71
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 8
+
+
+ 308 003c 7047     		bx	lr
+ 309              	.L23:
+ 310 003e 00BF     		.align	2
+ 311              	.L22:
+ 312 0040 00040240 		.word	1073873920
+ 313              		.cfi_endproc
+ 314              	.LFE137:
+ 316              		.section	.text.independent_counter,"ax",%progbits
+ 317              		.align	1
+ 318              		.global	independent_counter
+ 319              		.syntax unified
+ 320              		.thumb
+ 321              		.thumb_func
+ 323              	independent_counter:
+ 324              	.LFB138:
+  84:Core/Src/init.c **** 
+  85:Core/Src/init.c **** void independent_counter()
+  86:Core/Src/init.c **** {
+ 325              		.loc 1 86 1 is_stmt 1 view -0
+ 326              		.cfi_startproc
+ 327              		@ args = 0, pretend = 0, frame = 0
+ 328              		@ frame_needed = 0, uses_anonymous_args = 0
+ 329              		@ link register save eliminated.
+  87:Core/Src/init.c ****     time++;
+ 330              		.loc 1 87 5 view .LVU73
+ 331              		.loc 1 87 9 is_stmt 0 view .LVU74
+ 332 0000 024A     		ldr	r2, .L25
+ 333 0002 1368     		ldr	r3, [r2]
+ 334 0004 0133     		adds	r3, r3, #1
+ 335 0006 1360     		str	r3, [r2]
+  88:Core/Src/init.c **** }
+ 336              		.loc 1 88 1 view .LVU75
+ 337 0008 7047     		bx	lr
+ 338              	.L26:
+ 339 000a 00BF     		.align	2
+ 340              	.L25:
+ 341 000c 00000000 		.word	time
+ 342              		.cfi_endproc
+ 343              	.LFE138:
+ 345              		.text
+ 346              	.Letext0:
+ 347              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 348              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 349              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 350              		.file 5 "Core/Src/../Inc/init.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccUlMjNj.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:21     .text.macros_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:27     .text.macros_init:00000000 macros_init
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:40     .text.cmsis_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:46     .text.cmsis_init:00000000 cmsis_init
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:105    .text.cmsis_init:0000005c $d
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:112    .text.simple_init:00000000 $t
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:118    .text.simple_init:00000000 simple_init
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:131    .text.pressed_button:00000000 $t
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:137    .text.pressed_button:00000000 pressed_button
-C:\Users\User\AppData\Local\Temp\cchZgoWB.s:209    .text.pressed_button:00000038 $d
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:21     .text.macros_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:27     .text.macros_init:00000000 macros_init
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:40     .text.cmsis_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:46     .text.cmsis_init:00000000 cmsis_init
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:105    .text.cmsis_init:0000005c $d
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:112    .text.simple_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:118    .text.simple_init:00000000 simple_init
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:131    .text.pressed_button:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:137    .text.pressed_button:00000000 pressed_button
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:208    .text.pressed_button:00000038 $d
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:213    .text.LED_blinking:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:219    .text.LED_blinking:00000000 LED_blinking
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:312    .text.LED_blinking:00000040 $d
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:317    .text.independent_counter:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:323    .text.independent_counter:00000000 independent_counter
+C:\Users\User\AppData\Local\Temp\ccUlMjNj.s:341    .text.independent_counter:0000000c $d
 
 UNDEFINED SYMBOLS
 duration
+time
