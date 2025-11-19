@@ -2,6 +2,8 @@
 
 void TIM1_UP_TIM10_IRQHandler(void)
 {
-        TIM1->SR &= ~TIM_SR_UIF;
+    if (TIM1->SR & TIM_SR_UIF)
+    {
+        TIM1->SR &= ~TIM_SR_UIF; 
+    }
 }
-

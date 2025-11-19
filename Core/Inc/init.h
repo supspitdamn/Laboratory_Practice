@@ -1,17 +1,25 @@
 #ifndef INIT_H
 #define INIT_H
+#include <stdint.h>
+#include "stm32f4xx.h" 
 
-#include "stm32f4xx.h"
+/*Для читаемости кода, проценты*/
 
-void Clock_Init_HSE_PLL_168MHz(void);
+#define TWENTY_PERCENT 20
+#define FOURTY_PERCENT 40
+#define SIXTY_PERCENT 60
+#define EIGHTY_PERCENT 80
 
-void GPIO_Init(void);
-void ADC1_Init(void);
-void TIM1_Encoder_Init(void);
+/**/
 
-uint16_t ADC_Read(void);
+void RCC_init(void);
 
-float Get_Pot_Percent(void);
-void Update_LEDs(float perc);
+void TIM1_init(void);
+
+void GPIO_init(void);
+
+void ADC_init(void);
+
+uint16_t READ_POT(void);
 
 #endif

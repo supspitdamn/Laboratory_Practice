@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccwm0MGg.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,767 +20,359 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/init.c"
-  20              		.section	.text.Clock_Init_HSE_PLL_168MHz,"ax",%progbits
+  20              		.section	.text.RCC_init,"ax",%progbits
   21              		.align	1
-  22              		.global	Clock_Init_HSE_PLL_168MHz
+  22              		.global	RCC_init
   23              		.syntax unified
   24              		.thumb
   25              		.thumb_func
-  27              	Clock_Init_HSE_PLL_168MHz:
+  27              	RCC_init:
   28              	.LFB130:
    1:Core/Src/init.c **** #include "init.h"
    2:Core/Src/init.c **** 
-   3:Core/Src/init.c **** /* --------------- Настройка тактирования: HSE 8 МГц → PLL → 168 МГц
-   4:Core/Src/init.c **** void Clock_Init_HSE_PLL_168MHz(void)
-   5:Core/Src/init.c **** {
-  29              		.loc 1 5 1 view -0
+   3:Core/Src/init.c **** void RCC_init(void) // Тактирование майселф
+   4:Core/Src/init.c **** {
+  29              		.loc 1 4 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
   33              		@ link register save eliminated.
-   6:Core/Src/init.c ****     /* Включаем тактирование интерфейса питания */
-   7:Core/Src/init.c ****     RCC->APB1ENR |= RCC_APB1ENR_PWREN;
-  34              		.loc 1 7 5 view .LVU1
-  35              		.loc 1 7 8 is_stmt 0 view .LVU2
-  36 0000 1E4B     		ldr	r3, .L5
-  37 0002 1A6C     		ldr	r2, [r3, #64]
-  38              		.loc 1 7 18 view .LVU3
-  39 0004 42F08052 		orr	r2, r2, #268435456
-  40 0008 1A64     		str	r2, [r3, #64]
-   8:Core/Src/init.c **** 
-   9:Core/Src/init.c ****     /* Устанавливаем масштаб напряжения регулятора в ре�
-  10:Core/Src/init.c ****     PWR->CR |= PWR_CR_VOS;
-  41              		.loc 1 10 5 is_stmt 1 view .LVU4
-  42              		.loc 1 10 8 is_stmt 0 view .LVU5
-  43 000a 1D49     		ldr	r1, .L5+4
-  44 000c 0A68     		ldr	r2, [r1]
-  45              		.loc 1 10 13 view .LVU6
-  46 000e 42F44042 		orr	r2, r2, #49152
-  47 0012 0A60     		str	r2, [r1]
-  11:Core/Src/init.c **** 
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 2
+   5:Core/Src/init.c ****     // Подготовка к настройке - чистим регистры
+   6:Core/Src/init.c ****     MODIFY_REG(RCC->CR, RCC_CR_HSITRIM, 0x80UL);
+  34              		.loc 1 6 5 view .LVU1
+  35 0000 3D4A     		ldr	r2, .L7
+  36 0002 1368     		ldr	r3, [r2]
+  37 0004 23F0F803 		bic	r3, r3, #248
+  38 0008 43F08003 		orr	r3, r3, #128
+  39 000c 1360     		str	r3, [r2]
+   7:Core/Src/init.c ****     CLEAR_REG(RCC->CFGR); // Выбрали HSI
+  40              		.loc 1 7 5 view .LVU2
+  41 000e 0023     		movs	r3, #0
+  42 0010 9360     		str	r3, [r2, #8]
+   8:Core/Src/init.c ****     while((RCC->CFGR & RCC_CFGR_SWS_Msk) != RCC_CFGR_SWS_HSI); // Ждем включения HSI
+  43              		.loc 1 8 5 view .LVU3
+  44              	.L2:
+  45              		.loc 1 8 42 discriminator 1 view .LVU4
+  46              		.loc 1 8 15 is_stmt 0 discriminator 1 view .LVU5
+  47 0012 394B     		ldr	r3, .L7
+  48 0014 9B68     		ldr	r3, [r3, #8]
+  49              		.loc 1 8 42 discriminator 1 view .LVU6
+  50 0016 13F00C0F 		tst	r3, #12
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccwm0MGg.s 			page 2
 
 
-  12:Core/Src/init.c ****     /* Включаем внешний кварцевый генератор HSE */
-  13:Core/Src/init.c ****     RCC->CR |= RCC_CR_HSEON;
-  48              		.loc 1 13 5 is_stmt 1 view .LVU7
-  49              		.loc 1 13 8 is_stmt 0 view .LVU8
-  50 0014 1A68     		ldr	r2, [r3]
-  51              		.loc 1 13 13 view .LVU9
-  52 0016 42F48032 		orr	r2, r2, #65536
-  53 001a 1A60     		str	r2, [r3]
-  14:Core/Src/init.c ****     while (!(RCC->CR & RCC_CR_HSERDY)); // Ждем, пока HSE стабилизируется
-  54              		.loc 1 14 5 is_stmt 1 view .LVU10
-  55              	.L2:
-  56              		.loc 1 14 12 discriminator 1 view .LVU11
-  57              		.loc 1 14 17 is_stmt 0 discriminator 1 view .LVU12
-  58 001c 174B     		ldr	r3, .L5
-  59 001e 1B68     		ldr	r3, [r3]
-  60              		.loc 1 14 12 discriminator 1 view .LVU13
-  61 0020 13F4003F 		tst	r3, #131072
-  62 0024 FAD0     		beq	.L2
-  15:Core/Src/init.c **** 
-  16:Core/Src/init.c ****     /* Настраиваем Flash: включаем кэш и выставляем 5 тактов
-  17:Core/Src/init.c ****     FLASH->ACR = FLASH_ACR_ICEN | FLASH_ACR_DCEN |
-  63              		.loc 1 17 5 is_stmt 1 view .LVU14
-  64              		.loc 1 17 16 is_stmt 0 view .LVU15
-  65 0026 174B     		ldr	r3, .L5+8
-  66 0028 40F20562 		movw	r2, #1541
-  67 002c 1A60     		str	r2, [r3]
-  18:Core/Src/init.c ****                  FLASH_ACR_LATENCY_5WS;
-  19:Core/Src/init.c **** 
-  20:Core/Src/init.c ****     /* Настройка делителей шины */
-  21:Core/Src/init.c ****     RCC->CFGR = RCC_CFGR_HPRE_DIV1 |   // AHB = SYSCLK / 1
-  68              		.loc 1 21 5 is_stmt 1 view .LVU16
-  69              		.loc 1 21 15 is_stmt 0 view .LVU17
-  70 002e A3F58063 		sub	r3, r3, #1024
-  71 0032 4FF41442 		mov	r2, #37888
-  72 0036 9A60     		str	r2, [r3, #8]
-  22:Core/Src/init.c ****                 RCC_CFGR_PPRE1_DIV4 |  // APB1 = AHB / 4
-  23:Core/Src/init.c ****                 RCC_CFGR_PPRE2_DIV2;   // APB2 = AHB / 2
-  24:Core/Src/init.c **** 
-  25:Core/Src/init.c ****     /* Настройка PLL: PLLM=8, PLLN=336, PLLP=2, PLLQ=7 */
-  26:Core/Src/init.c ****     RCC->PLLCFGR = (8 << RCC_PLLCFGR_PLLM_Pos) |
-  73              		.loc 1 26 5 is_stmt 1 view .LVU18
-  74              		.loc 1 26 18 is_stmt 0 view .LVU19
-  75 0038 134A     		ldr	r2, .L5+12
-  76 003a 5A60     		str	r2, [r3, #4]
-  27:Core/Src/init.c ****                    (336 << RCC_PLLCFGR_PLLN_Pos) |
-  28:Core/Src/init.c ****                    (0 << RCC_PLLCFGR_PLLP_Pos) |      // PLLP=2
-  29:Core/Src/init.c ****                    RCC_PLLCFGR_PLLSRC_HSE |           // источник PLL = HSE
-  30:Core/Src/init.c ****                    (7 << RCC_PLLCFGR_PLLQ_Pos);      // PLLQ=7 для USB, SDIO и RNG
+  51 001a FAD1     		bne	.L2
+   9:Core/Src/init.c ****     CLEAR_BIT(RCC->CR, RCC_CR_PLLON); // Отчищаем предделители PLL
+  52              		.loc 1 9 5 is_stmt 1 view .LVU7
+  53 001c 364A     		ldr	r2, .L7
+  54 001e 1368     		ldr	r3, [r2]
+  55 0020 23F08073 		bic	r3, r3, #16777216
+  56 0024 1360     		str	r3, [r2]
+  10:Core/Src/init.c ****     while ((READ_BIT(RCC->CR, RCC_CR_PLLRDY))); // Ждем отключения PLL
+  57              		.loc 1 10 5 view .LVU8
+  58              	.L3:
+  59              		.loc 1 10 12 discriminator 1 view .LVU9
+  60              		.loc 1 10 13 is_stmt 0 discriminator 1 view .LVU10
+  61 0026 344B     		ldr	r3, .L7
+  62 0028 1B68     		ldr	r3, [r3]
+  63              		.loc 1 10 12 discriminator 1 view .LVU11
+  64 002a 13F0007F 		tst	r3, #33554432
+  65 002e FAD1     		bne	.L3
+  11:Core/Src/init.c ****     CLEAR_BIT(RCC->CR, RCC_CR_HSEON | RCC_CR_CSSON); // Отключаем HSE и CSS
+  66              		.loc 1 11 5 is_stmt 1 view .LVU12
+  67 0030 314A     		ldr	r2, .L7
+  68 0032 1368     		ldr	r3, [r2]
+  69 0034 23F41023 		bic	r3, r3, #589824
+  70 0038 1360     		str	r3, [r2]
+  12:Core/Src/init.c ****     while ((READ_BIT(RCC->CR, RCC_CR_HSERDY))); // Ждем отключения HSE
+  71              		.loc 1 12 5 view .LVU13
+  72              	.L4:
+  73              		.loc 1 12 12 discriminator 1 view .LVU14
+  74              		.loc 1 12 13 is_stmt 0 discriminator 1 view .LVU15
+  75 003a 2F4B     		ldr	r3, .L7
+  76 003c 1B68     		ldr	r3, [r3]
+  77              		.loc 1 12 12 discriminator 1 view .LVU16
+  78 003e 13F4003F 		tst	r3, #131072
+  79 0042 FAD1     		bne	.L4
+  13:Core/Src/init.c **** 
+  14:Core/Src/init.c ****     CLEAR_BIT(RCC->CR, RCC_CR_HSEBYP); // Без пайпаса
+  80              		.loc 1 14 5 is_stmt 1 view .LVU17
+  81 0044 2C4B     		ldr	r3, .L7
+  82 0046 1A68     		ldr	r2, [r3]
+  83 0048 22F48022 		bic	r2, r2, #262144
+  84 004c 1A60     		str	r2, [r3]
+  15:Core/Src/init.c ****     SET_BIT(RCC->CR, RCC_CR_HSEON); // Включаем HSE
+  85              		.loc 1 15 5 view .LVU18
+  86 004e 1A68     		ldr	r2, [r3]
+  87 0050 42F48032 		orr	r2, r2, #65536
+  88 0054 1A60     		str	r2, [r3]
+  16:Core/Src/init.c ****     while(!(RCC->CR & RCC_CR_HSERDY)); // Ждем включения
+  89              		.loc 1 16 5 view .LVU19
+  90              	.L5:
+  91              		.loc 1 16 11 discriminator 1 view .LVU20
+  92              		.loc 1 16 16 is_stmt 0 discriminator 1 view .LVU21
+  93 0056 284B     		ldr	r3, .L7
+  94 0058 1B68     		ldr	r3, [r3]
+  95              		.loc 1 16 11 discriminator 1 view .LVU22
+  96 005a 13F4003F 		tst	r3, #131072
+  97 005e FAD0     		beq	.L5
+  17:Core/Src/init.c ****     SET_BIT(RCC->CR, RCC_CR_CSSON);
+  98              		.loc 1 17 5 is_stmt 1 view .LVU23
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccwm0MGg.s 			page 3
+
+
+  99 0060 254B     		ldr	r3, .L7
+ 100 0062 1A68     		ldr	r2, [r3]
+ 101 0064 42F40022 		orr	r2, r2, #524288
+ 102 0068 1A60     		str	r2, [r3]
+  18:Core/Src/init.c **** 
+  19:Core/Src/init.c ****     CLEAR_REG(RCC->PLLCFGR);
+ 103              		.loc 1 19 5 view .LVU24
+ 104 006a 0022     		movs	r2, #0
+ 105 006c 5A60     		str	r2, [r3, #4]
+  20:Core/Src/init.c **** 
+  21:Core/Src/init.c ****     SET_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLSRC_HSE);
+ 106              		.loc 1 21 5 view .LVU25
+ 107 006e 5A68     		ldr	r2, [r3, #4]
+ 108 0070 42F48002 		orr	r2, r2, #4194304
+ 109 0074 5A60     		str	r2, [r3, #4]
+  22:Core/Src/init.c ****     
+  23:Core/Src/init.c ****     MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLM_Msk, 8UL << RCC_PLLCFGR_PLLM_Pos); // Какое пи
+ 110              		.loc 1 23 5 view .LVU26
+ 111 0076 5A68     		ldr	r2, [r3, #4]
+ 112 0078 22F03F02 		bic	r2, r2, #63
+ 113 007c 42F00802 		orr	r2, r2, #8
+ 114 0080 5A60     		str	r2, [r3, #4]
+  24:Core/Src/init.c ****     MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLN_Msk, 360UL << RCC_PLLCFGR_PLLN_Pos); // Какое п
+ 115              		.loc 1 24 5 view .LVU27
+ 116 0082 5A68     		ldr	r2, [r3, #4]
+ 117 0084 6FF38E12 		bfc	r2, #6, #9
+ 118 0088 42F4B442 		orr	r2, r2, #23040
+ 119 008c 5A60     		str	r2, [r3, #4]
+  25:Core/Src/init.c ****     MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLP_Msk, 0UL << RCC_PLLCFGR_PLLP_Pos); // 0 - 2, 1 - 4, 2
+ 120              		.loc 1 25 5 view .LVU28
+ 121 008e 5A68     		ldr	r2, [r3, #4]
+ 122 0090 22F44032 		bic	r2, r2, #196608
+ 123 0094 5A60     		str	r2, [r3, #4]
+  26:Core/Src/init.c **** 
+  27:Core/Src/init.c ****     MODIFY_REG(FLASH->ACR, FLASH_ACR_LATENCY, FLASH_ACR_LATENCY_5WS);
+ 124              		.loc 1 27 5 view .LVU29
+ 125 0096 1949     		ldr	r1, .L7+4
+ 126 0098 0A68     		ldr	r2, [r1]
+ 127 009a 22F00F02 		bic	r2, r2, #15
+ 128 009e 42F00502 		orr	r2, r2, #5
+ 129 00a2 0A60     		str	r2, [r1]
+  28:Core/Src/init.c **** 
+  29:Core/Src/init.c ****     SET_BIT(RCC->CR, RCC_CR_PLLON); // Включил PLL
+ 130              		.loc 1 29 5 view .LVU30
+ 131 00a4 1A68     		ldr	r2, [r3]
+ 132 00a6 42F08072 		orr	r2, r2, #16777216
+ 133 00aa 1A60     		str	r2, [r3]
+  30:Core/Src/init.c ****     while((RCC->CR & RCC_CR_PLLRDY) == RESET); // Подождал включения PLL
+ 134              		.loc 1 30 5 view .LVU31
+ 135              	.L6:
+ 136              		.loc 1 30 37 discriminator 1 view .LVU32
+ 137              		.loc 1 30 15 is_stmt 0 discriminator 1 view .LVU33
+ 138 00ac 124B     		ldr	r3, .L7
+ 139 00ae 1B68     		ldr	r3, [r3]
+ 140              		.loc 1 30 37 discriminator 1 view .LVU34
+ 141 00b0 13F0007F 		tst	r3, #33554432
+ 142 00b4 FAD0     		beq	.L6
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccwm0MGg.s 			page 4
+
+
   31:Core/Src/init.c **** 
-  32:Core/Src/init.c ****     /* Включаем PLL */
-  33:Core/Src/init.c ****     RCC->CR |= RCC_CR_PLLON;
-  77              		.loc 1 33 5 is_stmt 1 view .LVU20
-  78              		.loc 1 33 8 is_stmt 0 view .LVU21
-  79 003c 1A68     		ldr	r2, [r3]
-  80              		.loc 1 33 13 view .LVU22
-  81 003e 42F08072 		orr	r2, r2, #16777216
-  82 0042 1A60     		str	r2, [r3]
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 3
+  32:Core/Src/init.c ****     MODIFY_REG(RCC->CFGR, RCC_CFGR_SW_Msk, RCC_CFGR_SW_PLL); // Установил PLL как та�
+ 143              		.loc 1 32 5 is_stmt 1 view .LVU35
+ 144 00b6 104B     		ldr	r3, .L7
+ 145 00b8 9A68     		ldr	r2, [r3, #8]
+ 146 00ba 22F00302 		bic	r2, r2, #3
+ 147 00be 42F00202 		orr	r2, r2, #2
+ 148 00c2 9A60     		str	r2, [r3, #8]
+  33:Core/Src/init.c **** 
+  34:Core/Src/init.c ****     MODIFY_REG(RCC->CFGR, RCC_CFGR_HPRE_Msk, RCC_CFGR_HPRE_DIV1); // Прдедделитель 
+ 149              		.loc 1 34 5 view .LVU36
+ 150 00c4 9A68     		ldr	r2, [r3, #8]
+ 151 00c6 22F0F002 		bic	r2, r2, #240
+ 152 00ca 9A60     		str	r2, [r3, #8]
+  35:Core/Src/init.c ****     MODIFY_REG(RCC->CFGR, RCC_CFGR_PPRE2_Msk, RCC_CFGR_PPRE2_DIV2); // Предделитель APB
+ 153              		.loc 1 35 5 view .LVU37
+ 154 00cc 9A68     		ldr	r2, [r3, #8]
+ 155 00ce 22F46042 		bic	r2, r2, #57344
+ 156 00d2 42F40042 		orr	r2, r2, #32768
+ 157 00d6 9A60     		str	r2, [r3, #8]
+  36:Core/Src/init.c ****     MODIFY_REG(RCC->CFGR, RCC_CFGR_PPRE1_Msk, RCC_CFGR_PPRE1_DIV4); // Предделитель APB
+ 158              		.loc 1 36 5 view .LVU38
+ 159 00d8 9A68     		ldr	r2, [r3, #8]
+ 160 00da 22F4E052 		bic	r2, r2, #7168
+ 161 00de 42F4A052 		orr	r2, r2, #5120
+ 162 00e2 9A60     		str	r2, [r3, #8]
+  37:Core/Src/init.c **** 
+  38:Core/Src/init.c ****     MODIFY_REG(RCC->CFGR, RCC_CFGR_MCO2PRE_Msk, 0UL << RCC_CFGR_MCO2PRE_Pos); // Предделит
+ 163              		.loc 1 38 5 view .LVU39
+ 164 00e4 9A68     		ldr	r2, [r3, #8]
+ 165 00e6 22F06052 		bic	r2, r2, #939524096
+ 166 00ea 9A60     		str	r2, [r3, #8]
+  39:Core/Src/init.c ****     CLEAR_BIT(RCC->CFGR, RCC_CFGR_MCO2_Msk); // MCO2 от SysClock
+ 167              		.loc 1 39 5 view .LVU40
+ 168 00ec 9A68     		ldr	r2, [r3, #8]
+ 169 00ee 22F04042 		bic	r2, r2, #-1073741824
+ 170 00f2 9A60     		str	r2, [r3, #8]
+  40:Core/Src/init.c **** }
+ 171              		.loc 1 40 1 is_stmt 0 view .LVU41
+ 172 00f4 7047     		bx	lr
+ 173              	.L8:
+ 174 00f6 00BF     		.align	2
+ 175              	.L7:
+ 176 00f8 00380240 		.word	1073887232
+ 177 00fc 003C0240 		.word	1073888256
+ 178              		.cfi_endproc
+ 179              	.LFE130:
+ 181              		.section	.text.TIM1_init,"ax",%progbits
+ 182              		.align	1
+ 183              		.global	TIM1_init
+ 184              		.syntax unified
+ 185              		.thumb
+ 186              		.thumb_func
+ 188              	TIM1_init:
+ 189              	.LFB131:
+  41:Core/Src/init.c **** 
+  42:Core/Src/init.c **** void TIM1_init(void)
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccwm0MGg.s 			page 5
 
 
-  34:Core/Src/init.c ****     while (!(RCC->CR & RCC_CR_PLLRDY)); // Ждем готовности PLL
-  83              		.loc 1 34 5 is_stmt 1 view .LVU23
-  84              	.L3:
-  85              		.loc 1 34 12 discriminator 1 view .LVU24
-  86              		.loc 1 34 17 is_stmt 0 discriminator 1 view .LVU25
-  87 0044 0D4B     		ldr	r3, .L5
-  88 0046 1B68     		ldr	r3, [r3]
-  89              		.loc 1 34 12 discriminator 1 view .LVU26
-  90 0048 13F0007F 		tst	r3, #33554432
-  91 004c FAD0     		beq	.L3
-  35:Core/Src/init.c **** 
-  36:Core/Src/init.c ****     /* Переключаем системный такт на PLL */
-  37:Core/Src/init.c ****     RCC->CFGR |= RCC_CFGR_SW_PLL;
-  92              		.loc 1 37 5 is_stmt 1 view .LVU27
-  93              		.loc 1 37 8 is_stmt 0 view .LVU28
-  94 004e 0B4A     		ldr	r2, .L5
-  95 0050 9368     		ldr	r3, [r2, #8]
-  96              		.loc 1 37 15 view .LVU29
-  97 0052 43F00203 		orr	r3, r3, #2
-  98 0056 9360     		str	r3, [r2, #8]
-  38:Core/Src/init.c ****     while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL);
-  99              		.loc 1 38 5 is_stmt 1 view .LVU30
- 100              	.L4:
- 101              		.loc 1 38 39 discriminator 1 view .LVU31
- 102              		.loc 1 38 16 is_stmt 0 discriminator 1 view .LVU32
- 103 0058 084B     		ldr	r3, .L5
- 104 005a 9B68     		ldr	r3, [r3, #8]
- 105              		.loc 1 38 23 discriminator 1 view .LVU33
- 106 005c 03F00C03 		and	r3, r3, #12
- 107              		.loc 1 38 39 discriminator 1 view .LVU34
- 108 0060 082B     		cmp	r3, #8
- 109 0062 F9D1     		bne	.L4
-  39:Core/Src/init.c **** 
-  40:Core/Src/init.c ****     /* Выключаем внутренний RC-генератор HSI (опционально) *
-  41:Core/Src/init.c ****     RCC->CR &= ~RCC_CR_HSION;
- 110              		.loc 1 41 5 is_stmt 1 view .LVU35
- 111              		.loc 1 41 8 is_stmt 0 view .LVU36
- 112 0064 054A     		ldr	r2, .L5
- 113 0066 1368     		ldr	r3, [r2]
- 114              		.loc 1 41 13 view .LVU37
- 115 0068 23F00103 		bic	r3, r3, #1
- 116 006c 1360     		str	r3, [r2]
-  42:Core/Src/init.c **** 
-  43:Core/Src/init.c ****     /* Обновляем глобальную переменную SystemCoreClock */
-  44:Core/Src/init.c ****     SystemCoreClock = 168000000;
- 117              		.loc 1 44 5 is_stmt 1 view .LVU38
- 118              		.loc 1 44 21 is_stmt 0 view .LVU39
- 119 006e 074B     		ldr	r3, .L5+16
- 120 0070 02F14A42 		add	r2, r2, #-905969664
- 121 0074 02F5A132 		add	r2, r2, #82432
- 122 0078 1A60     		str	r2, [r3]
-  45:Core/Src/init.c **** }
- 123              		.loc 1 45 1 view .LVU40
- 124 007a 7047     		bx	lr
- 125              	.L6:
- 126              		.align	2
- 127              	.L5:
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 4
+  43:Core/Src/init.c **** {
+ 190              		.loc 1 43 1 is_stmt 1 view -0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 0
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194              		@ link register save eliminated.
+  44:Core/Src/init.c ****     // Включение тактирования
+  45:Core/Src/init.c ****     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_TIM1EN);
+ 195              		.loc 1 45 5 view .LVU43
+ 196 0000 1E4B     		ldr	r3, .L10
+ 197 0002 5A6C     		ldr	r2, [r3, #68]
+ 198 0004 42F00102 		orr	r2, r2, #1
+ 199 0008 5A64     		str	r2, [r3, #68]
+  46:Core/Src/init.c ****     SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
+ 200              		.loc 1 46 5 view .LVU44
+ 201 000a 1A6B     		ldr	r2, [r3, #48]
+ 202 000c 42F00102 		orr	r2, r2, #1
+ 203 0010 1A63     		str	r2, [r3, #48]
+  47:Core/Src/init.c ****     
+  48:Core/Src/init.c ****     // Настройка таймера
+  49:Core/Src/init.c ****     TIM1->PSC = 94;                    // Предделитель: 95MHz / 95 = 1MHz
+ 204              		.loc 1 49 5 view .LVU45
+ 205              		.loc 1 49 15 is_stmt 0 view .LVU46
+ 206 0012 A3F59C33 		sub	r3, r3, #79872
+ 207 0016 5E22     		movs	r2, #94
+ 208 0018 9A62     		str	r2, [r3, #40]
+  50:Core/Src/init.c ****     TIM1->ARR = 999;                   // Период: 1000 тактов
+ 209              		.loc 1 50 5 is_stmt 1 view .LVU47
+ 210              		.loc 1 50 15 is_stmt 0 view .LVU48
+ 211 001a 40F2E732 		movw	r2, #999
+ 212 001e DA62     		str	r2, [r3, #44]
+  51:Core/Src/init.c ****     TIM1->CCR1 = 500;                  // Скважность 50% (500/1000)
+ 213              		.loc 1 51 5 is_stmt 1 view .LVU49
+ 214              		.loc 1 51 16 is_stmt 0 view .LVU50
+ 215 0020 4FF4FA72 		mov	r2, #500
+ 216 0024 5A63     		str	r2, [r3, #52]
+  52:Core/Src/init.c ****     
+  53:Core/Src/init.c ****     // Принудительное обновление
+  54:Core/Src/init.c ****     TIM1->EGR = TIM_EGR_UG;
+ 217              		.loc 1 54 5 is_stmt 1 view .LVU51
+ 218              		.loc 1 54 15 is_stmt 0 view .LVU52
+ 219 0026 0122     		movs	r2, #1
+ 220 0028 5A61     		str	r2, [r3, #20]
+  55:Core/Src/init.c ****     
+  56:Core/Src/init.c ****     // Настройка вывода PA8 (TIM1_CH1)
+  57:Core/Src/init.c ****     MODIFY_REG(GPIOA->MODER, GPIO_MODER_MODER8_Msk, 2 << GPIO_MODER_MODER8_Pos);    // Alternate fu
+ 221              		.loc 1 57 5 is_stmt 1 view .LVU53
+ 222 002a 1549     		ldr	r1, .L10+4
+ 223 002c 0A68     		ldr	r2, [r1]
+ 224 002e 22F44032 		bic	r2, r2, #196608
+ 225 0032 42F40032 		orr	r2, r2, #131072
+ 226 0036 0A60     		str	r2, [r1]
+  58:Core/Src/init.c ****     MODIFY_REG(GPIOA->AFR[1], GPIO_AFRH_AFSEL8_Msk, 1 << GPIO_AFRH_AFSEL8_Pos);     // AF1 = TIM1
+ 227              		.loc 1 58 5 view .LVU54
+ 228 0038 4A6A     		ldr	r2, [r1, #36]
+ 229 003a 22F00F02 		bic	r2, r2, #15
+ 230 003e 42F00102 		orr	r2, r2, #1
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccwm0MGg.s 			page 6
 
 
- 128 007c 00380240 		.word	1073887232
- 129 0080 00700040 		.word	1073770496
- 130 0084 003C0240 		.word	1073888256
- 131 0088 08544007 		.word	121656328
- 132 008c 00000000 		.word	SystemCoreClock
- 133              		.cfi_endproc
- 134              	.LFE130:
- 136              		.section	.text.GPIO_Init,"ax",%progbits
- 137              		.align	1
- 138              		.global	GPIO_Init
- 139              		.syntax unified
- 140              		.thumb
- 141              		.thumb_func
- 143              	GPIO_Init:
- 144              	.LFB131:
-  46:Core/Src/init.c **** 
-  47:Core/Src/init.c **** void GPIO_Init(void)
-  48:Core/Src/init.c **** {
- 145              		.loc 1 48 1 is_stmt 1 view -0
- 146              		.cfi_startproc
- 147              		@ args = 0, pretend = 0, frame = 0
- 148              		@ frame_needed = 0, uses_anonymous_args = 0
- 149              		@ link register save eliminated.
-  49:Core/Src/init.c ****     /* ---- Светодиоды: PD4, PD5, PD6, PD7 ---- */
-  50:Core/Src/init.c ****     RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN; // Включаем тактирование порта D
- 150              		.loc 1 50 5 view .LVU42
- 151              		.loc 1 50 8 is_stmt 0 view .LVU43
- 152 0000 0B4B     		ldr	r3, .L8
- 153 0002 1A6B     		ldr	r2, [r3, #48]
- 154              		.loc 1 50 18 view .LVU44
- 155 0004 42F00802 		orr	r2, r2, #8
- 156 0008 1A63     		str	r2, [r3, #48]
-  51:Core/Src/init.c **** 
-  52:Core/Src/init.c ****     /* Сбрасываем режимы выводов PD4–PD7 */
-  53:Core/Src/init.c ****     GPIOD->MODER &= ~(
- 157              		.loc 1 53 5 is_stmt 1 view .LVU45
- 158              		.loc 1 53 10 is_stmt 0 view .LVU46
- 159 000a 0A4A     		ldr	r2, .L8+4
- 160 000c 1168     		ldr	r1, [r2]
- 161              		.loc 1 53 18 view .LVU47
- 162 000e 21F47F41 		bic	r1, r1, #65280
- 163 0012 1160     		str	r1, [r2]
-  54:Core/Src/init.c ****         (3 << (4*2)) |
-  55:Core/Src/init.c ****         (3 << (5*2)) |
-  56:Core/Src/init.c ****         (3 << (6*2)) |
-  57:Core/Src/init.c ****         (3 << (7*2))
-  58:Core/Src/init.c ****     );
-  59:Core/Src/init.c **** 
-  60:Core/Src/init.c ****     /* Устанавливаем режим "выход" для PD4–PD7 */
-  61:Core/Src/init.c ****     GPIOD->MODER |=  (
- 164              		.loc 1 61 5 is_stmt 1 view .LVU48
- 165              		.loc 1 61 10 is_stmt 0 view .LVU49
- 166 0014 1168     		ldr	r1, [r2]
- 167              		.loc 1 61 18 view .LVU50
- 168 0016 41F4AA41 		orr	r1, r1, #21760
- 169 001a 1160     		str	r1, [r2]
-  62:Core/Src/init.c ****         (1 << (4*2)) |
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 5
+ 231 0042 4A62     		str	r2, [r1, #36]
+  59:Core/Src/init.c ****     
+  60:Core/Src/init.c ****     // Настройка канала ШИМ
+  61:Core/Src/init.c ****     MODIFY_REG(TIM1->CCMR1, TIM_CCMR1_OC1M_Msk, 6 << TIM_CCMR1_OC1M_Pos);  // PWM mode 1
+ 232              		.loc 1 61 5 view .LVU55
+ 233 0044 9A69     		ldr	r2, [r3, #24]
+ 234 0046 22F07002 		bic	r2, r2, #112
+ 235 004a 42F06002 		orr	r2, r2, #96
+ 236 004e 9A61     		str	r2, [r3, #24]
+  62:Core/Src/init.c ****     SET_BIT(TIM1->CCMR1, TIM_CCMR1_OC1PE);          // Preload enable
+ 237              		.loc 1 62 5 view .LVU56
+ 238 0050 9A69     		ldr	r2, [r3, #24]
+ 239 0052 42F00802 		orr	r2, r2, #8
+ 240 0056 9A61     		str	r2, [r3, #24]
+  63:Core/Src/init.c ****     SET_BIT(TIM1->CCER, TIM_CCER_CC1E);             // Channel enable
+ 241              		.loc 1 63 5 view .LVU57
+ 242 0058 1A6A     		ldr	r2, [r3, #32]
+ 243 005a 42F00102 		orr	r2, r2, #1
+ 244 005e 1A62     		str	r2, [r3, #32]
+  64:Core/Src/init.c ****     SET_BIT(TIM1->BDTR, TIM_BDTR_MOE);              // Main output enable
+ 245              		.loc 1 64 5 view .LVU58
+ 246 0060 5A6C     		ldr	r2, [r3, #68]
+ 247 0062 42F40042 		orr	r2, r2, #32768
+ 248 0066 5A64     		str	r2, [r3, #68]
+  65:Core/Src/init.c ****     
+  66:Core/Src/init.c ****     // Дополнительные настройки (рекомендуется)
+  67:Core/Src/init.c ****     SET_BIT(TIM1->CR1, TIM_CR1_ARPE);               // Auto-reload preload enable
+ 249              		.loc 1 67 5 view .LVU59
+ 250 0068 1A68     		ldr	r2, [r3]
+ 251 006a 42F08002 		orr	r2, r2, #128
+ 252 006e 1A60     		str	r2, [r3]
+  68:Core/Src/init.c ****     
+  69:Core/Src/init.c ****     // Запуск таймера
+  70:Core/Src/init.c ****     TIM1->CR1 |= TIM_CR1_CEN;
+ 253              		.loc 1 70 5 view .LVU60
+ 254              		.loc 1 70 9 is_stmt 0 view .LVU61
+ 255 0070 1A68     		ldr	r2, [r3]
+ 256              		.loc 1 70 15 view .LVU62
+ 257 0072 42F00102 		orr	r2, r2, #1
+ 258 0076 1A60     		str	r2, [r3]
+  71:Core/Src/init.c ****     
+  72:Core/Src/init.c ****     // Включение прерывания (если нужно)
+  73:Core/Src/init.c ****     // NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
+  74:Core/Src/init.c **** }...
+ 259              		.loc 1 74 1 view .LVU63
+ 260 0078 7047     		bx	lr
+ 261              	.L11:
+ 262 007a 00BF     		.align	2
+ 263              	.L10:
+ 264 007c 00380240 		.word	1073887232
+ 265 0080 00000240 		.word	1073872896
+ 266              		.cfi_endproc
+ 267              	.LFE131:
+ 269              		.text
+ 270              	.Letext0:
+ 271              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 272              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccwm0MGg.s 			page 7
 
 
-  63:Core/Src/init.c ****         (1 << (5*2)) |
-  64:Core/Src/init.c ****         (1 << (6*2)) |
-  65:Core/Src/init.c ****         (1 << (7*2))
-  66:Core/Src/init.c ****     );
-  67:Core/Src/init.c **** 
-  68:Core/Src/init.c ****     /* ---- Пин для АЦП PA0 ---- */
-  69:Core/Src/init.c ****     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; // Включаем тактирование порта A
- 170              		.loc 1 69 5 is_stmt 1 view .LVU51
- 171              		.loc 1 69 8 is_stmt 0 view .LVU52
- 172 001c 1A6B     		ldr	r2, [r3, #48]
- 173              		.loc 1 69 18 view .LVU53
- 174 001e 42F00102 		orr	r2, r2, #1
- 175 0022 1A63     		str	r2, [r3, #48]
-  70:Core/Src/init.c ****     GPIOA->MODER |= (3 << 0);           // Устанавливаем режим "аналогов�
- 176              		.loc 1 70 5 is_stmt 1 view .LVU54
- 177              		.loc 1 70 10 is_stmt 0 view .LVU55
- 178 0024 044A     		ldr	r2, .L8+8
- 179 0026 1368     		ldr	r3, [r2]
- 180              		.loc 1 70 18 view .LVU56
- 181 0028 43F00303 		orr	r3, r3, #3
- 182 002c 1360     		str	r3, [r2]
-  71:Core/Src/init.c **** }
- 183              		.loc 1 71 1 view .LVU57
- 184 002e 7047     		bx	lr
- 185              	.L9:
- 186              		.align	2
- 187              	.L8:
- 188 0030 00380240 		.word	1073887232
- 189 0034 000C0240 		.word	1073875968
- 190 0038 00000240 		.word	1073872896
- 191              		.cfi_endproc
- 192              	.LFE131:
- 194              		.section	.text.ADC1_Init,"ax",%progbits
- 195              		.align	1
- 196              		.global	ADC1_Init
- 197              		.syntax unified
- 198              		.thumb
- 199              		.thumb_func
- 201              	ADC1_Init:
- 202              	.LFB132:
-  72:Core/Src/init.c **** 
-  73:Core/Src/init.c **** void ADC1_Init(void)
-  74:Core/Src/init.c **** {
- 203              		.loc 1 74 1 is_stmt 1 view -0
- 204              		.cfi_startproc
- 205              		@ args = 0, pretend = 0, frame = 0
- 206              		@ frame_needed = 0, uses_anonymous_args = 0
- 207              		@ link register save eliminated.
-  75:Core/Src/init.c ****     RCC->APB2ENR |= RCC_APB2ENR_ADC1EN; // Включаем тактирование ADC1
- 208              		.loc 1 75 5 view .LVU59
- 209              		.loc 1 75 8 is_stmt 0 view .LVU60
- 210 0000 084A     		ldr	r2, .L11
- 211 0002 536C     		ldr	r3, [r2, #68]
- 212              		.loc 1 75 18 view .LVU61
- 213 0004 43F48073 		orr	r3, r3, #256
- 214 0008 5364     		str	r3, [r2, #68]
-  76:Core/Src/init.c **** 
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 6
-
-
-  77:Core/Src/init.c ****     ADC1->SQR3 = 0;                      // Выбираем канал 0 (PA0)
- 215              		.loc 1 77 5 is_stmt 1 view .LVU62
- 216              		.loc 1 77 16 is_stmt 0 view .LVU63
- 217 000a 074B     		ldr	r3, .L11+4
- 218 000c 0022     		movs	r2, #0
- 219 000e 5A63     		str	r2, [r3, #52]
-  78:Core/Src/init.c ****     ADC1->SMPR2 |= ADC_SMPR2_SMP0_1;     // Настройка времени выборки для
- 220              		.loc 1 78 5 is_stmt 1 view .LVU64
- 221              		.loc 1 78 9 is_stmt 0 view .LVU65
- 222 0010 1A69     		ldr	r2, [r3, #16]
- 223              		.loc 1 78 17 view .LVU66
- 224 0012 42F00202 		orr	r2, r2, #2
- 225 0016 1A61     		str	r2, [r3, #16]
-  79:Core/Src/init.c ****     ADC1->CR2 |= ADC_CR2_ADON;           // Включаем АЦП
- 226              		.loc 1 79 5 is_stmt 1 view .LVU67
- 227              		.loc 1 79 9 is_stmt 0 view .LVU68
- 228 0018 9A68     		ldr	r2, [r3, #8]
- 229              		.loc 1 79 15 view .LVU69
- 230 001a 42F00102 		orr	r2, r2, #1
- 231 001e 9A60     		str	r2, [r3, #8]
-  80:Core/Src/init.c **** }
- 232              		.loc 1 80 1 view .LVU70
- 233 0020 7047     		bx	lr
- 234              	.L12:
- 235 0022 00BF     		.align	2
- 236              	.L11:
- 237 0024 00380240 		.word	1073887232
- 238 0028 00200140 		.word	1073815552
- 239              		.cfi_endproc
- 240              	.LFE132:
- 242              		.section	.text.ADC_Read,"ax",%progbits
- 243              		.align	1
- 244              		.global	ADC_Read
- 245              		.syntax unified
- 246              		.thumb
- 247              		.thumb_func
- 249              	ADC_Read:
- 250              	.LFB133:
-  81:Core/Src/init.c **** 
-  82:Core/Src/init.c **** 
-  83:Core/Src/init.c **** uint16_t ADC_Read(void)
-  84:Core/Src/init.c **** {
- 251              		.loc 1 84 1 is_stmt 1 view -0
- 252              		.cfi_startproc
- 253              		@ args = 0, pretend = 0, frame = 0
- 254              		@ frame_needed = 0, uses_anonymous_args = 0
- 255              		@ link register save eliminated.
-  85:Core/Src/init.c ****     ADC1->CR2 |= ADC_CR2_SWSTART;        // Запуск однократного преобраз�
- 256              		.loc 1 85 5 view .LVU72
- 257              		.loc 1 85 9 is_stmt 0 view .LVU73
- 258 0000 064A     		ldr	r2, .L15
- 259 0002 9368     		ldr	r3, [r2, #8]
- 260              		.loc 1 85 15 view .LVU74
- 261 0004 43F08043 		orr	r3, r3, #1073741824
- 262 0008 9360     		str	r3, [r2, #8]
-  86:Core/Src/init.c ****     while (!(ADC1->SR & ADC_SR_EOC));    // Ждем завершения преобразован�
- 263              		.loc 1 86 5 is_stmt 1 view .LVU75
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 7
-
-
- 264              	.L14:
- 265              		.loc 1 86 12 discriminator 1 view .LVU76
- 266              		.loc 1 86 18 is_stmt 0 discriminator 1 view .LVU77
- 267 000a 044B     		ldr	r3, .L15
- 268 000c 1B68     		ldr	r3, [r3]
- 269              		.loc 1 86 12 discriminator 1 view .LVU78
- 270 000e 13F0020F 		tst	r3, #2
- 271 0012 FAD0     		beq	.L14
-  87:Core/Src/init.c ****     return ADC1->DR;                     // Возвращаем результат (12 бит)
- 272              		.loc 1 87 5 is_stmt 1 view .LVU79
- 273              		.loc 1 87 16 is_stmt 0 view .LVU80
- 274 0014 014B     		ldr	r3, .L15
- 275 0016 D86C     		ldr	r0, [r3, #76]
-  88:Core/Src/init.c **** }
- 276              		.loc 1 88 1 view .LVU81
- 277 0018 80B2     		uxth	r0, r0
- 278 001a 7047     		bx	lr
- 279              	.L16:
- 280              		.align	2
- 281              	.L15:
- 282 001c 00200140 		.word	1073815552
- 283              		.cfi_endproc
- 284              	.LFE133:
- 286              		.section	.text.TIM1_Encoder_Init,"ax",%progbits
- 287              		.align	1
- 288              		.global	TIM1_Encoder_Init
- 289              		.syntax unified
- 290              		.thumb
- 291              		.thumb_func
- 293              	TIM1_Encoder_Init:
- 294              	.LFB134:
-  89:Core/Src/init.c **** 
-  90:Core/Src/init.c **** void TIM1_Encoder_Init(void)
-  91:Core/Src/init.c **** {
- 295              		.loc 1 91 1 is_stmt 1 view -0
- 296              		.cfi_startproc
- 297              		@ args = 0, pretend = 0, frame = 0
- 298              		@ frame_needed = 0, uses_anonymous_args = 0
- 299              		@ link register save eliminated.
-  92:Core/Src/init.c ****     // PA8 (CH1) и PA9 (CH2) – выводы энкодера
-  93:Core/Src/init.c ****     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; // Тактирование порта A
- 300              		.loc 1 93 5 view .LVU83
- 301              		.loc 1 93 8 is_stmt 0 view .LVU84
- 302 0000 1B4A     		ldr	r2, .L18
- 303 0002 136B     		ldr	r3, [r2, #48]
- 304              		.loc 1 93 18 view .LVU85
- 305 0004 43F00103 		orr	r3, r3, #1
- 306 0008 1363     		str	r3, [r2, #48]
-  94:Core/Src/init.c **** 
-  95:Core/Src/init.c ****     /* Настройка режима альтернативной функции для PA8 и PA
-  96:Core/Src/init.c ****     GPIOA->MODER &= ~(3 << (8*2));
- 307              		.loc 1 96 5 is_stmt 1 view .LVU86
- 308              		.loc 1 96 10 is_stmt 0 view .LVU87
- 309 000a 1A4B     		ldr	r3, .L18+4
- 310 000c 1968     		ldr	r1, [r3]
- 311              		.loc 1 96 18 view .LVU88
- 312 000e 21F44031 		bic	r1, r1, #196608
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 8
-
-
- 313 0012 1960     		str	r1, [r3]
-  97:Core/Src/init.c ****     GPIOA->MODER &= ~(3 << (9*2));
- 314              		.loc 1 97 5 is_stmt 1 view .LVU89
- 315              		.loc 1 97 10 is_stmt 0 view .LVU90
- 316 0014 1968     		ldr	r1, [r3]
- 317              		.loc 1 97 18 view .LVU91
- 318 0016 21F44021 		bic	r1, r1, #786432
- 319 001a 1960     		str	r1, [r3]
-  98:Core/Src/init.c ****     GPIOA->MODER |=  (2 << (8*2));    // Альтернативная функция
- 320              		.loc 1 98 5 is_stmt 1 view .LVU92
- 321              		.loc 1 98 10 is_stmt 0 view .LVU93
- 322 001c 1968     		ldr	r1, [r3]
- 323              		.loc 1 98 18 view .LVU94
- 324 001e 41F40031 		orr	r1, r1, #131072
- 325 0022 1960     		str	r1, [r3]
-  99:Core/Src/init.c ****     GPIOA->MODER |=  (2 << (9*2));
- 326              		.loc 1 99 5 is_stmt 1 view .LVU95
- 327              		.loc 1 99 10 is_stmt 0 view .LVU96
- 328 0024 1968     		ldr	r1, [r3]
- 329              		.loc 1 99 18 view .LVU97
- 330 0026 41F40021 		orr	r1, r1, #524288
- 331 002a 1960     		str	r1, [r3]
- 100:Core/Src/init.c **** 
- 101:Core/Src/init.c ****     /* Настройка альтернативной функции AF1 для TIM1 */
- 102:Core/Src/init.c ****     GPIOA->AFR[1] |= (1 << (0*4));    // PA8 -> AF1
- 332              		.loc 1 102 5 is_stmt 1 view .LVU98
- 333              		.loc 1 102 15 is_stmt 0 view .LVU99
- 334 002c 596A     		ldr	r1, [r3, #36]
- 335              		.loc 1 102 19 view .LVU100
- 336 002e 41F00101 		orr	r1, r1, #1
- 337 0032 5962     		str	r1, [r3, #36]
- 103:Core/Src/init.c ****     GPIOA->AFR[1] |= (1 << (1*4));    // PA9 -> AF1
- 338              		.loc 1 103 5 is_stmt 1 view .LVU101
- 339              		.loc 1 103 15 is_stmt 0 view .LVU102
- 340 0034 596A     		ldr	r1, [r3, #36]
- 341              		.loc 1 103 19 view .LVU103
- 342 0036 41F01001 		orr	r1, r1, #16
- 343 003a 5962     		str	r1, [r3, #36]
- 104:Core/Src/init.c **** 
- 105:Core/Src/init.c ****     RCC->APB2ENR |= RCC_APB2ENR_TIM1EN; // Тактирование TIM1
- 344              		.loc 1 105 5 is_stmt 1 view .LVU104
- 345              		.loc 1 105 8 is_stmt 0 view .LVU105
- 346 003c 536C     		ldr	r3, [r2, #68]
- 347              		.loc 1 105 18 view .LVU106
- 348 003e 43F00103 		orr	r3, r3, #1
- 349 0042 5364     		str	r3, [r2, #68]
- 106:Core/Src/init.c **** 
- 107:Core/Src/init.c ****     /* Режим энкодера: mode 3 (TIM1 counts on both edges of CH1 and CH2) */
- 108:Core/Src/init.c ****     TIM1->SMCR = TIM_SMCR_SMS_0 | TIM_SMCR_SMS_1;
- 350              		.loc 1 108 5 is_stmt 1 view .LVU107
- 351              		.loc 1 108 16 is_stmt 0 view .LVU108
- 352 0044 0C4B     		ldr	r3, .L18+8
- 353 0046 0322     		movs	r2, #3
- 354 0048 9A60     		str	r2, [r3, #8]
- 109:Core/Src/init.c **** 
- 110:Core/Src/init.c ****     /* Настройка каналов как вход */
- 111:Core/Src/init.c ****     TIM1->CCMR1 |= (1 << 0) | (1 << 8);
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 9
-
-
- 355              		.loc 1 111 5 is_stmt 1 view .LVU109
- 356              		.loc 1 111 9 is_stmt 0 view .LVU110
- 357 004a 9A69     		ldr	r2, [r3, #24]
- 358              		.loc 1 111 17 view .LVU111
- 359 004c 42F48072 		orr	r2, r2, #256
- 360 0050 42F00102 		orr	r2, r2, #1
- 361 0054 9A61     		str	r2, [r3, #24]
- 112:Core/Src/init.c **** 
- 113:Core/Src/init.c ****     /* Полярность сигналов (не инвертируем) */
- 114:Core/Src/init.c ****     TIM1->CCER &= ~(TIM_CCER_CC1P | TIM_CCER_CC2P);
- 362              		.loc 1 114 5 is_stmt 1 view .LVU112
- 363              		.loc 1 114 9 is_stmt 0 view .LVU113
- 364 0056 1A6A     		ldr	r2, [r3, #32]
- 365              		.loc 1 114 16 view .LVU114
- 366 0058 22F02202 		bic	r2, r2, #34
- 367 005c 1A62     		str	r2, [r3, #32]
- 115:Core/Src/init.c **** 
- 116:Core/Src/init.c ****     /* Включение основного выхода таймера (MOE) */
- 117:Core/Src/init.c ****     TIM1->BDTR |= TIM_BDTR_MOE;
- 368              		.loc 1 117 5 is_stmt 1 view .LVU115
- 369              		.loc 1 117 9 is_stmt 0 view .LVU116
- 370 005e 5A6C     		ldr	r2, [r3, #68]
- 371              		.loc 1 117 16 view .LVU117
- 372 0060 42F40042 		orr	r2, r2, #32768
- 373 0064 5A64     		str	r2, [r3, #68]
- 118:Core/Src/init.c **** 
- 119:Core/Src/init.c ****     TIM1->CR1 |= TIM_CR1_CEN; // Включение таймера
- 374              		.loc 1 119 5 is_stmt 1 view .LVU118
- 375              		.loc 1 119 9 is_stmt 0 view .LVU119
- 376 0066 1A68     		ldr	r2, [r3]
- 377              		.loc 1 119 15 view .LVU120
- 378 0068 42F00102 		orr	r2, r2, #1
- 379 006c 1A60     		str	r2, [r3]
- 120:Core/Src/init.c **** }
- 380              		.loc 1 120 1 view .LVU121
- 381 006e 7047     		bx	lr
- 382              	.L19:
- 383              		.align	2
- 384              	.L18:
- 385 0070 00380240 		.word	1073887232
- 386 0074 00000240 		.word	1073872896
- 387 0078 00000140 		.word	1073807360
- 388              		.cfi_endproc
- 389              	.LFE134:
- 391              		.section	.text.Get_Pot_Percent,"ax",%progbits
- 392              		.align	1
- 393              		.global	Get_Pot_Percent
- 394              		.syntax unified
- 395              		.thumb
- 396              		.thumb_func
- 398              	Get_Pot_Percent:
- 399              	.LFB135:
- 121:Core/Src/init.c **** /* Возвращает процент положения ручки: 0.0 … 1.0 */
- 122:Core/Src/init.c **** float Get_Pot_Percent(void)
- 123:Core/Src/init.c **** {
- 400              		.loc 1 123 1 is_stmt 1 view -0
- 401              		.cfi_startproc
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 10
-
-
- 402              		@ args = 0, pretend = 0, frame = 0
- 403              		@ frame_needed = 0, uses_anonymous_args = 0
- 404 0000 08B5     		push	{r3, lr}
- 405              	.LCFI0:
- 406              		.cfi_def_cfa_offset 8
- 407              		.cfi_offset 3, -8
- 408              		.cfi_offset 14, -4
- 124:Core/Src/init.c ****     uint16_t adc = ADC_Read();           // Считываем значение с АЦП
- 409              		.loc 1 124 5 view .LVU123
- 410              		.loc 1 124 20 is_stmt 0 view .LVU124
- 411 0002 FFF7FEFF 		bl	ADC_Read
- 412              	.LVL0:
- 413 0006 07EE900A 		vmov	s15, r0	@ int
- 414              	.LVL1:
- 125:Core/Src/init.c ****     return (float)adc / 4095.0f;        // Нормализуем к диапазону 0.0 – 1.0
- 415              		.loc 1 125 5 is_stmt 1 view .LVU125
- 416              		.loc 1 125 12 is_stmt 0 view .LVU126
- 417 000a F8EE677A 		vcvt.f32.u32	s15, s15
- 418              	.LVL2:
- 126:Core/Src/init.c **** }
- 419              		.loc 1 126 1 view .LVU127
- 420 000e 9FED020A 		vldr.32	s0, .L22
- 421 0012 87EE800A 		vdiv.f32	s0, s15, s0
- 422 0016 08BD     		pop	{r3, pc}
- 423              	.L23:
- 424              		.align	2
- 425              	.L22:
- 426 0018 00F07F45 		.word	1166012416
- 427              		.cfi_endproc
- 428              	.LFE135:
- 430              		.section	.text.Update_LEDs,"ax",%progbits
- 431              		.align	1
- 432              		.global	Update_LEDs
- 433              		.syntax unified
- 434              		.thumb
- 435              		.thumb_func
- 437              	Update_LEDs:
- 438              	.LVL3:
- 439              	.LFB136:
- 127:Core/Src/init.c **** 
- 128:Core/Src/init.c **** 
- 129:Core/Src/init.c **** /* Управляет диодами по диапазонам */
- 130:Core/Src/init.c **** void Update_LEDs(float perc)
- 131:Core/Src/init.c **** {
- 440              		.loc 1 131 1 is_stmt 1 view -0
- 441              		.cfi_startproc
- 442              		@ args = 0, pretend = 0, frame = 0
- 443              		@ frame_needed = 0, uses_anonymous_args = 0
- 444              		@ link register save eliminated.
- 132:Core/Src/init.c ****     // Сначала выключаем все диоды (записываем в BSRR 1 << n в 
- 133:Core/Src/init.c ****     GPIOD->BSRR = (1 << 4) << 16;
- 445              		.loc 1 133 5 view .LVU129
- 446              		.loc 1 133 17 is_stmt 0 view .LVU130
- 447 0000 2F4B     		ldr	r3, .L45
- 448 0002 4FF48012 		mov	r2, #1048576
- 449 0006 9A61     		str	r2, [r3, #24]
- 134:Core/Src/init.c ****     GPIOD->BSRR = (1 << 5) << 16;
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 11
-
-
- 450              		.loc 1 134 5 is_stmt 1 view .LVU131
- 451              		.loc 1 134 17 is_stmt 0 view .LVU132
- 452 0008 4FF40012 		mov	r2, #2097152
- 453 000c 9A61     		str	r2, [r3, #24]
- 135:Core/Src/init.c ****     GPIOD->BSRR = (1 << 6) << 16;
- 454              		.loc 1 135 5 is_stmt 1 view .LVU133
- 455              		.loc 1 135 17 is_stmt 0 view .LVU134
- 456 000e 4FF48002 		mov	r2, #4194304
- 457 0012 9A61     		str	r2, [r3, #24]
- 136:Core/Src/init.c ****     GPIOD->BSRR = (1 << 7) << 16;
- 458              		.loc 1 136 5 is_stmt 1 view .LVU135
- 459              		.loc 1 136 17 is_stmt 0 view .LVU136
- 460 0014 4FF40002 		mov	r2, #8388608
- 461 0018 9A61     		str	r2, [r3, #24]
- 137:Core/Src/init.c **** 
- 138:Core/Src/init.c ****     // Включаем диоды в зависимости от диапазона значени
- 139:Core/Src/init.c ****     if (perc >= 0.80f && perc <= 0.85f) {
- 462              		.loc 1 139 5 is_stmt 1 view .LVU137
- 463              		.loc 1 139 8 is_stmt 0 view .LVU138
- 464 001a DFED2A7A 		vldr.32	s15, .L45+4
- 465 001e B4EEE70A 		vcmpe.f32	s0, s15
- 466 0022 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 467 0026 0FDB     		blt	.L25
- 468              		.loc 1 139 23 discriminator 1 view .LVU139
- 469 0028 DFED277A 		vldr.32	s15, .L45+8
- 470 002c B4EEE70A 		vcmpe.f32	s0, s15
- 471 0030 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 472 0034 08D8     		bhi	.L25
- 140:Core/Src/init.c ****         GPIOD->BSRR = (1 << 4);
- 473              		.loc 1 140 9 is_stmt 1 view .LVU140
- 474              		.loc 1 140 21 is_stmt 0 view .LVU141
- 475 0036 1022     		movs	r2, #16
- 476 0038 9A61     		str	r2, [r3, #24]
- 141:Core/Src/init.c ****         GPIOD->BSRR = (1 << 5);
- 477              		.loc 1 141 9 is_stmt 1 view .LVU142
- 478              		.loc 1 141 21 is_stmt 0 view .LVU143
- 479 003a 2022     		movs	r2, #32
- 480 003c 9A61     		str	r2, [r3, #24]
- 142:Core/Src/init.c ****         GPIOD->BSRR = (1 << 6);
- 481              		.loc 1 142 9 is_stmt 1 view .LVU144
- 482              		.loc 1 142 21 is_stmt 0 view .LVU145
- 483 003e 4022     		movs	r2, #64
- 484 0040 9A61     		str	r2, [r3, #24]
- 143:Core/Src/init.c ****         GPIOD->BSRR = (1 << 7);
- 485              		.loc 1 143 9 is_stmt 1 view .LVU146
- 486              		.loc 1 143 21 is_stmt 0 view .LVU147
- 487 0042 8022     		movs	r2, #128
- 488 0044 9A61     		str	r2, [r3, #24]
- 489 0046 7047     		bx	lr
- 490              	.L25:
- 144:Core/Src/init.c ****     }
- 145:Core/Src/init.c ****     else if (perc >= 0.60f && perc < 0.80f) {
- 491              		.loc 1 145 10 is_stmt 1 view .LVU148
- 492              		.loc 1 145 13 is_stmt 0 view .LVU149
- 493 0048 DFED207A 		vldr.32	s15, .L45+12
- 494 004c B4EEE70A 		vcmpe.f32	s0, s15
- 495 0050 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 12
-
-
- 496 0054 0EDB     		blt	.L29
- 497              		.loc 1 145 28 discriminator 1 view .LVU150
- 498 0056 DFED1B7A 		vldr.32	s15, .L45+4
- 499 005a B4EEE70A 		vcmpe.f32	s0, s15
- 500 005e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 501 0062 07D5     		bpl	.L29
- 146:Core/Src/init.c ****         GPIOD->BSRR = (1 << 4);
- 502              		.loc 1 146 9 is_stmt 1 view .LVU151
- 503              		.loc 1 146 21 is_stmt 0 view .LVU152
- 504 0064 164B     		ldr	r3, .L45
- 505 0066 1022     		movs	r2, #16
- 506 0068 9A61     		str	r2, [r3, #24]
- 147:Core/Src/init.c ****         GPIOD->BSRR = (1 << 5);
- 507              		.loc 1 147 9 is_stmt 1 view .LVU153
- 508              		.loc 1 147 21 is_stmt 0 view .LVU154
- 509 006a 2022     		movs	r2, #32
- 510 006c 9A61     		str	r2, [r3, #24]
- 148:Core/Src/init.c ****         GPIOD->BSRR = (1 << 6);
- 511              		.loc 1 148 9 is_stmt 1 view .LVU155
- 512              		.loc 1 148 21 is_stmt 0 view .LVU156
- 513 006e 4022     		movs	r2, #64
- 514 0070 9A61     		str	r2, [r3, #24]
- 515 0072 7047     		bx	lr
- 516              	.L29:
- 149:Core/Src/init.c ****     }
- 150:Core/Src/init.c ****     else if (perc >= 0.40f && perc < 0.60f) {
- 517              		.loc 1 150 10 is_stmt 1 view .LVU157
- 518              		.loc 1 150 13 is_stmt 0 view .LVU158
- 519 0074 DFED167A 		vldr.32	s15, .L45+16
- 520 0078 B4EEE70A 		vcmpe.f32	s0, s15
- 521 007c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 522 0080 0CDB     		blt	.L32
- 523              		.loc 1 150 28 discriminator 1 view .LVU159
- 524 0082 DFED127A 		vldr.32	s15, .L45+12
- 525 0086 B4EEE70A 		vcmpe.f32	s0, s15
- 526 008a F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 527 008e 05D5     		bpl	.L32
- 151:Core/Src/init.c ****         GPIOD->BSRR = (1 << 4);
- 528              		.loc 1 151 9 is_stmt 1 view .LVU160
- 529              		.loc 1 151 21 is_stmt 0 view .LVU161
- 530 0090 0B4B     		ldr	r3, .L45
- 531 0092 1022     		movs	r2, #16
- 532 0094 9A61     		str	r2, [r3, #24]
- 152:Core/Src/init.c ****         GPIOD->BSRR = (1 << 5);
- 533              		.loc 1 152 9 is_stmt 1 view .LVU162
- 534              		.loc 1 152 21 is_stmt 0 view .LVU163
- 535 0096 2022     		movs	r2, #32
- 536 0098 9A61     		str	r2, [r3, #24]
- 537 009a 7047     		bx	lr
- 538              	.L32:
- 153:Core/Src/init.c ****     }
- 154:Core/Src/init.c ****     else if (perc >= 0.20f && perc < 0.40f) {
- 539              		.loc 1 154 10 is_stmt 1 view .LVU164
- 540              		.loc 1 154 13 is_stmt 0 view .LVU165
- 541 009c DFED0D7A 		vldr.32	s15, .L45+20
- 542 00a0 B4EEE70A 		vcmpe.f32	s0, s15
- 543 00a4 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 13
-
-
- 544 00a8 09DB     		blt	.L24
- 545              		.loc 1 154 28 discriminator 1 view .LVU166
- 546 00aa DFED097A 		vldr.32	s15, .L45+16
- 547 00ae B4EEE70A 		vcmpe.f32	s0, s15
- 548 00b2 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 549 00b6 02D5     		bpl	.L24
- 155:Core/Src/init.c ****         GPIOD->BSRR = (1 << 4);
- 550              		.loc 1 155 9 is_stmt 1 view .LVU167
- 551              		.loc 1 155 21 is_stmt 0 view .LVU168
- 552 00b8 014B     		ldr	r3, .L45
- 553 00ba 1022     		movs	r2, #16
- 554 00bc 9A61     		str	r2, [r3, #24]
- 555              	.L24:
- 156:Core/Src/init.c ****     }
- 157:Core/Src/init.c **** }...
- 556              		.loc 1 157 1 view .LVU169
- 557 00be 7047     		bx	lr
- 558              	.L46:
- 559              		.align	2
- 560              	.L45:
- 561 00c0 000C0240 		.word	1073875968
- 562 00c4 CDCC4C3F 		.word	1061997773
- 563 00c8 9A99593F 		.word	1062836634
- 564 00cc 9A99193F 		.word	1058642330
- 565 00d0 CDCCCC3E 		.word	1053609165
- 566 00d4 CDCC4C3E 		.word	1045220557
- 567              		.cfi_endproc
- 568              	.LFE136:
- 570              		.text
- 571              	.Letext0:
- 572              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 573              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 574              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 575              		.file 5 "CMSIS/Devices/STM32F4xx/Inc/system_stm32f4xx.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccC53c3R.s 			page 14
+ 273              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 274              		.file 5 "CMSIS/Devices/STM32F4xx/Inc/stm32f4xx.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccwm0MGg.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 init.c
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:21     .text.Clock_Init_HSE_PLL_168MHz:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:27     .text.Clock_Init_HSE_PLL_168MHz:00000000 Clock_Init_HSE_PLL_168MHz
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:128    .text.Clock_Init_HSE_PLL_168MHz:0000007c $d
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:137    .text.GPIO_Init:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:143    .text.GPIO_Init:00000000 GPIO_Init
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:188    .text.GPIO_Init:00000030 $d
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:195    .text.ADC1_Init:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:201    .text.ADC1_Init:00000000 ADC1_Init
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:237    .text.ADC1_Init:00000024 $d
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:243    .text.ADC_Read:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:249    .text.ADC_Read:00000000 ADC_Read
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:282    .text.ADC_Read:0000001c $d
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:287    .text.TIM1_Encoder_Init:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:293    .text.TIM1_Encoder_Init:00000000 TIM1_Encoder_Init
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:385    .text.TIM1_Encoder_Init:00000070 $d
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:392    .text.Get_Pot_Percent:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:398    .text.Get_Pot_Percent:00000000 Get_Pot_Percent
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:426    .text.Get_Pot_Percent:00000018 $d
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:431    .text.Update_LEDs:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:437    .text.Update_LEDs:00000000 Update_LEDs
-C:\Users\User\AppData\Local\Temp\ccC53c3R.s:561    .text.Update_LEDs:000000c0 $d
+C:\Users\User\AppData\Local\Temp\ccwm0MGg.s:21     .text.RCC_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccwm0MGg.s:27     .text.RCC_init:00000000 RCC_init
+C:\Users\User\AppData\Local\Temp\ccwm0MGg.s:176    .text.RCC_init:000000f8 $d
+C:\Users\User\AppData\Local\Temp\ccwm0MGg.s:182    .text.TIM1_init:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccwm0MGg.s:188    .text.TIM1_init:00000000 TIM1_init
+C:\Users\User\AppData\Local\Temp\ccwm0MGg.s:264    .text.TIM1_init:0000007c $d
 
-UNDEFINED SYMBOLS
-SystemCoreClock
+NO UNDEFINED SYMBOLS

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccdtsk1j.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\cc45wqWX.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -30,70 +30,37 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccdtsk1j.s 			page 1
   28              	.LFB130:
    1:Core/Src/main.c **** #include "stm32f4xx.h"      // Основной заголовочный файл CMSIS для STM3
    2:Core/Src/main.c **** #include "init.h"           // Заголовок с прототипами функций иниц
-   3:Core/Src/main.c **** #include "Interrupt.h"      // Заголовок с прототипами обработчико�
+   3:Core/Src/main.c **** #include "interrupt.h"      // Заголовок с прототипами обработчико�
    4:Core/Src/main.c **** 
    5:Core/Src/main.c **** int main(void)
    6:Core/Src/main.c **** {
   29              		.loc 1 6 1 view -0
   30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 08B5     		push	{r3, lr}
-  34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 8
-  36              		.cfi_offset 3, -8
-  37              		.cfi_offset 14, -4
-   7:Core/Src/main.c ****     GPIO_Init();            // Инициализация портов ввода/вывода
-  38              		.loc 1 7 5 view .LVU1
-  39 0002 FFF7FEFF 		bl	GPIO_Init
-  40              	.LVL0:
-   8:Core/Src/main.c ****     ADC1_Init();            // Инициализация АЦП1
-  41              		.loc 1 8 5 view .LVU2
-  42 0006 FFF7FEFF 		bl	ADC1_Init
-  43              	.LVL1:
-   9:Core/Src/main.c ****     TIM1_Encoder_Init();    // Инициализация таймера TIM1 для работы �
-  44              		.loc 1 9 5 view .LVU3
-  45 000a FFF7FEFF 		bl	TIM1_Encoder_Init
-  46              	.LVL2:
-  47              	.L2:
+  31              		@ Volatile: function does not return.
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  35              	.L2:
+   7:Core/Src/main.c **** 
+   8:Core/Src/main.c ****     while (1)
+  36              		.loc 1 8 5 view .LVU1
+   9:Core/Src/main.c ****     {
   10:Core/Src/main.c **** 
-  11:Core/Src/main.c ****     while (1)
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccdtsk1j.s 			page 2
-
-
-  48              		.loc 1 11 5 view .LVU4
-  49              	.LBB2:
-  12:Core/Src/main.c ****     {
-  13:Core/Src/main.c ****         float perc = Get_Pot_Percent();  // Считываем значение потенциом�
-  50              		.loc 1 13 9 view .LVU5
-  51              		.loc 1 13 22 is_stmt 0 view .LVU6
-  52 000e FFF7FEFF 		bl	Get_Pot_Percent
-  53              	.LVL3:
-  14:Core/Src/main.c ****         Update_LEDs(perc);               // Обновляем состояние светодио�
-  54              		.loc 1 14 9 is_stmt 1 discriminator 1 view .LVU7
-  55 0012 FFF7FEFF 		bl	Update_LEDs
-  56              	.LVL4:
-  57              		.loc 1 14 9 is_stmt 0 discriminator 1 view .LVU8
-  58              	.LBE2:
-  11:Core/Src/main.c ****     {
-  59              		.loc 1 11 11 is_stmt 1 view .LVU9
-  60 0016 FAE7     		b	.L2
-  61              		.cfi_endproc
-  62              	.LFE130:
-  64              		.text
-  65              	.Letext0:
-  66              		.file 2 "Core/Inc/init.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccdtsk1j.s 			page 3
+  11:Core/Src/main.c ****     }
+  37              		.loc 1 11 5 view .LVU2
+   8:Core/Src/main.c ****     {
+  38              		.loc 1 8 11 view .LVU3
+  39 0000 FEE7     		b	.L2
+  40              		.cfi_endproc
+  41              	.LFE130:
+  43              		.text
+  44              	.Letext0:
+ARM GAS  C:\Users\User\AppData\Local\Temp\cc45wqWX.s 			page 2
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\User\AppData\Local\Temp\ccdtsk1j.s:21     .text.main:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccdtsk1j.s:27     .text.main:00000000 main
+C:\Users\User\AppData\Local\Temp\cc45wqWX.s:21     .text.main:00000000 $t
+C:\Users\User\AppData\Local\Temp\cc45wqWX.s:27     .text.main:00000000 main
 
-UNDEFINED SYMBOLS
-GPIO_Init
-ADC1_Init
-TIM1_Encoder_Init
-Get_Pot_Percent
-Update_LEDs
+NO UNDEFINED SYMBOLS
