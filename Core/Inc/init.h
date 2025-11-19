@@ -1,30 +1,17 @@
 #ifndef INIT_H
-
-/*Настроить таймер в режиме энкодера.
-При зависимости от положения ручки потенциометра включается
-определенное число светодиодов.
-20% - 1 светодиод,
-40% - 2 светодиода,
-60% - 3 светодиода,
-80% - 4 светодиода.
-При других положениях светодиоды не горят. */
+#define INIT_H
 
 #include "stm32f4xx.h"
-#include "stm32f429xx.h"
-#include "stdio.h"
 
-void GPIO_init(void);
+void Clock_Init_HSE_PLL_168MHz(void);
 
-void RCC_init(void);
+void GPIO_Init(void);
+void ADC1_Init(void);
+void TIM1_Encoder_Init(void);
 
-void Interrupt_init(void);
+uint16_t ADC_Read(void);
 
-void systick_init(void);
-
-void TIM1_init(void);
-
-void ADC_init(void);
-
-uint32_t READ_POT(void);
+float Get_Pot_Percent(void);
+void Update_LEDs(float perc);
 
 #endif

@@ -1,169 +1,165 @@
-#include "../Inc/init.h"
-#include "../Inc/interrupt.h"
+#include "init.h"
 
-void GPIO_init(void)
+/* --------------- Настройка тактирования: HSE 8 МГц → PLL → 168 МГц --------------- */
+void Clock_Init_HSE_PLL_168MHz(void)
 {
-    SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOAEN); // Светодиоды PB4, PA4, PB3, PB5. Потенциометр на PA8
+    /* Включаем тактирование интерфейса питания */
+    RCC->APB1ENR |= RCC_APB1ENR_PWREN;
 
-    // PB3 PB4 PB5 - светодиод
+    /* Устанавливаем масштаб напряжения регулятора в режим 1 (необходимо для 168 МГц) */
+    PWR->CR |= PWR_CR_VOS;
 
-    SET_BIT(GPIOB->MODER, GPIO_MODER_MODE3_0 | GPIO_MODER_MODE4_0 | GPIO_MODER_MODE5_0);
-    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT3 | GPIO_OTYPER_OT4 | GPIO_OTYPER_OT5);
-    SET_BIT(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED3_Msk | GPIO_OSPEEDR_OSPEED4_Msk | GPIO_OSPEEDR_OSPEED5_Msk);
-    CLEAR_BIT(GPIOB->PUPDR, GPIO_PUPDR_PUPD3_Msk | GPIO_PUPDR_PUPD4_Msk | GPIO_PUPDR_PUPD5_Msk);
-    SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR3 | GPIO_BSRR_BR4 | GPIO_BSRR_BR5);
+    /* Включаем внешний кварцевый генератор HSE */
+    RCC->CR |= RCC_CR_HSEON;
+    while (!(RCC->CR & RCC_CR_HSERDY)); // Ждем, пока HSE стабилизируется
 
-    // PB1 - светодиод
+    /* Настраиваем Flash: включаем кэш и выставляем 5 тактов задержки (5 WS) */
+    FLASH->ACR = FLASH_ACR_ICEN | FLASH_ACR_DCEN |
+                 FLASH_ACR_LATENCY_5WS;
 
-    SET_BIT(GPIOB->MODER, GPIO_MODER_MODE1_0);
-    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT1);
-    SET_BIT(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED1_Msk);
-    CLEAR_BIT(GPIOB->PUPDR, GPIO_PUPDR_PUPD1_Msk);
-    SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR1);
+    /* Настройка делителей шины */
+    RCC->CFGR = RCC_CFGR_HPRE_DIV1 |   // AHB = SYSCLK / 1
+                RCC_CFGR_PPRE1_DIV4 |  // APB1 = AHB / 4
+                RCC_CFGR_PPRE2_DIV2;   // APB2 = AHB / 2
 
-    // PA8 - TIM1
+    /* Настройка PLL: PLLM=8, PLLN=336, PLLP=2, PLLQ=7 */
+    RCC->PLLCFGR = (8 << RCC_PLLCFGR_PLLM_Pos) |
+                   (336 << RCC_PLLCFGR_PLLN_Pos) |
+                   (0 << RCC_PLLCFGR_PLLP_Pos) |      // PLLP=2
+                   RCC_PLLCFGR_PLLSRC_HSE |           // источник PLL = HSE
+                   (7 << RCC_PLLCFGR_PLLQ_Pos);      // PLLQ=7 для USB, SDIO и RNG
 
-    SET_BIT(GPIOA->MODER,  GPIO_MODER_MODE8_1);
-    MODIFY_REG(GPIOA->AFR[1], GPIO_AFRH_AFSEL8_Msk, 1 << GPIO_AFRH_AFSEL8_Pos); //AF1
-    CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT8);
-    CLEAR_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD8_Msk);
-    SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR8);
+    /* Включаем PLL */
+    RCC->CR |= RCC_CR_PLLON;
+    while (!(RCC->CR & RCC_CR_PLLRDY)); // Ждем готовности PLL
 
-    // PA0 - ПОТЕНЦИОМЕТР
+    /* Переключаем системный такт на PLL */
+    RCC->CFGR |= RCC_CFGR_SW_PLL;
+    while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL);
 
-    MODIFY_REG(GPIOA->MODER, GPIO_MODER_MODE0_Msk, 0x3 << GPIO_MODER_MODE0_Pos);
+    /* Выключаем внутренний RC-генератор HSI (опционально) */
+    RCC->CR &= ~RCC_CR_HSION;
+
+    /* Обновляем глобальную переменную SystemCoreClock */
+    SystemCoreClock = 168000000;
 }
 
-void Interrupt_init(void) // По какому-либо сценарию происходит остановка программы по таймеру, вызывая обработчик прерывания
+void GPIO_Init(void)
 {
-    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_SYSCFGEN); // Подали тактирование для прерываний. 90 Мгц
+    /* ---- Светодиоды: PD4, PD5, PD6, PD7 ---- */
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN; // Включаем тактирование порта D
 
-    SET_BIT(SYSCFG->EXTICR[1], SYSCFG_EXTICR2_EXTI6_PC); // Активировали PC6
+    /* Сбрасываем режимы выводов PD4–PD7 */
+    GPIOD->MODER &= ~(
+        (3 << (4*2)) |
+        (3 << (5*2)) |
+        (3 << (6*2)) |
+        (3 << (7*2))
+    );
 
-    SET_BIT(EXTI->IMR, EXTI_IMR_IM6); // Настроили маску на прерывание
+    /* Устанавливаем режим "выход" для PD4–PD7 */
+    GPIOD->MODER |=  (
+        (1 << (4*2)) |
+        (1 << (5*2)) |
+        (1 << (6*2)) |
+        (1 << (7*2))
+    );
 
-    SET_BIT(EXTI->RTSR, EXTI_RTSR_TR6); // Назначили по фронту интеррапт
-
-    SET_BIT(EXTI->FTSR, EXTI_FTSR_TR6); // Назначили по спаду интеррапт
-
-    SET_BIT(SYSCFG->EXTICR[1], SYSCFG_EXTICR2_EXTI7_PC); // Активировали PC6
-
-    SET_BIT(EXTI->IMR, EXTI_IMR_IM7); // Настроили маску на прерывание
-
-    SET_BIT(EXTI->RTSR, EXTI_RTSR_TR7); // Назначили по фронту интеррапт
-
-    SET_BIT(EXTI->FTSR, EXTI_FTSR_TR7); // Назначили по спаду интеррапт
-
-    NVIC_SetPriority(EXTI9_5_IRQn, NVIC_EncodePriority(__NVIC_GetPriorityGrouping(), 0, 0));
-
-    NVIC_EnableIRQ(EXTI9_5_IRQn); // Разрешил прерывание (название взял в ассемблерном коде stm32)
+    /* ---- Пин для АЦП PA0 ---- */
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; // Включаем тактирование порта A
+    GPIOA->MODER |= (3 << 0);           // Устанавливаем режим "аналоговый" для PA0
 }
 
-void systick_init(void) // Прерывания таймера
+void ADC1_Init(void)
 {
-    CLEAR_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk);// Если поймали помехи. Отключили счетный регистр
-    SET_BIT(SysTick->CTRL, SysTick_CTRL_TICKINT_Msk); // Включили прерывания
-    SET_BIT(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk); // Подключили источник тактирования. 1 - без делителя
-
-    MODIFY_REG(SysTick->LOAD, SysTick_LOAD_RELOAD_Msk, (180000-1) << SysTick_LOAD_RELOAD_Pos); // Регистр, маска удаления, маска установочная
-    MODIFY_REG(SysTick->VAL, SysTick_VAL_CURRENT_Msk, (0) << SysTick_VAL_CURRENT_Pos);
+    RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;
+    __DSB(); // Добавьте барьер памяти
     
-    SET_BIT(SysTick->CTRL, SysTick_CTRL_ENABLE_Msk); // Включил прерывание
-}
-
-void RCC_init(void) // Тактирование майселф
-{
-    // Подготовка к настройке - чистим регистры
-    MODIFY_REG(RCC->CR, RCC_CR_HSITRIM, 0x80UL);
-    CLEAR_REG(RCC->CFGR); // Выбрали HSI
-    while((RCC->CFGR & RCC_CFGR_SWS_Msk) != RCC_CFGR_SWS_HSI); // Ждем включения HSI
-    CLEAR_BIT(RCC->CR, RCC_CR_PLLON); // Отчищаем предделители PLL
-    while ((READ_BIT(RCC->CR, RCC_CR_PLLRDY))); // Ждем отключения PLL
-    CLEAR_BIT(RCC->CR, RCC_CR_HSEON | RCC_CR_CSSON); // Отключаем HSE и CSS
-    while ((READ_BIT(RCC->CR, RCC_CR_HSERDY))); // Ждем отключения HSE
-
-    CLEAR_BIT(RCC->CR, RCC_CR_HSEBYP); // Без пайпаса
-    SET_BIT(RCC->CR, RCC_CR_HSEON); // Включаем HSE
-    while(!(RCC->CR & RCC_CR_HSERDY)); // Ждем включения
-    SET_BIT(RCC->CR, RCC_CR_CSSON);
-
-    CLEAR_REG(RCC->PLLCFGR);
-
-    SET_BIT(RCC->PLLCFGR, RCC_PLLCFGR_PLLSRC_HSE);
+    ADC1->SQR3 = 0; // Канал 0
+    ADC1->SQR1 = 0; // 1 преобразование в последовательности
     
-    MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLM_Msk, 8UL << RCC_PLLCFGR_PLLM_Pos); // Какое пишем, такое и будет
-    MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLN_Msk, 360UL << RCC_PLLCFGR_PLLN_Pos); // Какое пишем, такое и будет
-    MODIFY_REG(RCC->PLLCFGR, RCC_PLLCFGR_PLLP_Msk, 0UL << RCC_PLLCFGR_PLLP_Pos); // 0 - 2, 1 - 4, 2 - 6, 3 - 8
-
-    MODIFY_REG(FLASH->ACR, FLASH_ACR_LATENCY, FLASH_ACR_LATENCY_5WS);
-
-    SET_BIT(RCC->CR, RCC_CR_PLLON); // Включил PLL
-    while((RCC->CR & RCC_CR_PLLRDY) == RESET); // Подождал включения PLL
-
-    MODIFY_REG(RCC->CFGR, RCC_CFGR_SW_Msk, RCC_CFGR_SW_PLL); // Установил PLL как тактирование
-
-    MODIFY_REG(RCC->CFGR, RCC_CFGR_HPRE_Msk, RCC_CFGR_HPRE_DIV1); // Прдедделитель 
-    MODIFY_REG(RCC->CFGR, RCC_CFGR_PPRE2_Msk, RCC_CFGR_PPRE2_DIV2); // Предделитель APB2 - 90 МГц
-    MODIFY_REG(RCC->CFGR, RCC_CFGR_PPRE1_Msk, RCC_CFGR_PPRE1_DIV4); // Предделитель APB1 - 45 МГц
-
-    MODIFY_REG(RCC->CFGR, RCC_CFGR_MCO2PRE_Msk, 0UL << RCC_CFGR_MCO2PRE_Pos); // Предделитель MCО2 = 0 - 0, 4 - 2, 5 - 3, 6 - 4, 3 - 5
-    CLEAR_BIT(RCC->CFGR, RCC_CFGR_MCO2_Msk); // MCO2 от SysClock
+    // Увеличьте время выборки для надежности
+    ADC1->SMPR2 |= (0b111 << ADC_SMPR2_SMP0_Pos); // 480 циклов вместо 28
+    
+    ADC1->CR2 |= ADC_CR2_ADON;
+    
+    // Задержка для стабилизации ADC
+    for(volatile uint32_t i = 0; i < 10000; i++);
 }
 
-/*Что в итоге сказать. Для настройки обычного счетчика мне нужно сделать:
-1) Подать тактирование на таймер (для TIM1 это APB2, по документации)
-2) Настроить предделитель PSC (Prescaler)
-3) Настроить значение переполнения ARR (AUTO RENEW)
-4) Обновить счетчик EGR_UG. РАЗРЕШИТЬ ПРЕРЫВАНИЕ ПО ПЕРЕПОЛНЕНИЮ DIER_UIE
-5) Запустить счетчик CR1_CEN
-6) Добавить обработчик
-7) Выдать приоритет (важно когда прерываний несколько)*/
 
-void TIM1_init(void)
+uint16_t ADC_Read(void)
 {
-    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_TIM1EN); // Подали тактирование на TIM1
-
-    MODIFY_REG(TIM1->PSC,TIM_PSC_PSC_Msk, 179 << TIM_PSC_PSC_Pos); // предделитель CLK 
-    MODIFY_REG(TIM1->ARR, TIM_ARR_ARR_Msk, 999 << TIM_ARR_ARR_Pos); // переполнение 
-
-    SET_BIT(TIM1->CR1, TIM_CR1_ARPE); 
-
-    MODIFY_REG(TIM1->CCMR1, TIM_CCMR1_OC1M_Msk, 6 << TIM_CCMR1_OC1M_Pos); // Режим PWM
-    SET_BIT(TIM1->CCMR1, TIM_CCMR1_OC1PE);
-    MODIFY_REG(TIM1->CCR1, TIM_CCR1_CCR1_Msk, 500 << TIM_CCR1_CCR1_Pos);
-
-    SET_BIT(TIM1->CCER, TIM_CCER_CC1E);
-    SET_BIT(TIM1->BDTR, TIM_BDTR_MOE);
-
-
-    SET_BIT(TIM1->EGR, TIM_EGR_UG); // Обновляем счетчик
-
-    SET_BIT(TIM1->DIER, TIM_DIER_UIE); // Разрешил прерывание по переполнению
-
-    SET_BIT(TIM1->CR1, TIM_CR1_CEN); // Включил TIM1
-
-    NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn); // Соответствующий обработчик прерывания
-    NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 0); // Приоритет прерывания 1
-
-
+    ADC1->CR2 |= ADC_CR2_SWSTART;        // Запуск однократного преобразования
+    while (!(ADC1->SR & ADC_SR_EOC)) __NOP(); // Ждем завершения преобразования
+    return ADC1->DR;                     // Возвращаем результат (12 бит)
 }
 
-void ADC_init(void)
+void TIM1_Encoder_Init(void)
 {
-    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);
-    SET_BIT(ADC1->CR2, ADC_CR2_ADON);
+    // PA8 (CH1) и PA9 (CH2) – выводы энкодера
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; // Тактирование порта A
 
-    MODIFY_REG(ADC1->SQR3, ADC_SQR3_SQ1_Msk, 0 << ADC_SQR3_SQ1_Pos);
-    MODIFY_REG(ADC1->SQR1, ADC_SQR1_L_Msk, 0 << ADC_SQR1_L_Pos);
+    /* Настройка режима альтернативной функции для PA8 и PA9 */
+    GPIOA->MODER &= ~(3 << (8*2));
+    GPIOA->MODER &= ~(3 << (9*2));
+    GPIOA->MODER |=  (2 << (8*2));    // Альтернативная функция
+    GPIOA->MODER |=  (2 << (9*2));
 
-    for(uint16_t i = 0; i<1000; i++);
+    /* Настройка альтернативной функции AF1 для TIM1 */
+    GPIOA->AFR[1] |= (1 << (0*4));    // PA8 -> AF1
+    GPIOA->AFR[1] |= (1 << (1*4));    // PA9 -> AF1
+
+    RCC->APB2ENR |= RCC_APB2ENR_TIM1EN; // Тактирование TIM1
+
+    /* Режим энкодера: mode 3 (TIM1 counts on both edges of CH1 and CH2) */
+    TIM1->SMCR = TIM_SMCR_SMS_0 | TIM_SMCR_SMS_1;
+
+    /* Настройка каналов как вход */
+    TIM1->CCMR1 |= (1 << 0) | (1 << 8);
+
+    /* Полярность сигналов (не инвертируем) */
+    TIM1->CCER &= ~(TIM_CCER_CC1P | TIM_CCER_CC2P);
+
+    /* Включение основного выхода таймера (MOE) */
+    TIM1->BDTR |= TIM_BDTR_MOE;
+
+    TIM1->CR1 |= TIM_CR1_CEN; // Включение таймера
+}
+/* Возвращает процент положения ручки: 0.0 … 1.0 */
+float Get_Pot_Percent(void)
+{
+    uint16_t adc = ADC_Read();           // Считываем значение с АЦП
+    return (float)adc / 4095.0f;        // Нормализуем к диапазону 0.0 – 1.0
 }
 
-uint32_t READ_POT(void)
+
+/* Управляет диодами по диапазонам */
+void Update_LEDs(float perc)
 {
-    SET_BIT(ADC1->CR2, ADC_CR2_SWSTART);
+    // Сначала выключаем все диоды (записываем в BSRR 1 << n в старший байт для сброса)
+    GPIOD->BSRR = (1 << 4) << 16;
+    GPIOD->BSRR = (1 << 5) << 16;
+    GPIOD->BSRR = (1 << 6) << 16;
+    GPIOD->BSRR = (1 << 7) << 16;
 
-    while(!READ_BIT(ADC1->SR, ADC_SR_EOC)) __NOP();
-
-    return ADC1->DR; // Возвращает зашимленное значение
+    // Включаем диоды в зависимости от диапазона значения потенциометра
+    if (perc >= 0.80f && perc <= 0.85f) {
+        GPIOD->BSRR = (1 << 4);
+        GPIOD->BSRR = (1 << 5);
+        GPIOD->BSRR = (1 << 6);
+        GPIOD->BSRR = (1 << 7);
+    }
+    else if (perc >= 0.60f && perc < 0.80f) {
+        GPIOD->BSRR = (1 << 4);
+        GPIOD->BSRR = (1 << 5);
+        GPIOD->BSRR = (1 << 6);
+    }
+    else if (perc >= 0.40f && perc < 0.60f) {
+        GPIOD->BSRR = (1 << 4);
+        GPIOD->BSRR = (1 << 5);
+    }
+    else if (perc >= 0.20f && perc < 0.40f) {
+        GPIOD->BSRR = (1 << 4);
+    }
 }
