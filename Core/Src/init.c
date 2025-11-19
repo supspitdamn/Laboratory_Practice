@@ -1,31 +1,37 @@
-#include "../Inc/init2.h"
+#include "../Inc/init.h"
 #include "../Inc/interrupt.h"
-extern volatile uint16_t MCO2_freq;
-extern volatile uint16_t SysClock_freq;
 
 void GPIO_init(void)
 {
-    // Активировал порты ГПИОБ ГПИОС
-    SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN);
-    SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOCEN);
+    SET_BIT(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOAEN); // Светодиоды PB4, PA4, PB3, PB5. Потенциометр на PA8
 
+    // PB3 PB4 PB5 - светодиод
 
-    // НАСТРОЙКА MCO2 (PC9) - ИСПРАВЛЕНО
-    MODIFY_REG(GPIOC->MODER, GPIO_MODER_MODER9_Msk, 2UL << GPIO_MODER_MODER9_Pos);   // Alternate function
-    MODIFY_REG(GPIOC->OSPEEDR, GPIO_OSPEEDR_OSPEED9_Msk, 3UL << GPIO_OSPEEDR_OSPEED9_Pos); // High speed
-    MODIFY_REG(GPIOC->AFR[1], GPIO_AFRH_AFSEL9_Msk, 0UL << GPIO_AFRH_AFSEL9_Pos);   // AF0 ???
+    SET_BIT(GPIOB->MODER, GPIO_MODER_MODE3_0 | GPIO_MODER_MODE4_0 | GPIO_MODER_MODE5_0);
+    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT3 | GPIO_OTYPER_OT4 | GPIO_OTYPER_OT5);
+    SET_BIT(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED3_Msk | GPIO_OSPEEDR_OSPEED4_Msk | GPIO_OSPEEDR_OSPEED5_Msk);
+    CLEAR_BIT(GPIOB->PUPDR, GPIO_PUPDR_PUPD3_Msk | GPIO_PUPDR_PUPD4_Msk | GPIO_PUPDR_PUPD5_Msk);
+    SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR3 | GPIO_BSRR_BR4 | GPIO_BSRR_BR5);
 
-    SET_BIT(GPIOB->MODER, GPIO_MODER_MODE0_0 | GPIO_MODER_MODE7_0 | GPIO_MODER_MODE14_0
-         | GPIO_MODER_MODE8_0 | GPIO_MODER_MODE9_0 | GPIO_MODER_MODE10_0); // Светодиоды на выход
+    // PB1 - светодиод
 
-    CLEAR_BIT(GPIOC->MODER, GPIO_MODER_MODE6 | GPIO_MODER_MODE7); // Кнопки по входу
+    SET_BIT(GPIOB->MODER, GPIO_MODER_MODE1_0);
+    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT1);
+    SET_BIT(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED1_Msk);
+    CLEAR_BIT(GPIOB->PUPDR, GPIO_PUPDR_PUPD1_Msk);
+    SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR1);
 
-    //
+    // PA8 - TIM1
 
-    SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0 | GPIO_BSRR_BR7 | GPIO_BSRR_BR14 | GPIO_BSRR_BR8 | GPIO_BSRR_BR9 | GPIO_BSRR_BR10); // Выключил светодиоды
-    CLEAR_BIT(GPIOB->OTYPER, GPIO_OTYPER_OT0_Msk); // светодиоды пуш-пул
-    SET_BIT(GPIOC->PUPDR, GPIO_PUPDR_PUPD6_0 | GPIO_PUPDR_PUPD7_0); // Кнопки пул-ап
+    SET_BIT(GPIOA->MODER,  GPIO_MODER_MODE8_1);
+    MODIFY_REG(GPIOA->AFR[1], GPIO_AFRH_AFSEL8_Msk, 1 << GPIO_AFRH_AFSEL8_Pos); //AF1
+    CLEAR_BIT(GPIOA->OTYPER, GPIO_OTYPER_OT8);
+    CLEAR_BIT(GPIOA->PUPDR, GPIO_PUPDR_PUPD8_Msk);
+    SET_BIT(GPIOA->BSRR, GPIO_BSRR_BR8);
 
+    // PA0 - ПОТЕНЦИОМЕТР
+
+    MODIFY_REG(GPIOA->MODER, GPIO_MODER_MODE0_Msk, 0x3 << GPIO_MODER_MODE0_Pos);
 }
 
 void Interrupt_init(void) // По какому-либо сценарию происходит остановка программы по таймеру, вызывая обработчик прерывания
@@ -102,4 +108,62 @@ void RCC_init(void) // Тактирование майселф
 
     MODIFY_REG(RCC->CFGR, RCC_CFGR_MCO2PRE_Msk, 0UL << RCC_CFGR_MCO2PRE_Pos); // Предделитель MCО2 = 0 - 0, 4 - 2, 5 - 3, 6 - 4, 3 - 5
     CLEAR_BIT(RCC->CFGR, RCC_CFGR_MCO2_Msk); // MCO2 от SysClock
+}
+
+/*Что в итоге сказать. Для настройки обычного счетчика мне нужно сделать:
+1) Подать тактирование на таймер (для TIM1 это APB2, по документации)
+2) Настроить предделитель PSC (Prescaler)
+3) Настроить значение переполнения ARR (AUTO RENEW)
+4) Обновить счетчик EGR_UG. РАЗРЕШИТЬ ПРЕРЫВАНИЕ ПО ПЕРЕПОЛНЕНИЮ DIER_UIE
+5) Запустить счетчик CR1_CEN
+6) Добавить обработчик
+7) Выдать приоритет (важно когда прерываний несколько)*/
+
+void TIM1_init(void)
+{
+    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_TIM1EN); // Подали тактирование на TIM1
+
+    MODIFY_REG(TIM1->PSC,TIM_PSC_PSC_Msk, 179 << TIM_PSC_PSC_Pos); // предделитель CLK 
+    MODIFY_REG(TIM1->ARR, TIM_ARR_ARR_Msk, 999 << TIM_ARR_ARR_Pos); // переполнение 
+
+    SET_BIT(TIM1->CR1, TIM_CR1_ARPE); 
+
+    MODIFY_REG(TIM1->CCMR1, TIM_CCMR1_OC1M_Msk, 6 << TIM_CCMR1_OC1M_Pos); // Режим PWM
+    SET_BIT(TIM1->CCMR1, TIM_CCMR1_OC1PE);
+    MODIFY_REG(TIM1->CCR1, TIM_CCR1_CCR1_Msk, 500 << TIM_CCR1_CCR1_Pos);
+
+    SET_BIT(TIM1->CCER, TIM_CCER_CC1E);
+    SET_BIT(TIM1->BDTR, TIM_BDTR_MOE);
+
+
+    SET_BIT(TIM1->EGR, TIM_EGR_UG); // Обновляем счетчик
+
+    SET_BIT(TIM1->DIER, TIM_DIER_UIE); // Разрешил прерывание по переполнению
+
+    SET_BIT(TIM1->CR1, TIM_CR1_CEN); // Включил TIM1
+
+    NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn); // Соответствующий обработчик прерывания
+    NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 0); // Приоритет прерывания 1
+
+
+}
+
+void ADC_init(void)
+{
+    SET_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);
+    SET_BIT(ADC1->CR2, ADC_CR2_ADON);
+
+    MODIFY_REG(ADC1->SQR3, ADC_SQR3_SQ1_Msk, 0 << ADC_SQR3_SQ1_Pos);
+    MODIFY_REG(ADC1->SQR1, ADC_SQR1_L_Msk, 0 << ADC_SQR1_L_Pos);
+
+    for(uint16_t i = 0; i<1000; i++);
+}
+
+uint32_t READ_POT(void)
+{
+    SET_BIT(ADC1->CR2, ADC_CR2_SWSTART);
+
+    while(!READ_BIT(ADC1->SR, ADC_SR_EOC)) __NOP();
+
+    return ADC1->DR; // Возвращает зашимленное значение
 }

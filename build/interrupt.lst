@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccrZdPVN.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -46,554 +46,272 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 1
   11:Core/Src/interrupt.c ****     if (READ_BIT(EXTI->PR, EXTI_PR_PR6)) 
   34              		.loc 1 11 5 view .LVU1
   35              		.loc 1 11 9 is_stmt 0 view .LVU2
-  36 0000 2C4B     		ldr	r3, .L10
+  36 0000 084B     		ldr	r3, .L4
   37 0002 5B69     		ldr	r3, [r3, #20]
   38              		.loc 1 11 8 view .LVU3
   39 0004 13F0400F 		tst	r3, #64
-  40 0008 0CD0     		beq	.L2
+  40 0008 02D0     		beq	.L2
   12:Core/Src/interrupt.c ****     {
   13:Core/Src/interrupt.c ****         EXTI->PR = EXTI_PR_PR6;  // Сброс флага
   41              		.loc 1 13 9 is_stmt 1 view .LVU4
   42              		.loc 1 13 18 is_stmt 0 view .LVU5
-  43 000a 2A4B     		ldr	r3, .L10
+  43 000a 064B     		ldr	r3, .L4
   44 000c 4022     		movs	r2, #64
   45 000e 5A61     		str	r2, [r3, #20]
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 2
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccrZdPVN.s 			page 2
 
 
-  14:Core/Src/interrupt.c **** 
-  15:Core/Src/interrupt.c ****         if(!(GPIOC->IDR & GPIO_IDR_ID6)) // кнопка нажата
-  46              		.loc 1 15 9 is_stmt 1 view .LVU6
-  47              		.loc 1 15 19 is_stmt 0 view .LVU7
-  48 0010 03F54C43 		add	r3, r3, #52224
-  49 0014 1B69     		ldr	r3, [r3, #16]
-  50              		.loc 1 15 11 view .LVU8
-  51 0016 13F0400F 		tst	r3, #64
-  52 001a 16D1     		bne	.L3
-  16:Core/Src/interrupt.c ****         {
-  17:Core/Src/interrupt.c ****             last_button1_time_pressed = global_counter; 
-  53              		.loc 1 17 13 is_stmt 1 view .LVU9
-  54              		.loc 1 17 39 is_stmt 0 view .LVU10
-  55 001c 264B     		ldr	r3, .L10+4
-  56 001e 1A68     		ldr	r2, [r3]
-  57 0020 264B     		ldr	r3, .L10+8
-  58 0022 1A60     		str	r2, [r3]
-  59              	.L2:
-  18:Core/Src/interrupt.c ****         }
-  19:Core/Src/interrupt.c ****         else // кнопка отпущена
-  20:Core/Src/interrupt.c ****         {
-  21:Core/Src/interrupt.c ****             last_button1_time_unpressed = global_counter;
-  22:Core/Src/interrupt.c ****             uint32_t press_duration = last_button1_time_unpressed - last_button1_time_pressed;
-  23:Core/Src/interrupt.c ****             
-  24:Core/Src/interrupt.c ****             if(press_duration > TIME_DELAY_50MS)
-  25:Core/Src/interrupt.c ****             {
-  26:Core/Src/interrupt.c ****                 if(press_duration > TIME_DELAY_2SEC)
-  27:Core/Src/interrupt.c ****                 {
-  28:Core/Src/interrupt.c ****                     long_press1 = 1;
-  29:Core/Src/interrupt.c ****                 }
-  30:Core/Src/interrupt.c ****                 else
-  31:Core/Src/interrupt.c ****                 {
-  32:Core/Src/interrupt.c ****                     short_press1 = 1;
-  33:Core/Src/interrupt.c ****                 }
-  34:Core/Src/interrupt.c ****             }
-  35:Core/Src/interrupt.c ****             // Обнуляем времена
-  36:Core/Src/interrupt.c ****             last_button1_time_unpressed = 0;
-  37:Core/Src/interrupt.c ****             last_button1_time_pressed = 0; 
-  38:Core/Src/interrupt.c ****         }
-  39:Core/Src/interrupt.c ****     }
-  40:Core/Src/interrupt.c **** 
-  41:Core/Src/interrupt.c ****     // Обработка кнопки 2 (PC7)
-  42:Core/Src/interrupt.c ****     if (READ_BIT(EXTI->PR, EXTI_PR_PR7)) 
-  60              		.loc 1 42 5 is_stmt 1 view .LVU11
-  61              		.loc 1 42 9 is_stmt 0 view .LVU12
-  62 0024 234B     		ldr	r3, .L10
-  63 0026 5B69     		ldr	r3, [r3, #20]
-  64              		.loc 1 42 8 view .LVU13
-  65 0028 13F0800F 		tst	r3, #128
-  66 002c 3CD0     		beq	.L1
-  43:Core/Src/interrupt.c ****     {
-  44:Core/Src/interrupt.c ****         EXTI->PR = EXTI_PR_PR7;  // Сброс флага
-  67              		.loc 1 44 9 is_stmt 1 view .LVU14
-  68              		.loc 1 44 18 is_stmt 0 view .LVU15
-  69 002e 214B     		ldr	r3, .L10
-  70 0030 8022     		movs	r2, #128
-  71 0032 5A61     		str	r2, [r3, #20]
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 3
+  46              	.L2:
+  14:Core/Src/interrupt.c ****     }
+  15:Core/Src/interrupt.c **** 
+  16:Core/Src/interrupt.c ****     // Обработка кнопки 2 (PC7)
+  17:Core/Src/interrupt.c ****     if (READ_BIT(EXTI->PR, EXTI_PR_PR7)) 
+  47              		.loc 1 17 5 is_stmt 1 view .LVU6
+  48              		.loc 1 17 9 is_stmt 0 view .LVU7
+  49 0010 044B     		ldr	r3, .L4
+  50 0012 5B69     		ldr	r3, [r3, #20]
+  51              		.loc 1 17 8 view .LVU8
+  52 0014 13F0800F 		tst	r3, #128
+  53 0018 02D0     		beq	.L1
+  18:Core/Src/interrupt.c ****     {
+  19:Core/Src/interrupt.c ****         EXTI->PR = EXTI_PR_PR7;  // Сброс флага
+  54              		.loc 1 19 9 is_stmt 1 view .LVU9
+  55              		.loc 1 19 18 is_stmt 0 view .LVU10
+  56 001a 024B     		ldr	r3, .L4
+  57 001c 8022     		movs	r2, #128
+  58 001e 5A61     		str	r2, [r3, #20]
+  59              	.L1:
+  20:Core/Src/interrupt.c ****     }
+  21:Core/Src/interrupt.c **** }
+  60              		.loc 1 21 1 view .LVU11
+  61 0020 7047     		bx	lr
+  62              	.L5:
+  63 0022 00BF     		.align	2
+  64              	.L4:
+  65 0024 003C0140 		.word	1073822720
+  66              		.cfi_endproc
+  67              	.LFE133:
+  69              		.section	.text.SysTick_Handler,"ax",%progbits
+  70              		.align	1
+  71              		.global	SysTick_Handler
+  72              		.syntax unified
+  73              		.thumb
+  74              		.thumb_func
+  76              	SysTick_Handler:
+  77              	.LFB134:
+  22:Core/Src/interrupt.c **** 
+  23:Core/Src/interrupt.c **** void SysTick_Handler(void)
+  24:Core/Src/interrupt.c **** {
+  78              		.loc 1 24 1 is_stmt 1 view -0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 0
+  81              		@ frame_needed = 0, uses_anonymous_args = 0
+  82              		@ link register save eliminated.
+  25:Core/Src/interrupt.c ****     global_counter++;
+  83              		.loc 1 25 5 view .LVU13
+  84              		.loc 1 25 19 is_stmt 0 view .LVU14
+  85 0000 024A     		ldr	r2, .L7
+  86 0002 1368     		ldr	r3, [r2]
+  87 0004 0133     		adds	r3, r3, #1
+  88 0006 1360     		str	r3, [r2]
+  26:Core/Src/interrupt.c **** }
+  89              		.loc 1 26 1 view .LVU15
+  90 0008 7047     		bx	lr
+  91              	.L8:
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccrZdPVN.s 			page 3
 
 
-  45:Core/Src/interrupt.c **** 
-  46:Core/Src/interrupt.c ****         if(!(GPIOC->IDR & GPIO_IDR_ID7)) // кнопка нажата
-  72              		.loc 1 46 9 is_stmt 1 view .LVU16
-  73              		.loc 1 46 19 is_stmt 0 view .LVU17
-  74 0034 03F54C43 		add	r3, r3, #52224
-  75 0038 1B69     		ldr	r3, [r3, #16]
-  76              		.loc 1 46 11 view .LVU18
-  77 003a 13F0800F 		tst	r3, #128
-  78 003e 1ED1     		bne	.L7
-  47:Core/Src/interrupt.c ****         {
-  48:Core/Src/interrupt.c ****             last_button2_time_pressed = global_counter; 
-  79              		.loc 1 48 13 is_stmt 1 view .LVU19
-  80              		.loc 1 48 39 is_stmt 0 view .LVU20
-  81 0040 1D4B     		ldr	r3, .L10+4
-  82 0042 1A68     		ldr	r2, [r3]
-  83 0044 1E4B     		ldr	r3, .L10+12
-  84 0046 1A60     		str	r2, [r3]
-  85 0048 7047     		bx	lr
-  86              	.L3:
-  87              	.LBB2:
-  21:Core/Src/interrupt.c ****             uint32_t press_duration = last_button1_time_unpressed - last_button1_time_pressed;
-  88              		.loc 1 21 13 is_stmt 1 view .LVU21
-  21:Core/Src/interrupt.c ****             uint32_t press_duration = last_button1_time_unpressed - last_button1_time_pressed;
-  89              		.loc 1 21 41 is_stmt 0 view .LVU22
-  90 004a 1B4B     		ldr	r3, .L10+4
-  91 004c 1A68     		ldr	r2, [r3]
-  92 004e 1D4B     		ldr	r3, .L10+16
-  93 0050 1A60     		str	r2, [r3]
-  22:Core/Src/interrupt.c ****             
-  94              		.loc 1 22 13 is_stmt 1 view .LVU23
-  22:Core/Src/interrupt.c ****             
-  95              		.loc 1 22 67 is_stmt 0 view .LVU24
-  96 0052 1B68     		ldr	r3, [r3]
-  97 0054 194A     		ldr	r2, .L10+8
-  98 0056 1268     		ldr	r2, [r2]
-  22:Core/Src/interrupt.c ****             
-  99              		.loc 1 22 22 view .LVU25
- 100 0058 9B1A     		subs	r3, r3, r2
- 101              	.LVL0:
-  24:Core/Src/interrupt.c ****             {
- 102              		.loc 1 24 13 is_stmt 1 view .LVU26
-  24:Core/Src/interrupt.c ****             {
- 103              		.loc 1 24 15 is_stmt 0 view .LVU27
- 104 005a 322B     		cmp	r3, #50
- 105 005c 05D9     		bls	.L4
-  26:Core/Src/interrupt.c ****                 {
- 106              		.loc 1 26 17 is_stmt 1 view .LVU28
-  26:Core/Src/interrupt.c ****                 {
- 107              		.loc 1 26 19 is_stmt 0 view .LVU29
- 108 005e B3F5FA6F 		cmp	r3, #2000
- 109 0062 08D9     		bls	.L5
-  28:Core/Src/interrupt.c ****                 }
- 110              		.loc 1 28 21 is_stmt 1 view .LVU30
-  28:Core/Src/interrupt.c ****                 }
- 111              		.loc 1 28 33 is_stmt 0 view .LVU31
- 112 0064 184B     		ldr	r3, .L10+20
- 113              	.LVL1:
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 4
+  92 000a 00BF     		.align	2
+  93              	.L7:
+  94 000c 00000000 		.word	global_counter
+  95              		.cfi_endproc
+  96              	.LFE134:
+  98              		.section	.text.TIM1_UP_TIM10_IRQHandler,"ax",%progbits
+  99              		.align	1
+ 100              		.global	TIM1_UP_TIM10_IRQHandler
+ 101              		.syntax unified
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	TIM1_UP_TIM10_IRQHandler:
+ 106              	.LFB135:
+  27:Core/Src/interrupt.c **** 
+  28:Core/Src/interrupt.c **** void TIM1_UP_TIM10_IRQHandler(void)
+  29:Core/Src/interrupt.c **** {
+ 107              		.loc 1 29 1 is_stmt 1 view -0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 0
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111 0000 08B5     		push	{r3, lr}
+ 112              	.LCFI0:
+ 113              		.cfi_def_cfa_offset 8
+ 114              		.cfi_offset 3, -8
+ 115              		.cfi_offset 14, -4
+  30:Core/Src/interrupt.c ****     if(READ_BIT(TIM1->SR, TIM_SR_UIF))
+ 116              		.loc 1 30 5 view .LVU17
+ 117              		.loc 1 30 8 is_stmt 0 view .LVU18
+ 118 0002 0F4B     		ldr	r3, .L17
+ 119 0004 1B69     		ldr	r3, [r3, #16]
+ 120              		.loc 1 30 7 view .LVU19
+ 121 0006 13F0010F 		tst	r3, #1
+ 122 000a 00D1     		bne	.L16
+ 123              	.L9:
+  31:Core/Src/interrupt.c ****     {
+  32:Core/Src/interrupt.c ****         CLEAR_BIT(TIM1->SR, TIM_SR_UIF);
+  33:Core/Src/interrupt.c ****         /*Реализейшн*/
+  34:Core/Src/interrupt.c **** 
+  35:Core/Src/interrupt.c ****         uint32_t pot_value = READ_POT();
+  36:Core/Src/interrupt.c ****         uint16_t per = 4095/4;
+  37:Core/Src/interrupt.c ****         for(uint8_t i = 0; i < 4; i++)
+  38:Core/Src/interrupt.c ****         {
+  39:Core/Src/interrupt.c ****             if(pot_value >= (i+1)*per)
+  40:Core/Src/interrupt.c ****             {
+  41:Core/Src/interrupt.c ****                 states[i] = 1;
+  42:Core/Src/interrupt.c ****             }
+  43:Core/Src/interrupt.c ****             else
+  44:Core/Src/interrupt.c ****             {
+  45:Core/Src/interrupt.c ****                 states[i] = 0;
+  46:Core/Src/interrupt.c ****             }
+  47:Core/Src/interrupt.c ****         }
+  48:Core/Src/interrupt.c ****     }
+  49:Core/Src/interrupt.c **** }
+ 124              		.loc 1 49 1 view .LVU20
+ 125 000c 08BD     		pop	{r3, pc}
+ 126              	.L16:
+ 127              	.LBB2:
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccrZdPVN.s 			page 4
 
 
-  28:Core/Src/interrupt.c ****                 }
- 114              		.loc 1 28 33 view .LVU32
- 115 0066 0122     		movs	r2, #1
- 116 0068 1A70     		strb	r2, [r3]
- 117              	.L4:
-  36:Core/Src/interrupt.c ****             last_button1_time_pressed = 0; 
- 118              		.loc 1 36 13 is_stmt 1 view .LVU33
-  36:Core/Src/interrupt.c ****             last_button1_time_pressed = 0; 
- 119              		.loc 1 36 41 is_stmt 0 view .LVU34
- 120 006a 0023     		movs	r3, #0
- 121 006c 154A     		ldr	r2, .L10+16
- 122 006e 1360     		str	r3, [r2]
-  37:Core/Src/interrupt.c ****         }
- 123              		.loc 1 37 13 is_stmt 1 view .LVU35
-  37:Core/Src/interrupt.c ****         }
- 124              		.loc 1 37 39 is_stmt 0 view .LVU36
- 125 0070 124A     		ldr	r2, .L10+8
- 126 0072 1360     		str	r3, [r2]
- 127 0074 D6E7     		b	.L2
- 128              	.LVL2:
- 129              	.L5:
-  32:Core/Src/interrupt.c ****                 }
- 130              		.loc 1 32 21 is_stmt 1 view .LVU37
-  32:Core/Src/interrupt.c ****                 }
- 131              		.loc 1 32 34 is_stmt 0 view .LVU38
- 132 0076 154B     		ldr	r3, .L10+24
- 133              	.LVL3:
-  32:Core/Src/interrupt.c ****                 }
- 134              		.loc 1 32 34 view .LVU39
- 135 0078 0122     		movs	r2, #1
- 136 007a 1A70     		strb	r2, [r3]
- 137 007c F5E7     		b	.L4
- 138              	.LVL4:
- 139              	.L7:
-  32:Core/Src/interrupt.c ****                 }
- 140              		.loc 1 32 34 view .LVU40
- 141              	.LBE2:
- 142              	.LBB3:
-  49:Core/Src/interrupt.c ****         }
-  50:Core/Src/interrupt.c ****         else // кнопка отпущена
-  51:Core/Src/interrupt.c ****         {
-  52:Core/Src/interrupt.c ****             last_button2_time_unpressed = global_counter;
- 143              		.loc 1 52 13 is_stmt 1 view .LVU41
- 144              		.loc 1 52 41 is_stmt 0 view .LVU42
- 145 007e 0E4B     		ldr	r3, .L10+4
- 146 0080 1A68     		ldr	r2, [r3]
- 147 0082 134B     		ldr	r3, .L10+28
- 148 0084 1A60     		str	r2, [r3]
-  53:Core/Src/interrupt.c ****             uint32_t press_duration = last_button2_time_unpressed - last_button2_time_pressed;
- 149              		.loc 1 53 13 is_stmt 1 view .LVU43
- 150              		.loc 1 53 67 is_stmt 0 view .LVU44
- 151 0086 1B68     		ldr	r3, [r3]
- 152 0088 0D4A     		ldr	r2, .L10+12
- 153 008a 1268     		ldr	r2, [r2]
- 154              		.loc 1 53 22 view .LVU45
- 155 008c 9B1A     		subs	r3, r3, r2
- 156              	.LVL5:
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 5
+  32:Core/Src/interrupt.c ****         /*Реализейшн*/
+ 128              		.loc 1 32 9 is_stmt 1 view .LVU21
+ 129 000e 0C4A     		ldr	r2, .L17
+ 130 0010 1369     		ldr	r3, [r2, #16]
+ 131 0012 23F00103 		bic	r3, r3, #1
+ 132 0016 1361     		str	r3, [r2, #16]
+  35:Core/Src/interrupt.c ****         uint16_t per = 4095/4;
+ 133              		.loc 1 35 9 view .LVU22
+  35:Core/Src/interrupt.c ****         uint16_t per = 4095/4;
+ 134              		.loc 1 35 30 is_stmt 0 view .LVU23
+ 135 0018 FFF7FEFF 		bl	READ_POT
+ 136              	.LVL0:
+  36:Core/Src/interrupt.c ****         for(uint8_t i = 0; i < 4; i++)
+ 137              		.loc 1 36 9 is_stmt 1 view .LVU24
+  37:Core/Src/interrupt.c ****         {
+ 138              		.loc 1 37 9 view .LVU25
+ 139              	.LBB3:
+  37:Core/Src/interrupt.c ****         {
+ 140              		.loc 1 37 13 view .LVU26
+  37:Core/Src/interrupt.c ****         {
+ 141              		.loc 1 37 21 is_stmt 0 view .LVU27
+ 142 001c 0023     		movs	r3, #0
+  37:Core/Src/interrupt.c ****         {
+ 143              		.loc 1 37 9 view .LVU28
+ 144 001e 04E0     		b	.L11
+ 145              	.LVL1:
+ 146              	.L12:
+  45:Core/Src/interrupt.c ****             }
+ 147              		.loc 1 45 17 is_stmt 1 view .LVU29
+  45:Core/Src/interrupt.c ****             }
+ 148              		.loc 1 45 27 is_stmt 0 view .LVU30
+ 149 0020 084A     		ldr	r2, .L17+4
+ 150 0022 0021     		movs	r1, #0
+ 151 0024 D154     		strb	r1, [r2, r3]
+ 152              	.L13:
+  37:Core/Src/interrupt.c ****         {
+ 153              		.loc 1 37 36 is_stmt 1 discriminator 2 view .LVU31
+ 154 0026 0133     		adds	r3, r3, #1
+ 155              	.LVL2:
+  37:Core/Src/interrupt.c ****         {
+ 156              		.loc 1 37 36 is_stmt 0 discriminator 2 view .LVU32
+ 157 0028 DBB2     		uxtb	r3, r3
+ 158              	.LVL3:
+ 159              	.L11:
+  37:Core/Src/interrupt.c ****         {
+ 160              		.loc 1 37 30 is_stmt 1 discriminator 1 view .LVU33
+ 161 002a 032B     		cmp	r3, #3
+ 162 002c EED8     		bhi	.L9
+  39:Core/Src/interrupt.c ****             {
+ 163              		.loc 1 39 13 view .LVU34
+  39:Core/Src/interrupt.c ****             {
+ 164              		.loc 1 39 31 is_stmt 0 view .LVU35
+ 165 002e 5A1C     		adds	r2, r3, #1
+  39:Core/Src/interrupt.c ****             {
+ 166              		.loc 1 39 34 view .LVU36
+ 167 0030 C2EB8222 		rsb	r2, r2, r2, lsl #10
+  39:Core/Src/interrupt.c ****             {
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccrZdPVN.s 			page 5
 
 
-  54:Core/Src/interrupt.c ****             
-  55:Core/Src/interrupt.c ****             if(press_duration > TIME_DELAY_50MS)
- 157              		.loc 1 55 13 is_stmt 1 view .LVU46
- 158              		.loc 1 55 15 is_stmt 0 view .LVU47
- 159 008e 322B     		cmp	r3, #50
- 160 0090 05D9     		bls	.L8
-  56:Core/Src/interrupt.c ****             {
-  57:Core/Src/interrupt.c ****                 if(press_duration > TIME_DELAY_2SEC)
- 161              		.loc 1 57 17 is_stmt 1 view .LVU48
- 162              		.loc 1 57 19 is_stmt 0 view .LVU49
- 163 0092 B3F5FA6F 		cmp	r3, #2000
- 164 0096 08D9     		bls	.L9
-  58:Core/Src/interrupt.c ****                 {
-  59:Core/Src/interrupt.c ****                     long_press2 = 1;
- 165              		.loc 1 59 21 is_stmt 1 view .LVU50
- 166              		.loc 1 59 33 is_stmt 0 view .LVU51
- 167 0098 0E4B     		ldr	r3, .L10+32
- 168              	.LVL6:
- 169              		.loc 1 59 33 view .LVU52
- 170 009a 0122     		movs	r2, #1
- 171 009c 1A70     		strb	r2, [r3]
- 172              	.L8:
-  60:Core/Src/interrupt.c ****                 }
-  61:Core/Src/interrupt.c ****                 else
-  62:Core/Src/interrupt.c ****                 {
-  63:Core/Src/interrupt.c ****                     short_press2 = 1;
-  64:Core/Src/interrupt.c ****                 }
-  65:Core/Src/interrupt.c ****             }
-  66:Core/Src/interrupt.c ****             // Обнуляем времена
-  67:Core/Src/interrupt.c ****             last_button2_time_unpressed = 0;
- 173              		.loc 1 67 13 is_stmt 1 view .LVU53
- 174              		.loc 1 67 41 is_stmt 0 view .LVU54
- 175 009e 0023     		movs	r3, #0
- 176 00a0 0B4A     		ldr	r2, .L10+28
- 177 00a2 1360     		str	r3, [r2]
-  68:Core/Src/interrupt.c ****             last_button2_time_pressed = 0; 
- 178              		.loc 1 68 13 is_stmt 1 view .LVU55
- 179              		.loc 1 68 39 is_stmt 0 view .LVU56
- 180 00a4 064A     		ldr	r2, .L10+12
- 181 00a6 1360     		str	r3, [r2]
- 182              	.LVL7:
- 183              	.L1:
- 184              		.loc 1 68 39 view .LVU57
- 185              	.LBE3:
-  69:Core/Src/interrupt.c ****         }
-  70:Core/Src/interrupt.c ****     }
-  71:Core/Src/interrupt.c **** }
- 186              		.loc 1 71 1 view .LVU58
- 187 00a8 7047     		bx	lr
- 188              	.LVL8:
- 189              	.L9:
- 190              	.LBB4:
-  63:Core/Src/interrupt.c ****                 }
- 191              		.loc 1 63 21 is_stmt 1 view .LVU59
-  63:Core/Src/interrupt.c ****                 }
- 192              		.loc 1 63 34 is_stmt 0 view .LVU60
- 193 00aa 0B4B     		ldr	r3, .L10+36
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 6
-
-
- 194              	.LVL9:
-  63:Core/Src/interrupt.c ****                 }
- 195              		.loc 1 63 34 view .LVU61
- 196 00ac 0122     		movs	r2, #1
- 197 00ae 1A70     		strb	r2, [r3]
- 198 00b0 F5E7     		b	.L8
- 199              	.L11:
- 200 00b2 00BF     		.align	2
- 201              	.L10:
- 202 00b4 003C0140 		.word	1073822720
- 203 00b8 00000000 		.word	global_counter
- 204 00bc 00000000 		.word	last_button1_time_pressed
- 205 00c0 00000000 		.word	last_button2_time_pressed
- 206 00c4 00000000 		.word	last_button1_time_unpressed
- 207 00c8 00000000 		.word	long_press1
- 208 00cc 00000000 		.word	short_press1
- 209 00d0 00000000 		.word	last_button2_time_unpressed
- 210 00d4 00000000 		.word	long_press2
- 211 00d8 00000000 		.word	short_press2
- 212              	.LBE4:
- 213              		.cfi_endproc
- 214              	.LFE133:
- 216              		.section	.text.SysTick_Handler,"ax",%progbits
- 217              		.align	1
- 218              		.global	SysTick_Handler
- 219              		.syntax unified
- 220              		.thumb
- 221              		.thumb_func
- 223              	SysTick_Handler:
- 224              	.LFB134:
-  72:Core/Src/interrupt.c **** 
-  73:Core/Src/interrupt.c **** void SysTick_Handler(void)
-  74:Core/Src/interrupt.c **** {
- 225              		.loc 1 74 1 is_stmt 1 view -0
- 226              		.cfi_startproc
- 227              		@ args = 0, pretend = 0, frame = 0
- 228              		@ frame_needed = 0, uses_anonymous_args = 0
- 229              		@ link register save eliminated.
-  75:Core/Src/interrupt.c ****     global_counter++;
- 230              		.loc 1 75 5 view .LVU63
- 231              		.loc 1 75 19 is_stmt 0 view .LVU64
- 232 0000 184A     		ldr	r2, .L18
- 233 0002 1368     		ldr	r3, [r2]
- 234 0004 0133     		adds	r3, r3, #1
- 235 0006 1360     		str	r3, [r2]
-  76:Core/Src/interrupt.c **** 
-  77:Core/Src/interrupt.c ****     for (int i = 0; i < 6; i++)
- 236              		.loc 1 77 5 is_stmt 1 view .LVU65
- 237              	.LBB5:
- 238              		.loc 1 77 10 view .LVU66
- 239              	.LVL10:
- 240              		.loc 1 77 14 is_stmt 0 view .LVU67
- 241 0008 0023     		movs	r3, #0
- 242              		.loc 1 77 5 view .LVU68
- 243 000a 1BE0     		b	.L13
- 244              	.LVL11:
- 245              	.L15:
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 7
-
-
-  78:Core/Src/interrupt.c ****     {
-  79:Core/Src/interrupt.c **** 
-  80:Core/Src/interrupt.c ****         if (i == selected_led) continue;
-  81:Core/Src/interrupt.c ****         if(counter_light == 0)
-  82:Core/Src/interrupt.c ****         {
-  83:Core/Src/interrupt.c ****             states[i] = 0;
-  84:Core/Src/interrupt.c ****         }
-  85:Core/Src/interrupt.c ****         else if (global_counter - last_toggle[i] >= frequences[i] && i <= counter_light - 1)
- 246              		.loc 1 85 14 is_stmt 1 view .LVU69
- 247              		.loc 1 85 33 is_stmt 0 view .LVU70
- 248 000c 154A     		ldr	r2, .L18
- 249 000e 1268     		ldr	r2, [r2]
- 250              		.loc 1 85 46 view .LVU71
- 251 0010 1549     		ldr	r1, .L18+4
- 252 0012 51F82310 		ldr	r1, [r1, r3, lsl #2]
- 253              		.loc 1 85 33 view .LVU72
- 254 0016 521A     		subs	r2, r2, r1
- 255              		.loc 1 85 63 view .LVU73
- 256 0018 1449     		ldr	r1, .L18+8
- 257 001a 51F82310 		ldr	r1, [r1, r3, lsl #2]
- 258              		.loc 1 85 17 view .LVU74
- 259 001e 8A42     		cmp	r2, r1
- 260 0020 0FD3     		bcc	.L14
- 261              		.loc 1 85 72 discriminator 1 view .LVU75
- 262 0022 134A     		ldr	r2, .L18+12
- 263 0024 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 264 0026 D2B2     		uxtb	r2, r2
- 265              		.loc 1 85 67 discriminator 1 view .LVU76
- 266 0028 9A42     		cmp	r2, r3
- 267 002a 0ADD     		ble	.L14
-  86:Core/Src/interrupt.c ****         {
-  87:Core/Src/interrupt.c ****             states[i] = !states[i];           // инвертируем состояние
- 268              		.loc 1 87 13 is_stmt 1 view .LVU77
- 269              		.loc 1 87 32 is_stmt 0 view .LVU78
- 270 002c 1149     		ldr	r1, .L18+16
- 271 002e CA5C     		ldrb	r2, [r1, r3]	@ zero_extendqisi2
- 272              		.loc 1 87 25 view .LVU79
- 273 0030 B2FA82F2 		clz	r2, r2
- 274 0034 5209     		lsrs	r2, r2, #5
- 275              		.loc 1 87 23 view .LVU80
- 276 0036 CA54     		strb	r2, [r1, r3]
-  88:Core/Src/interrupt.c ****             last_toggle[i] = global_counter;  // обновляем время
- 277              		.loc 1 88 13 is_stmt 1 view .LVU81
- 278              		.loc 1 88 28 is_stmt 0 view .LVU82
- 279 0038 0A4A     		ldr	r2, .L18
- 280 003a 1168     		ldr	r1, [r2]
- 281 003c 0A4A     		ldr	r2, .L18+4
- 282 003e 42F82310 		str	r1, [r2, r3, lsl #2]
- 283              	.L14:
-  77:Core/Src/interrupt.c ****     {
- 284              		.loc 1 77 29 is_stmt 1 discriminator 2 view .LVU83
- 285 0042 0133     		adds	r3, r3, #1
- 286              	.LVL12:
- 287              	.L13:
-  77:Core/Src/interrupt.c ****     {
- 288              		.loc 1 77 23 discriminator 1 view .LVU84
- 289 0044 052B     		cmp	r3, #5
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 8
-
-
- 290 0046 0CDC     		bgt	.L17
-  80:Core/Src/interrupt.c ****         if(counter_light == 0)
- 291              		.loc 1 80 9 view .LVU85
-  80:Core/Src/interrupt.c ****         if(counter_light == 0)
- 292              		.loc 1 80 15 is_stmt 0 view .LVU86
- 293 0048 0B4A     		ldr	r2, .L18+20
- 294 004a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 295 004c 52B2     		sxtb	r2, r2
-  80:Core/Src/interrupt.c ****         if(counter_light == 0)
- 296              		.loc 1 80 12 view .LVU87
- 297 004e 9A42     		cmp	r2, r3
- 298 0050 F7D0     		beq	.L14
-  81:Core/Src/interrupt.c ****         {
- 299              		.loc 1 81 9 is_stmt 1 view .LVU88
-  81:Core/Src/interrupt.c ****         {
- 300              		.loc 1 81 26 is_stmt 0 view .LVU89
- 301 0052 074A     		ldr	r2, .L18+12
- 302 0054 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
-  81:Core/Src/interrupt.c ****         {
- 303              		.loc 1 81 11 view .LVU90
- 304 0056 002A     		cmp	r2, #0
- 305 0058 D8D1     		bne	.L15
-  83:Core/Src/interrupt.c ****         }
- 306              		.loc 1 83 13 is_stmt 1 view .LVU91
-  83:Core/Src/interrupt.c ****         }
- 307              		.loc 1 83 23 is_stmt 0 view .LVU92
- 308 005a 064A     		ldr	r2, .L18+16
- 309 005c 0021     		movs	r1, #0
- 310 005e D154     		strb	r1, [r2, r3]
- 311 0060 EFE7     		b	.L14
- 312              	.L17:
- 313              	.LBE5:
-  89:Core/Src/interrupt.c ****         }
-  90:Core/Src/interrupt.c ****     }
-  91:Core/Src/interrupt.c **** }
- 314              		.loc 1 91 1 view .LVU93
- 315 0062 7047     		bx	lr
- 316              	.L19:
- 317              		.align	2
- 318              	.L18:
- 319 0064 00000000 		.word	global_counter
- 320 0068 00000000 		.word	last_toggle
- 321 006c 00000000 		.word	frequences
- 322 0070 00000000 		.word	counter_light
- 323 0074 00000000 		.word	states
- 324 0078 00000000 		.word	selected_led
- 325              		.cfi_endproc
- 326              	.LFE134:
- 328              		.section	.text.wait,"ax",%progbits
- 329              		.align	1
- 330              		.global	wait
- 331              		.syntax unified
- 332              		.thumb
- 333              		.thumb_func
- 335              	wait:
- 336              	.LVL13:
- 337              	.LFB135:
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 9
-
-
-  92:Core/Src/interrupt.c **** 
-  93:Core/Src/interrupt.c **** void wait(uint32_t time)
-  94:Core/Src/interrupt.c **** {
- 338              		.loc 1 94 1 is_stmt 1 view -0
- 339              		.cfi_startproc
- 340              		@ args = 0, pretend = 0, frame = 0
- 341              		@ frame_needed = 0, uses_anonymous_args = 0
- 342              		@ link register save eliminated.
-  95:Core/Src/interrupt.c ****     uint32_t start_time = global_counter;
- 343              		.loc 1 95 5 view .LVU95
- 344              		.loc 1 95 14 is_stmt 0 view .LVU96
- 345 0000 044B     		ldr	r3, .L23
- 346 0002 1A68     		ldr	r2, [r3]
- 347              	.LVL14:
-  96:Core/Src/interrupt.c ****     uint32_t delay_time = time;
- 348              		.loc 1 96 5 is_stmt 1 view .LVU97
-  97:Core/Src/interrupt.c ****     
-  98:Core/Src/interrupt.c ****     while((global_counter - start_time) < delay_time)
- 349              		.loc 1 98 5 view .LVU98
- 350              		.loc 1 98 10 is_stmt 0 view .LVU99
- 351 0004 00E0     		b	.L21
- 352              	.L22:
-  99:Core/Src/interrupt.c ****     {
- 100:Core/Src/interrupt.c ****         __NOP();
- 353              		.loc 1 100 9 is_stmt 1 view .LVU100
- 354              		.syntax unified
- 355              	@ 100 "Core/Src/interrupt.c" 1
- 356 0006 00BF     		nop
- 357              	@ 0 "" 2
- 358              		.thumb
- 359              		.syntax unified
- 360              	.L21:
-  98:Core/Src/interrupt.c ****     {
- 361              		.loc 1 98 41 view .LVU101
-  98:Core/Src/interrupt.c ****     {
- 362              		.loc 1 98 27 is_stmt 0 view .LVU102
- 363 0008 024B     		ldr	r3, .L23
- 364 000a 1B68     		ldr	r3, [r3]
- 365 000c 9B1A     		subs	r3, r3, r2
-  98:Core/Src/interrupt.c ****     {
- 366              		.loc 1 98 41 view .LVU103
- 367 000e 8342     		cmp	r3, r0
- 368 0010 F9D3     		bcc	.L22
- 101:Core/Src/interrupt.c ****     }
- 102:Core/Src/interrupt.c **** }...
- 369              		.loc 1 102 1 view .LVU104
- 370 0012 7047     		bx	lr
- 371              	.L24:
- 372              		.align	2
- 373              	.L23:
- 374 0014 00000000 		.word	global_counter
- 375              		.cfi_endproc
- 376              	.LFE135:
- 378              		.global	last_button2_time_unpressed
- 379              		.section	.bss.last_button2_time_unpressed,"aw",%nobits
- 380              		.align	2
- 383              	last_button2_time_unpressed:
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 10
-
-
- 384 0000 00000000 		.space	4
- 385              		.global	last_button2_time_pressed
- 386              		.section	.bss.last_button2_time_pressed,"aw",%nobits
- 387              		.align	2
- 390              	last_button2_time_pressed:
- 391 0000 00000000 		.space	4
- 392              		.global	last_button1_time_unpressed
- 393              		.section	.bss.last_button1_time_unpressed,"aw",%nobits
- 394              		.align	2
- 397              	last_button1_time_unpressed:
- 398 0000 00000000 		.space	4
- 399              		.global	last_button1_time_pressed
- 400              		.section	.bss.last_button1_time_pressed,"aw",%nobits
- 401              		.align	2
- 404              	last_button1_time_pressed:
- 405 0000 00000000 		.space	4
- 406              		.text
- 407              	.Letext0:
- 408              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 409              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 410              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
- 411              		.file 5 "Core/Inc/interrupt.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccjQJRBT.s 			page 11
+ 168              		.loc 1 39 15 view .LVU37
+ 169 0034 8242     		cmp	r2, r0
+ 170 0036 F3D8     		bhi	.L12
+  41:Core/Src/interrupt.c ****             }
+ 171              		.loc 1 41 17 is_stmt 1 view .LVU38
+  41:Core/Src/interrupt.c ****             }
+ 172              		.loc 1 41 27 is_stmt 0 view .LVU39
+ 173 0038 024A     		ldr	r2, .L17+4
+ 174 003a 0121     		movs	r1, #1
+ 175 003c D154     		strb	r1, [r2, r3]
+ 176 003e F2E7     		b	.L13
+ 177              	.L18:
+ 178              		.align	2
+ 179              	.L17:
+ 180 0040 00000140 		.word	1073807360
+ 181 0044 00000000 		.word	states
+ 182              	.LBE3:
+ 183              	.LBE2:
+ 184              		.cfi_endproc
+ 185              	.LFE135:
+ 187              		.global	last_button2_time_unpressed
+ 188              		.section	.bss.last_button2_time_unpressed,"aw",%nobits
+ 189              		.align	2
+ 192              	last_button2_time_unpressed:
+ 193 0000 00000000 		.space	4
+ 194              		.global	last_button2_time_pressed
+ 195              		.section	.bss.last_button2_time_pressed,"aw",%nobits
+ 196              		.align	2
+ 199              	last_button2_time_pressed:
+ 200 0000 00000000 		.space	4
+ 201              		.global	last_button1_time_unpressed
+ 202              		.section	.bss.last_button1_time_unpressed,"aw",%nobits
+ 203              		.align	2
+ 206              	last_button1_time_unpressed:
+ 207 0000 00000000 		.space	4
+ 208              		.global	last_button1_time_pressed
+ 209              		.section	.bss.last_button1_time_pressed,"aw",%nobits
+ 210              		.align	2
+ 213              	last_button1_time_pressed:
+ 214 0000 00000000 		.space	4
+ 215              		.text
+ 216              	.Letext0:
+ 217              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 218              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+ 219              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+ 220              		.file 5 "Core/Inc/interrupt.h"
+ 221              		.file 6 "Core/Inc/init.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\ccrZdPVN.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 interrupt.c
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:21     .text.EXTI9_5_IRQHandler:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:27     .text.EXTI9_5_IRQHandler:00000000 EXTI9_5_IRQHandler
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:202    .text.EXTI9_5_IRQHandler:000000b4 $d
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:404    .bss.last_button1_time_pressed:00000000 last_button1_time_pressed
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:390    .bss.last_button2_time_pressed:00000000 last_button2_time_pressed
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:397    .bss.last_button1_time_unpressed:00000000 last_button1_time_unpressed
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:383    .bss.last_button2_time_unpressed:00000000 last_button2_time_unpressed
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:217    .text.SysTick_Handler:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:223    .text.SysTick_Handler:00000000 SysTick_Handler
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:319    .text.SysTick_Handler:00000064 $d
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:329    .text.wait:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:335    .text.wait:00000000 wait
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:374    .text.wait:00000014 $d
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:380    .bss.last_button2_time_unpressed:00000000 $d
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:387    .bss.last_button2_time_pressed:00000000 $d
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:394    .bss.last_button1_time_unpressed:00000000 $d
-C:\Users\User\AppData\Local\Temp\ccjQJRBT.s:401    .bss.last_button1_time_pressed:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:21     .text.EXTI9_5_IRQHandler:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:27     .text.EXTI9_5_IRQHandler:00000000 EXTI9_5_IRQHandler
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:65     .text.EXTI9_5_IRQHandler:00000024 $d
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:70     .text.SysTick_Handler:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:76     .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:94     .text.SysTick_Handler:0000000c $d
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:99     .text.TIM1_UP_TIM10_IRQHandler:00000000 $t
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:105    .text.TIM1_UP_TIM10_IRQHandler:00000000 TIM1_UP_TIM10_IRQHandler
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:180    .text.TIM1_UP_TIM10_IRQHandler:00000040 $d
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:192    .bss.last_button2_time_unpressed:00000000 last_button2_time_unpressed
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:189    .bss.last_button2_time_unpressed:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:199    .bss.last_button2_time_pressed:00000000 last_button2_time_pressed
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:196    .bss.last_button2_time_pressed:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:206    .bss.last_button1_time_unpressed:00000000 last_button1_time_unpressed
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:203    .bss.last_button1_time_unpressed:00000000 $d
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:213    .bss.last_button1_time_pressed:00000000 last_button1_time_pressed
+C:\Users\User\AppData\Local\Temp\ccrZdPVN.s:210    .bss.last_button1_time_pressed:00000000 $d
 
 UNDEFINED SYMBOLS
 global_counter
-long_press1
-short_press1
-long_press2
-short_press2
-last_toggle
-frequences
-counter_light
+READ_POT
 states
-selected_led

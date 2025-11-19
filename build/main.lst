@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccptg3E8.s 			page 1
+ARM GAS  C:\Users\User\AppData\Local\Temp\cckF1grg.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -29,307 +29,128 @@ ARM GAS  C:\Users\User\AppData\Local\Temp\ccptg3E8.s 			page 1
   27              	main:
   28              	.LFB133:
    1:Core/Src/main.c **** #include "..\Inc\init.h"
-   2:Core/Src/main.c **** #include "..\Inc\init2.h"
-   3:Core/Src/main.c **** #include "stdio.h"
-   4:Core/Src/main.c **** 
-   5:Core/Src/main.c **** // Кнопка 6 - включение светодиодов
-   6:Core/Src/main.c **** // Кнопка 7 - смена режима работы
-   7:Core/Src/main.c **** int main(void)
-   8:Core/Src/main.c **** {
-  29              		.loc 1 8 1 view -0
+   2:Core/Src/main.c **** #include "interrupt.h"
+   3:Core/Src/main.c **** 
+   4:Core/Src/main.c **** volatile uint32_t global_counter = 0;
+   5:Core/Src/main.c **** 
+   6:Core/Src/main.c **** volatile uint8_t states[4] = {0, 0, 0, 0};
+   7:Core/Src/main.c ****  
+   8:Core/Src/main.c **** int main(void)
+   9:Core/Src/main.c **** {
+  29              		.loc 1 9 1 view -0
   30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 0, uses_anonymous_args = 0
-  33 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
-  34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 24
-  36              		.cfi_offset 3, -24
-  37              		.cfi_offset 4, -20
-  38              		.cfi_offset 5, -16
-  39              		.cfi_offset 6, -12
-  40              		.cfi_offset 7, -8
-  41              		.cfi_offset 14, -4
-   9:Core/Src/main.c ****     simple_init();
-  42              		.loc 1 9 5 view .LVU1
-  43 0002 FFF7FEFF 		bl	simple_init
-  44              	.LVL0:
-  10:Core/Src/main.c ****     
-  11:Core/Src/main.c ****     uint32_t counter_LED1 = 0;
-  45              		.loc 1 11 5 view .LVU2
-  12:Core/Src/main.c ****     uint32_t counter_LED2 = 0;
-  46              		.loc 1 12 5 view .LVU3
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccptg3E8.s 			page 2
+  31              		@ Volatile: function does not return.
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+  10:Core/Src/main.c ****     // RCC_init();
+  11:Core/Src/main.c **** 
+  12:Core/Src/main.c ****     GPIO_init();
+  39              		.loc 1 12 5 view .LVU1
+  40 0002 FFF7FEFF 		bl	GPIO_init
+  41              	.LVL0:
+  13:Core/Src/main.c ****     // TIM1_init();
+  14:Core/Src/main.c ****     // ADC_init();
+  15:Core/Src/main.c ****     SET_BIT(GPIOB->MODER, GPIO_MODER_MODE7_0);
+  42              		.loc 1 15 5 view .LVU2
+  43 0006 054B     		ldr	r3, .L4
+ARM GAS  C:\Users\User\AppData\Local\Temp\cckF1grg.s 			page 2
 
 
-  13:Core/Src/main.c ****     uint32_t counter_LED3 = 0;
-  47              		.loc 1 13 5 view .LVU4
-  14:Core/Src/main.c ****     uint32_t change_mode = 0;
-  48              		.loc 1 14 5 view .LVU5
-  49              		.loc 1 14 14 is_stmt 0 view .LVU6
-  50 0006 0025     		movs	r5, #0
-  13:Core/Src/main.c ****     uint32_t counter_LED3 = 0;
-  51              		.loc 1 13 14 view .LVU7
-  52 0008 2E46     		mov	r6, r5
-  12:Core/Src/main.c ****     uint32_t counter_LED2 = 0;
-  53              		.loc 1 12 14 view .LVU8
-  54 000a 2F46     		mov	r7, r5
-  11:Core/Src/main.c ****     uint32_t counter_LED2 = 0;
-  55              		.loc 1 11 14 view .LVU9
-  56 000c 2C46     		mov	r4, r5
-  57 000e 20E0     		b	.L2
-  58              	.LVL1:
-  59              	.L5:
-  15:Core/Src/main.c **** 
-  16:Core/Src/main.c ****     while(1)
-  17:Core/Src/main.c ****     {
-  18:Core/Src/main.c ****  
-  19:Core/Src/main.c ****         if (pressed_button(IDRC7_))  
-  20:Core/Src/main.c ****         {
-  21:Core/Src/main.c ****             change_mode = !change_mode;
-  22:Core/Src/main.c ****         }
-  23:Core/Src/main.c **** 
-  24:Core/Src/main.c ****         if(pressed_button(IDRC6_))
-  25:Core/Src/main.c ****         {
-  26:Core/Src/main.c ****             if(change_mode == 0)
-  27:Core/Src/main.c ****             {
-  28:Core/Src/main.c ****                 if(counter_LED1 == 0)
-  29:Core/Src/main.c ****                     counter_LED1 = 1;
-  30:Core/Src/main.c ****                 else if(counter_LED2 == 0)
-  31:Core/Src/main.c ****                     counter_LED2 = 1;
-  32:Core/Src/main.c ****                 else if(counter_LED3 == 0)
-  33:Core/Src/main.c ****                     counter_LED3 = 1;
-  34:Core/Src/main.c ****             }
-  35:Core/Src/main.c ****             else
-  36:Core/Src/main.c ****             {
-  37:Core/Src/main.c ****                 if(counter_LED3 == 1)
-  60              		.loc 1 37 17 is_stmt 1 view .LVU10
-  61              		.loc 1 37 19 is_stmt 0 view .LVU11
-  62 0010 012E     		cmp	r6, #1
-  63 0012 34D0     		beq	.L15
-  38:Core/Src/main.c ****                     counter_LED3 = 0;
-  39:Core/Src/main.c ****                 else if(counter_LED2 == 1)
-  64              		.loc 1 39 22 is_stmt 1 view .LVU12
-  65              		.loc 1 39 24 is_stmt 0 view .LVU13
-  66 0014 012F     		cmp	r7, #1
-  67 0016 34D0     		beq	.L16
-  40:Core/Src/main.c ****                     counter_LED2 = 0;
-  41:Core/Src/main.c ****                 else if(counter_LED1 == 1)
-  68              		.loc 1 41 22 is_stmt 1 view .LVU14
-  69              		.loc 1 41 24 is_stmt 0 view .LVU15
-  70 0018 012C     		cmp	r4, #1
-  71 001a 02D1     		bne	.L4
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccptg3E8.s 			page 3
+  44 0008 1A68     		ldr	r2, [r3]
+  45 000a 42F48042 		orr	r2, r2, #16384
+  46 000e 1A60     		str	r2, [r3]
+  16:Core/Src/main.c ****     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS7);
+  47              		.loc 1 16 5 view .LVU3
+  48 0010 9A69     		ldr	r2, [r3, #24]
+  49 0012 42F08002 		orr	r2, r2, #128
+  50 0016 9A61     		str	r2, [r3, #24]
+  51              	.L2:
+  17:Core/Src/main.c ****     // SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS4);
+  18:Core/Src/main.c **** 
+  19:Core/Src/main.c **** 
+  20:Core/Src/main.c ****     while (1)
+  52              		.loc 1 20 5 view .LVU4
+  21:Core/Src/main.c ****     {
+  22:Core/Src/main.c ****         // if(states[0])
+  23:Core/Src/main.c ****         // {
+  24:Core/Src/main.c ****         //     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS4);
+  25:Core/Src/main.c ****         // }
+  26:Core/Src/main.c ****         // else
+  27:Core/Src/main.c ****         // {
+  28:Core/Src/main.c ****         //     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR4);
+  29:Core/Src/main.c ****         // }
+  30:Core/Src/main.c ****         // if(states[1])
+  31:Core/Src/main.c ****         // {
+  32:Core/Src/main.c ****         //     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS1);
+  33:Core/Src/main.c ****         // }
+  34:Core/Src/main.c ****         // else
+  35:Core/Src/main.c ****         // {
+  36:Core/Src/main.c ****         //     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR1);
+  37:Core/Src/main.c ****         // }
+  38:Core/Src/main.c ****         // if(states[2])
+  39:Core/Src/main.c ****         // {
+  40:Core/Src/main.c ****         //     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS3);
+  41:Core/Src/main.c ****         // }
+  42:Core/Src/main.c ****         // else
+  43:Core/Src/main.c ****         // {
+  44:Core/Src/main.c ****         //     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR3);
+  45:Core/Src/main.c ****         // }
+  46:Core/Src/main.c ****         // if(states[3])
+  47:Core/Src/main.c ****         // {
+  48:Core/Src/main.c ****         //     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS5);
+  49:Core/Src/main.c ****         // }
+  50:Core/Src/main.c ****         // else
+  51:Core/Src/main.c ****         // {
+  52:Core/Src/main.c ****         //     SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR5);
+  53:Core/Src/main.c ****         // }
+  54:Core/Src/main.c ****     }
+  53              		.loc 1 54 5 view .LVU5
+  20:Core/Src/main.c ****     {
+  54              		.loc 1 20 11 view .LVU6
+  55 0018 FEE7     		b	.L2
+  56              	.L5:
+  57 001a 00BF     		.align	2
+  58              	.L4:
+  59 001c 00040240 		.word	1073873920
+  60              		.cfi_endproc
+ARM GAS  C:\Users\User\AppData\Local\Temp\cckF1grg.s 			page 3
 
 
-  42:Core/Src/main.c ****                     counter_LED1 = 0;
-  72              		.loc 1 42 34 view .LVU16
-  73 001c 3C46     		mov	r4, r7
-  74              	.LVL2:
-  75              		.loc 1 42 34 view .LVU17
-  76 001e 00E0     		b	.L4
-  77              	.LVL3:
-  78              	.L12:
-  29:Core/Src/main.c ****                 else if(counter_LED2 == 0)
-  79              		.loc 1 29 34 view .LVU18
-  80 0020 0124     		movs	r4, #1
-  81              	.LVL4:
-  82              	.L4:
-  43:Core/Src/main.c ****             }
-  44:Core/Src/main.c ****         }
-  45:Core/Src/main.c **** 
-  46:Core/Src/main.c ****         if(counter_LED1)
-  83              		.loc 1 46 9 is_stmt 1 view .LVU19
-  84              		.loc 1 46 11 is_stmt 0 view .LVU20
-  85 0022 84B3     		cbz	r4, .L6
-  47:Core/Src/main.c ****         {
-  48:Core/Src/main.c ****             SET_BIT(BSRR_, BSRRB_0_ON);
-  86              		.loc 1 48 13 is_stmt 1 view .LVU21
-  87 0024 244A     		ldr	r2, .L19
-  88 0026 D2F81834 		ldr	r3, [r2, #1048]
-  89 002a 43F00103 		orr	r3, r3, #1
-  90 002e C2F81834 		str	r3, [r2, #1048]
-  91              	.L7:
-  49:Core/Src/main.c ****         }
-  50:Core/Src/main.c ****         else
-  51:Core/Src/main.c ****         {
-  52:Core/Src/main.c ****             SET_BIT(BSRR_, BSRRB_0_OFF);
-  53:Core/Src/main.c ****         }
-  54:Core/Src/main.c **** 
-  55:Core/Src/main.c ****         if(counter_LED2)
-  92              		.loc 1 55 9 view .LVU22
-  93              		.loc 1 55 11 is_stmt 0 view .LVU23
-  94 0032 87B3     		cbz	r7, .L8
-  56:Core/Src/main.c ****         {
-  57:Core/Src/main.c ****             SET_BIT(BSRR_, BSRRB_7_ON);
-  95              		.loc 1 57 13 is_stmt 1 view .LVU24
-  96 0034 204A     		ldr	r2, .L19
-  97 0036 D2F81834 		ldr	r3, [r2, #1048]
-  98 003a 43F08003 		orr	r3, r3, #128
-  99 003e C2F81834 		str	r3, [r2, #1048]
- 100              	.L9:
-  58:Core/Src/main.c ****         }
-  59:Core/Src/main.c ****         else
-  60:Core/Src/main.c ****         {
-  61:Core/Src/main.c ****             SET_BIT(BSRR_, BSRRB_7_OFF);
-  62:Core/Src/main.c ****         }
-  63:Core/Src/main.c **** 
-  64:Core/Src/main.c ****         if(counter_LED3)
- 101              		.loc 1 64 9 view .LVU25
- 102              		.loc 1 64 11 is_stmt 0 view .LVU26
- 103 0042 86B3     		cbz	r6, .L10
-  65:Core/Src/main.c ****         {
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccptg3E8.s 			page 4
-
-
-  66:Core/Src/main.c ****             SET_BIT(BSRR_, BSRRB_14_ON);
- 104              		.loc 1 66 13 is_stmt 1 view .LVU27
- 105 0044 1C4A     		ldr	r2, .L19
- 106 0046 D2F81834 		ldr	r3, [r2, #1048]
- 107 004a 43F48043 		orr	r3, r3, #16384
- 108 004e C2F81834 		str	r3, [r2, #1048]
- 109              	.LVL5:
- 110              	.L2:
-  16:Core/Src/main.c ****     {
- 111              		.loc 1 16 5 view .LVU28
-  19:Core/Src/main.c ****         {
- 112              		.loc 1 19 9 view .LVU29
-  19:Core/Src/main.c ****         {
- 113              		.loc 1 19 13 is_stmt 0 view .LVU30
- 114 0052 8020     		movs	r0, #128
- 115 0054 FFF7FEFF 		bl	pressed_button
- 116              	.LVL6:
-  19:Core/Src/main.c ****         {
- 117              		.loc 1 19 12 discriminator 1 view .LVU31
- 118 0058 08B1     		cbz	r0, .L3
-  21:Core/Src/main.c ****         }
- 119              		.loc 1 21 13 is_stmt 1 view .LVU32
-  21:Core/Src/main.c ****         }
- 120              		.loc 1 21 27 is_stmt 0 view .LVU33
- 121 005a 85F00105 		eor	r5, r5, #1
- 122              	.LVL7:
- 123              	.L3:
-  24:Core/Src/main.c ****         {
- 124              		.loc 1 24 9 is_stmt 1 view .LVU34
-  24:Core/Src/main.c ****         {
- 125              		.loc 1 24 12 is_stmt 0 view .LVU35
- 126 005e 4020     		movs	r0, #64
- 127 0060 FFF7FEFF 		bl	pressed_button
- 128              	.LVL8:
-  24:Core/Src/main.c ****         {
- 129              		.loc 1 24 11 discriminator 1 view .LVU36
- 130 0064 0028     		cmp	r0, #0
- 131 0066 DCD0     		beq	.L4
-  26:Core/Src/main.c ****             {
- 132              		.loc 1 26 13 is_stmt 1 view .LVU37
-  26:Core/Src/main.c ****             {
- 133              		.loc 1 26 15 is_stmt 0 view .LVU38
- 134 0068 002D     		cmp	r5, #0
- 135 006a D1D1     		bne	.L5
-  28:Core/Src/main.c ****                     counter_LED1 = 1;
- 136              		.loc 1 28 17 is_stmt 1 view .LVU39
-  28:Core/Src/main.c ****                     counter_LED1 = 1;
- 137              		.loc 1 28 19 is_stmt 0 view .LVU40
- 138 006c 002C     		cmp	r4, #0
- 139 006e D7D0     		beq	.L12
-  30:Core/Src/main.c ****                     counter_LED2 = 1;
- 140              		.loc 1 30 22 is_stmt 1 view .LVU41
-  30:Core/Src/main.c ****                     counter_LED2 = 1;
- 141              		.loc 1 30 24 is_stmt 0 view .LVU42
- 142 0070 1FB1     		cbz	r7, .L13
-  32:Core/Src/main.c ****                     counter_LED3 = 1;
- 143              		.loc 1 32 22 is_stmt 1 view .LVU43
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccptg3E8.s 			page 5
-
-
-  32:Core/Src/main.c ****                     counter_LED3 = 1;
- 144              		.loc 1 32 24 is_stmt 0 view .LVU44
- 145 0072 002E     		cmp	r6, #0
- 146 0074 D5D1     		bne	.L4
-  33:Core/Src/main.c ****             }
- 147              		.loc 1 33 34 view .LVU45
- 148 0076 3E46     		mov	r6, r7
- 149              	.LVL9:
-  33:Core/Src/main.c ****             }
- 150              		.loc 1 33 34 view .LVU46
- 151 0078 D3E7     		b	.L4
- 152              	.LVL10:
- 153              	.L13:
-  31:Core/Src/main.c ****                 else if(counter_LED3 == 0)
- 154              		.loc 1 31 34 view .LVU47
- 155 007a 2746     		mov	r7, r4
- 156              	.LVL11:
-  31:Core/Src/main.c ****                 else if(counter_LED3 == 0)
- 157              		.loc 1 31 34 view .LVU48
- 158 007c D1E7     		b	.L4
- 159              	.LVL12:
- 160              	.L15:
-  38:Core/Src/main.c ****                 else if(counter_LED2 == 1)
- 161              		.loc 1 38 34 view .LVU49
- 162 007e 0026     		movs	r6, #0
- 163              	.LVL13:
-  38:Core/Src/main.c ****                 else if(counter_LED2 == 1)
- 164              		.loc 1 38 34 view .LVU50
- 165 0080 CFE7     		b	.L4
- 166              	.LVL14:
- 167              	.L16:
-  40:Core/Src/main.c ****                 else if(counter_LED1 == 1)
- 168              		.loc 1 40 34 view .LVU51
- 169 0082 3746     		mov	r7, r6
- 170              	.LVL15:
-  40:Core/Src/main.c ****                 else if(counter_LED1 == 1)
- 171              		.loc 1 40 34 view .LVU52
- 172 0084 CDE7     		b	.L4
- 173              	.LVL16:
- 174              	.L6:
-  52:Core/Src/main.c ****         }
- 175              		.loc 1 52 13 is_stmt 1 view .LVU53
- 176 0086 0C4A     		ldr	r2, .L19
- 177 0088 D2F81834 		ldr	r3, [r2, #1048]
- 178 008c 43F48033 		orr	r3, r3, #65536
- 179 0090 C2F81834 		str	r3, [r2, #1048]
- 180 0094 CDE7     		b	.L7
- 181              	.L8:
-  61:Core/Src/main.c ****         }
- 182              		.loc 1 61 13 view .LVU54
- 183 0096 084A     		ldr	r2, .L19
- 184 0098 D2F81834 		ldr	r3, [r2, #1048]
- 185 009c 43F40003 		orr	r3, r3, #8388608
- 186 00a0 C2F81834 		str	r3, [r2, #1048]
- 187 00a4 CDE7     		b	.L9
- 188              	.L10:
-  67:Core/Src/main.c ****         }
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccptg3E8.s 			page 6
-
-
-  68:Core/Src/main.c ****         else
-  69:Core/Src/main.c ****         {
-  70:Core/Src/main.c ****             SET_BIT(BSRR_, BSRRB_14_OFF);
- 189              		.loc 1 70 13 view .LVU55
- 190 00a6 044A     		ldr	r2, .L19
- 191 00a8 D2F81834 		ldr	r3, [r2, #1048]
- 192 00ac 43F08043 		orr	r3, r3, #1073741824
- 193 00b0 C2F81834 		str	r3, [r2, #1048]
- 194 00b4 CDE7     		b	.L2
- 195              	.L20:
- 196 00b6 00BF     		.align	2
- 197              	.L19:
- 198 00b8 00000240 		.word	1073872896
- 199              		.cfi_endproc
- 200              	.LFE133:
- 202              		.text
- 203              	.Letext0:
- 204              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 205              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
- 206              		.file 4 "Core/Src/..\\Inc\\init.h"
-ARM GAS  C:\Users\User\AppData\Local\Temp\ccptg3E8.s 			page 7
+  61              	.LFE133:
+  63              		.global	states
+  64              		.section	.bss.states,"aw",%nobits
+  65              		.align	2
+  68              	states:
+  69 0000 00000000 		.space	4
+  70              		.global	global_counter
+  71              		.section	.bss.global_counter,"aw",%nobits
+  72              		.align	2
+  75              	global_counter:
+  76 0000 00000000 		.space	4
+  77              		.text
+  78              	.Letext0:
+  79              		.file 2 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+  80              		.file 3 "C:/Users/User/OneDrive/Desktop/mkp/xpack-arm-none-eabi-gcc-13.2.1-1.1-win32-x64/xpack-arm
+  81              		.file 4 "CMSIS/Devices/STM32F4xx/Inc/STM32F429ZI/stm32f429xx.h"
+  82              		.file 5 "Core/Inc/interrupt.h"
+  83              		.file 6 "Core/Inc/init.h"
+ARM GAS  C:\Users\User\AppData\Local\Temp\cckF1grg.s 			page 4
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\User\AppData\Local\Temp\ccptg3E8.s:21     .text.main:00000000 $t
-C:\Users\User\AppData\Local\Temp\ccptg3E8.s:27     .text.main:00000000 main
-C:\Users\User\AppData\Local\Temp\ccptg3E8.s:198    .text.main:000000b8 $d
+C:\Users\User\AppData\Local\Temp\cckF1grg.s:21     .text.main:00000000 $t
+C:\Users\User\AppData\Local\Temp\cckF1grg.s:27     .text.main:00000000 main
+C:\Users\User\AppData\Local\Temp\cckF1grg.s:59     .text.main:0000001c $d
+C:\Users\User\AppData\Local\Temp\cckF1grg.s:68     .bss.states:00000000 states
+C:\Users\User\AppData\Local\Temp\cckF1grg.s:65     .bss.states:00000000 $d
+C:\Users\User\AppData\Local\Temp\cckF1grg.s:75     .bss.global_counter:00000000 global_counter
+C:\Users\User\AppData\Local\Temp\cckF1grg.s:72     .bss.global_counter:00000000 $d
 
 UNDEFINED SYMBOLS
-simple_init
-pressed_button
+GPIO_init
