@@ -5,10 +5,10 @@
 
 /*Для читаемости кода, проценты*/
 
-#define TWENTY_PERCENT 20
-#define FOURTY_PERCENT 40
-#define SIXTY_PERCENT 60
-#define EIGHTY_PERCENT 80
+#define TWENTY_PERCENT   819    // 4095 * 0.20 = 819
+#define FOURTY_PERCENT   1638   // 4095 * 0.40 = 1638  
+#define SIXTY_PERCENT    2457   // 4095 * 0.60 = 2457
+#define EIGHTY_PERCENT   3276   // 4095 * 0.80 = 3276
 
 /**/
 

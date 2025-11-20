@@ -50,27 +50,23 @@ void TIM1_init(void)
     TIM1->ARR = 999;                   // Период: 1000 тактов
     TIM1->CCR1 = 500;                  // Скважность 50% (500/1000)
     
-    // Принудительное обновление
     TIM1->EGR = TIM_EGR_UG;
     
     // Настройка вывода PA8 (TIM1_CH1)
-    MODIFY_REG(GPIOA->MODER, GPIO_MODER_MODER8_Msk, 2 << GPIO_MODER_MODER8_Pos);    // Alternate function
-    MODIFY_REG(GPIOA->AFR[1], GPIO_AFRH_AFSEL8_Msk, 1 << GPIO_AFRH_AFSEL8_Pos);     // AF1 = TIM1
+    MODIFY_REG(GPIOA->MODER, GPIO_MODER_MODER8_Msk, 2 << GPIO_MODER_MODER8_Pos);    
+    MODIFY_REG(GPIOA->AFR[1], GPIO_AFRH_AFSEL8_Msk, 1 << GPIO_AFRH_AFSEL8_Pos);     
     
     // Настройка канала ШИМ
-    MODIFY_REG(TIM1->CCMR1, TIM_CCMR1_OC1M_Msk, 6 << TIM_CCMR1_OC1M_Pos);  // PWM mode 1
-    SET_BIT(TIM1->CCMR1, TIM_CCMR1_OC1PE);          // Preload enable
-    SET_BIT(TIM1->CCER, TIM_CCER_CC1E);             // Channel enable
-    SET_BIT(TIM1->BDTR, TIM_BDTR_MOE);              // Main output enable
+    MODIFY_REG(TIM1->CCMR1, TIM_CCMR1_OC1M_Msk, 6 << TIM_CCMR1_OC1M_Pos);  // ПВМКА
+    SET_BIT(TIM1->CCMR1, TIM_CCMR1_OC1PE);          
+    SET_BIT(TIM1->CCER, TIM_CCER_CC1E);            
+    SET_BIT(TIM1->BDTR, TIM_BDTR_MOE);              
     
-    // Дополнительные настройки (рекомендуется)
-    SET_BIT(TIM1->CR1, TIM_CR1_ARPE);               // Auto-reload preload enable
+    SET_BIT(TIM1->CR1, TIM_CR1_ARPE);              
     
-    // Запуск таймера
     TIM1->CR1 |= TIM_CR1_CEN;
     
-    // Включение прерывания (если нужно)
-    // NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
+    NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
 }
 
 void GPIO_init(void)
@@ -88,9 +84,11 @@ void GPIO_init(void)
 void ADC_init(void)
 {
     SET_BIT(RCC->APB2ENR, RCC_APB2ENR_ADC1EN);
-    SET_BIT(ADC1->CR2, ADC_CR2_ADON);
-    SET_BIT(ADC1->CR2, ADC_CR2_CONT);
-    CLEAR_REG(ADC1->SQR3);
+    ADC1->CR2 = 0;
+    SET_BIT(ADC1->CR2, ADC_CR2_ADON);     // Включить АЦП
+    SET_BIT(ADC1->CR2, ADC_CR2_CONT);     // Непрерывный режим
+    ADC1->SQR3 = 0;                       // Канал 0 в 1-м преобразовании
+    SET_BIT(ADC1->SMPR2, ADC_SMPR2_SMP0_0 | ADC_SMPR2_SMP0_1 | ADC_SMPR2_SMP0_2);
     SET_BIT(ADC1->CR2, ADC_CR2_SWSTART);
 }
 
